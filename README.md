@@ -82,4 +82,4 @@ reproductive potential of the stock.
 * Fish Tickets
 * Logbooks
 * Port sampling (length, weight, sex, & maturity)
-* Observer Program (1998--2016)
+* Observer Program (1998-2016)
