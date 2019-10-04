@@ -1,4 +1,11 @@
-#SEAK GKC Harvest and CPUE trends#####
+# a.olson and k.palof ADF&G juneau, ak 
+# date modfied: 2019-10-4
+# Objective:
+# explore and develop management indicators for Southeast Alaska GKC 
+
+# SEAK GKC Harvest and CPUE trends -----------
+
+# load ---------
 library(tidyverse)
 library(lubridate)
 library(readxl)
@@ -9,7 +16,6 @@ library(tidyr)
 library(padr)
 library(anytime)
 
-
 ##THEMES FOR GRAPHS#####
 loadfonts(device="win")
 windowsFonts(Times=windowsFont("TT Times New Roman"))
@@ -19,13 +25,14 @@ theme_set(theme_bw(base_size=14,base_family='Times New Roman')
 #COLOR BLIND PALETTE####
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
-#Import fishticket and logbook data from ALEX
+## data -------------------------
+# Import fishticket and logbook data from ALEX
 gkc_fish <- read.csv("data/fishery/gkc_fishticket.csv")
-
 gkc_log <- read.csv("data/fishery/gkc_logbook.csv")
 
+# here or in readme need how to pull this data **FIX**
 
-#Annual harvest regionwide and by mgt area####
+# Annual harvest regionwide and by mgt area ####
 
 ggplot(gkc_fish, aes(YEAR, POUNDS)) + geom_bar(stat = "identity") +
   ylab("Harvest (lbs)") + xlab("Year") +
@@ -57,7 +64,7 @@ ggplot(price_lb, aes(YEAR, mean)) + geom_line(lwd = 1) + geom_point(size = 3, co
               alpha = 0.3, fill = "gray") + ylab("Average $/lb") + xlab("Year") 
 
 
-###Logbook CPUE####
+# Logbook CPUE -----------
 cpue_log <- gkc_log %>% filter(TARGET_SPECIES_CODE == 923, !is.na(TARGET_SPECIES_RETAINED),
                                !is.na(NUMBER_POTS_LIFTED), !is.na(I_FISHERY)) %>%
   mutate(mgt_area = ifelse(I_FISHERY == "East Central GKC", "East Central",
@@ -86,11 +93,11 @@ ggplot(data = cpue_log, aes(YEAR, cpue)) +
   ylab("Mean CPUE (crab/pot)") + xlab("Year") +
   facet_wrap(~mgt_area, scales = "free_y") 
 
-###lbs per pot day####
-#Use fishticket data#
-gkc_fish
+# lbs per pot day -----------
+# Use fishticket data #
+head(gkc_fish)
 
-#Select for mgt areas#
+# Select for mgt areas #
 target <- c("East Central GKC", "Icy Strait GKC", "Lower Chatham Strait GKC", 
             "Mid-Chatham Strait GKC","North Stephens Passage GKC", "Northern GKC",
                  "Southern GKC")
