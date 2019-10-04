@@ -84,7 +84,7 @@ ggplot(data = cpue_log, aes(YEAR, cpue)) +
   geom_ribbon(aes(ymin = ll, ymax = ul),
               alpha = 0.3, fill = "gray") +
   ylab("Mean CPUE (crab/pot)") + xlab("Year") +
-  facet_wrap(~mgt_area) 
+  facet_wrap(~mgt_area, scales = "free_y") 
 
 ###lbs per pot day####
 #Use fishticket data#
@@ -96,8 +96,10 @@ target <- c("East Central GKC", "Icy Strait GKC", "Lower Chatham Strait GKC",
                  "Southern GKC")
 
 #Fishing season based on first and last haul dates#
-season_leng <- gkc_fish %>% filter(!is.na(CATCH_DATE), !is.na(SELL_DATE), I_FISHERY %in% target) %>% group_by(YEAR, I_FISHERY) %>% 
-  mutate(CATCH_DATE = as.character(CATCH_DATE), mdy = mdy(CATCH_DATE)) %>% select(YEAR, I_FISHERY, mdy) %>%
+season_leng <- gkc_fish %>% filter(!is.na(CATCH_DATE), !is.na(SELL_DATE), I_FISHERY %in% target) %>% 
+  group_by(YEAR, I_FISHERY) %>% 
+  mutate(CATCH_DATE = as.character(CATCH_DATE), mdy = mdy(CATCH_DATE)) %>% 
+  select(YEAR, I_FISHERY, mdy) %>%
   summarise(min = min(mdy), max = max(mdy), diff = max-min)
   
 season_leng
@@ -120,6 +122,8 @@ lbs_per_day <- bind_cols(season_leng, harv) %>%
 
 lbs_per_day  
 
+View(lbs_per_day)
+
 hist_avg <- lbs_per_day %>% group_by(I_FISHERY) %>% summarise(mean = mean(cpue))
 
 avg_ten <- lbs_per_day %>% group_by(I_FISHERY) %>% filter(YEAR >= 1983 & 2017) %>%
@@ -131,6 +135,8 @@ avg_ten
 ggplot(lbs_per_day, aes(YEAR, cpue, color = I_FISHERY)) + geom_line(lwd = 1) + geom_point(size = 2) +
   facet_wrap(~ I_FISHERY, scales = "free_y") + ylab("CPUE (lbs/pot day)") + xlab("Year") + 
   theme(legend.position = "none")
+
+ec <- lbs_per_day %>% filter(I_FISHERY == "East Central GKC")
 
 #East Central#
 ggplot(ec, aes(YEAR, cpue)) + geom_line(lwd = 1) + 
