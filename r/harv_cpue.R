@@ -106,7 +106,7 @@ gkc_fish %>%
 
 #Convert difference in season days to a numeric value for further calculations
   
-season_leng
+head(season_leng)
 
 ggplot(season_leng, aes(YEAR, diff, color = I_FISHERY)) + 
   geom_line(lwd = 1) + 
@@ -115,7 +115,7 @@ ggplot(season_leng, aes(YEAR, diff, color = I_FISHERY)) +
   ylab("Season Length (number of days)") + xlab("Year") +
   theme(legend.position = "none")
 
-#Harvest by mgt area and year ----------
+# Harvest by mgt area and year ----------
 gkc_fish %>% 
   filter(!is.na(CATCH_DATE), !is.na(SELL_DATE), !is.na(POUNDS), I_FISHERY %in% target) %>% 
   group_by(YEAR, I_FISHERY) %>%
@@ -136,8 +136,6 @@ lbs_per_day %>%
   group_by(I_FISHERY) %>% 
   filter(YEAR >= 1983 & 2017) %>%
   summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
-
-avg_ten
 
 #All mgt areas#
 ggplot(lbs_per_day, aes(YEAR, cpue, color = I_FISHERY)) + geom_line(lwd = 1) + geom_point(size = 2) +
