@@ -35,16 +35,19 @@ ggplot(gkc_fish, aes(YEAR, POUNDS)) + geom_bar(stat = "identity") +
 ###Avg Ex-Vessel Value  -----------
 head(gkc_fish)
 
-fish_value <- gkc_fish %>% group_by(YEAR) %>% 
-  summarise(total_value = sum(VALUE))
+gkc_fish %>% 
+  group_by(YEAR) %>% 
+  summarise(total_value = sum(VALUE)) -> fish_value
 
 ggplot(fish_value, aes(YEAR, total_value)) + geom_line(lwd = 1) + 
   geom_point(size = 3, color = "dodgerblue") + ylab("Ex-vessel value") + xlab("Year")
 
 
-price_lb <-gkc_fish %>% group_by(YEAR) %>% filter(VALUE > 0, !is.na(VALUE), !is.na(POUNDS)) %>%
+gkc_fish %>% 
+  group_by(YEAR) %>% 
+  filter(VALUE > 0, !is.na(VALUE), !is.na(POUNDS)) %>%
   mutate(price_per_lb = VALUE / POUNDS) %>%
-  summarise(mean = mean(price_per_lb), sd = sd(price_per_lb))
+  summarise(mean = mean(price_per_lb), sd = sd(price_per_lb)) -> price_lb
 
 ggplot(price_lb, aes(YEAR, mean)) + geom_line(lwd = 1) + geom_point(size = 3, color = "dodgerblue") +
   geom_ribbon(aes(YEAR, ymin = mean - sd, ymax = mean + sd),
@@ -52,7 +55,7 @@ ggplot(price_lb, aes(YEAR, mean)) + geom_line(lwd = 1) + geom_point(size = 3, co
 
 
 # Logbook CPUE -----------
-cpue_log <- gkc_log %>% filter(TARGET_SPECIES_CODE == 923, !is.na(TARGET_SPECIES_RETAINED),
+gkc_log %>% filter(TARGET_SPECIES_CODE == 923, !is.na(TARGET_SPECIES_RETAINED),
                                !is.na(NUMBER_POTS_LIFTED), !is.na(I_FISHERY)) %>%
   mutate(mgt_area = ifelse(I_FISHERY == "East Central GKC", "East Central",
                     ifelse(I_FISHERY == "Icy Strait GKC", "Icy Strait", 
@@ -61,7 +64,8 @@ cpue_log <- gkc_log %>% filter(TARGET_SPECIES_CODE == 923, !is.na(TARGET_SPECIES
                     ifelse(I_FISHERY == "North Stephens Passage GKC", "North Stephens Passage",
                     ifelse(I_FISHERY == "Northern GKC", "Northern",
                     ifelse(I_FISHERY == "Southern GKC", "Southern", "Misc"))))))),
-         cpue = TARGET_SPECIES_RETAINED / NUMBER_POTS_LIFTED) %>% select(YEAR, mgt_area, cpue, NUMBER_POTS_LIFTED) %>%
+         cpue = TARGET_SPECIES_RETAINED / NUMBER_POTS_LIFTED) %>% 
+  select(YEAR, mgt_area, cpue, NUMBER_POTS_LIFTED) %>%
   filter(!is.na(cpue), mgt_area != "Misc") %>% #have to add this here since 0 pots lifts for 0 crab is included here
   group_by(YEAR, mgt_area) %>%
   summarise(sd = sd(cpue),
@@ -70,7 +74,7 @@ cpue_log <- gkc_log %>% filter(TARGET_SPECIES_CODE == 923, !is.na(TARGET_SPECIES
             se = sd / sqrt (n),
             total_pots = sum(NUMBER_POTS_LIFTED)) %>%
   mutate(ll = cpue - 2 * se,
-         ul = cpue + 2 * se)
+         ul = cpue + 2 * se) -> cpue_log
 
 ggplot(data = cpue_log, aes(YEAR, cpue)) + 
   geom_line() + 
@@ -90,17 +94,16 @@ target <- c("East Central GKC", "Icy Strait GKC", "Lower Chatham Strait GKC",
                  "Southern GKC")
 
 #Fishing season based on first and last haul dates#
-season_leng <- gkc_fish %>% filter(!is.na(CATCH_DATE), !is.na(SELL_DATE), I_FISHERY %in% target) %>% 
+gkc_fish %>% 
+  filter(!is.na(CATCH_DATE), !is.na(SELL_DATE), I_FISHERY %in% target) %>% 
   group_by(YEAR, I_FISHERY) %>% 
   mutate(CATCH_DATE = as.character(CATCH_DATE), mdy = mdy(CATCH_DATE)) %>% 
   select(YEAR, I_FISHERY, mdy) %>%
-  summarise(min = min(mdy), max = max(mdy), diff = max-min)
+  summarise(min = min(mdy), max = max(mdy), diff = max-min) %>% 
+  mutate(diff = as.numeric(diff, units = "days")) -> season_leng 
+#Convert difference in season days to a numeric value for further calculations
   
 season_leng
-
-#Convert difference in season days to a numeric value for further calculations
-season_leng$diff <- as.numeric(season_leng$diff, units = "days")
-
 
 ggplot(season_leng, aes(YEAR, diff, color = I_FISHERY)) + geom_line(lwd = 1) + geom_point(size = 2) +
   facet_wrap(~ I_FISHERY) + ylab("Season Length (number of days)") + xlab("Year") +
