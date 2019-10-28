@@ -8,6 +8,8 @@
 # load ---------
 source("./r/helper.R")
 
+# global ---------
+cur_yr = 2019
 
 
 ## data -------------------------
@@ -21,17 +23,17 @@ gkc_log <- read.csv("data/fishery/gkc_logbook.csv")
 
 ggplot(gkc_fish, aes(YEAR, POUNDS)) + geom_bar(stat = "identity") +
   ylab("Harvest (lbs)") + xlab("Year") +
-  scale_x_continuous(breaks = pretty(gkc_fish$YEAR, n = 5), limits = c(1970, 2020)) +
+  scale_x_continuous(breaks = pretty(gkc_fish$YEAR, n = 5), limits = c(1970, cur_yr+1)) +
   scale_y_continuous(label = scales::comma)
 
 
 ggplot(gkc_fish, aes(YEAR, POUNDS)) + geom_bar(stat = "identity") +
   ylab("Harvest (lbs)") + xlab("Year") +
-  scale_x_continuous(breaks = pretty(gkc_fish$YEAR, n = 5), limits = c(1970, 2020)) +
-  scale_y_continuous(label = scales::comma) + facet_wrap(~I_FISHERY)
+  scale_x_continuous(breaks = pretty(gkc_fish$YEAR, n = 5), limits = c(1970, cur_yr+1)) +
+  scale_y_continuous(label = scales::comma) + facet_wrap(~I_FISHERY, scales = "free_y")
 
-###Avg Ex-Vessel Value###
-gkc_fish
+###Avg Ex-Vessel Value  -----------
+head(gkc_fish)
 
 fish_value <- gkc_fish %>% group_by(YEAR) %>% 
   summarise(total_value = sum(VALUE))
