@@ -100,31 +100,42 @@ gkc_fish %>%
   mutate(CATCH_DATE = as.character(CATCH_DATE), mdy = mdy(CATCH_DATE)) %>% 
   select(YEAR, I_FISHERY, mdy) %>%
   summarise(min = min(mdy), max = max(mdy), diff = max-min) %>% 
-  mutate(diff = as.numeric(diff, units = "days")) -> season_leng 
+  mutate(diff = as.numeric(diff, units = "days")) %>% 
+  mutate(diff = replace(diff, which(diff == 0), 14)) -> season_leng 
+# change diff that are 0 to 14 days - average "trip" based on tides. pers.comm A.Olson, K.Palof
+
 #Convert difference in season days to a numeric value for further calculations
   
 season_leng
 
-ggplot(season_leng, aes(YEAR, diff, color = I_FISHERY)) + geom_line(lwd = 1) + geom_point(size = 2) +
-  facet_wrap(~ I_FISHERY) + ylab("Season Length (number of days)") + xlab("Year") +
+ggplot(season_leng, aes(YEAR, diff, color = I_FISHERY)) + 
+  geom_line(lwd = 1) + 
+  geom_point(size = 2) +
+  facet_wrap(~ I_FISHERY) + 
+  ylab("Season Length (number of days)") + xlab("Year") +
   theme(legend.position = "none")
 
-#Harvest by mgt area and year#
-harv <- gkc_fish %>% filter(!is.na(CATCH_DATE), !is.na(SELL_DATE), !is.na(POUNDS), I_FISHERY %in% target) %>% group_by(YEAR, I_FISHERY) %>%
-  summarise(total_lbs = sum(POUNDS))
+#Harvest by mgt area and year ----------
+gkc_fish %>% 
+  filter(!is.na(CATCH_DATE), !is.na(SELL_DATE), !is.na(POUNDS), I_FISHERY %in% target) %>% 
+  group_by(YEAR, I_FISHERY) %>%
+  summarise(total_lbs = sum(POUNDS)) -> harv
 
-lbs_per_day <- bind_cols(season_leng, harv) %>% 
-  select(YEAR, I_FISHERY, diff, total_lbs)  %>% group_by(YEAR, I_FISHERY, diff, total_lbs) %>%
-  summarise(cpue = total_lbs / diff)
+harv %>% 
+  full_join(season_leng) %>% 
+  select(YEAR, I_FISHERY, diff, total_lbs)  %>% 
+  mutate(cpue = total_lbs / diff) -> lbs_per_day
 
-lbs_per_day  
+head(lbs_per_day)
 
-View(lbs_per_day)
+lbs_per_day %>% 
+  group_by(I_FISHERY) %>% 
+  summarise(mean = mean(cpue, na.rm = TRUE)) -> hist_avg
 
-hist_avg <- lbs_per_day %>% group_by(I_FISHERY) %>% summarise(mean = mean(cpue))
-
-avg_ten <- lbs_per_day %>% group_by(I_FISHERY) %>% filter(YEAR >= 1983 & 2017) %>%
-  summarise(mean = mean(cpue))
+lbs_per_day %>% 
+  group_by(I_FISHERY) %>% 
+  filter(YEAR >= 1983 & 2017) %>%
+  summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
 
 avg_ten
 
