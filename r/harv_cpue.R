@@ -125,15 +125,6 @@ harv %>%
 
 head(lbs_per_day)
 
-lbs_per_day %>% 
-  group_by(I_FISHERY) %>% 
-  summarise(mean = mean(cpue, na.rm = TRUE)) -> hist_avg
-
-lbs_per_day %>% 
-  group_by(I_FISHERY) %>% 
-  filter(YEAR >= 1983 & 2017) %>%
-  summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
-
 # All mgt areas -----------------
 ggplot(lbs_per_day, aes(YEAR, cpue, color = I_FISHERY)) + 
   geom_line(lwd = 1) + 
@@ -143,14 +134,30 @@ ggplot(lbs_per_day, aes(YEAR, cpue, color = I_FISHERY)) +
   xlab("Year") + 
   theme(legend.position = "none")
 
+# lbs per day figure ------------------
 # make sure functions are loaded from helper.R file
-lbs_per_day_graph(1983, 2017, "East Central GKC")
-lbs_per_day_graph(1983, 2017, "Icy Strait GKC")
-lbs_per_day_graph(1983, 2017, "Lower Chatham Strait GKC") # didn't work
-lbs_per_day_graph(1983, 2017, "Mid-Chatham Strait GKC")
-lbs_per_day_graph(1983, 2017, "North Stephens Passage GKC")
-lbs_per_day_graph(1983, 2017, "Northern GKC")
-lbs_per_day_graph(1983, 2017, "Southern GKC")
+lbs_per_day_graph(1983, 2017, "East Central GKC", lbs_per_day)
+lbs_per_day_graph(1983, 2017, "Icy Strait GKC", lbs_per_day)
+lbs_per_day_graph(1983, 2017, "Lower Chatham Strait GKC", lbs_per_day) # didn't work
+lbs_per_day_graph(1983, 2017, "Mid-Chatham Strait GKC", lbs_per_day)
+lbs_per_day_graph(1983, 2017, "North Stephens Passage GKC", lbs_per_day)
+lbs_per_day_graph(1983, 2017, "Northern GKC", lbs_per_day)
+lbs_per_day_graph(1983, 2017, "Southern GKC", lbs_per_day)
+
+
+
+
+#### old code ----------------------------
+# lbs per day additional calcs ---
+# these are curretnly in the function call 
+lbs_per_day %>% 
+  group_by(I_FISHERY) %>% 
+  summarise(mean = mean(cpue, na.rm = TRUE)) -> hist_avg
+
+lbs_per_day %>% 
+  group_by(I_FISHERY) %>% 
+  filter(YEAR >= 1983 & 2017) %>%
+  summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
 
 #East Central --- andrew's -----------
 ec <- lbs_per_day %>% filter(I_FISHERY == "East Central GKC")
