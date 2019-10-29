@@ -140,7 +140,7 @@ ggplot(lbs_per_day, aes(YEAR, cpue, color = I_FISHERY)) +
 # make sure functions are loaded from helper.R file
 lbs_per_day_graph(1983, 2017, "East Central GKC", lbs_per_day)
 lbs_per_day_graph(1983, 2017, "Icy Strait GKC", lbs_per_day)
-lbs_per_day_graph(1983, 2017, "Lower Chatham Strait GKC", lbs_per_day) # didn't work
+lbs_per_day_graph(1983, 2017, "Lower Chatham Strait GKC", lbs_per_day) 
 lbs_per_day_graph(1983, 2017, "Mid-Chatham Strait GKC", lbs_per_day)
 lbs_per_day_graph(1983, 2017, "North Stephens Passage GKC", lbs_per_day)
 lbs_per_day_graph(1983, 2017, "Northern GKC", lbs_per_day)
@@ -149,8 +149,13 @@ lbs_per_day_graph(1983, 2017, "Southern GKC", lbs_per_day)
 
 # lbs per pot day per permit -----------
 # these use cpue 2, see seperate function
-
-
+lbs_per_day_permit_graph(1983, 2017, "East Central GKC", lbs_per_day)
+lbs_per_day_permit_graph(1983, 2017, "Icy Strait GKC", lbs_per_day)
+lbs_per_day_permit_graph(1983, 2017, "Lower Chatham Strait GKC", lbs_per_day) 
+lbs_per_day_permit_graph(1983, 2017, "Mid-Chatham Strait GKC", lbs_per_day)
+lbs_per_day_permit_graph(1983, 2017, "North Stephens Passage GKC", lbs_per_day)
+lbs_per_day_permit_graph(1983, 2017, "Northern GKC", lbs_per_day)
+lbs_per_day_permit_graph(1983, 2017, "Southern GKC", lbs_per_day)
 
 
 
