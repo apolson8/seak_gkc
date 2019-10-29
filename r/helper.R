@@ -30,7 +30,12 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2",
 #end_yr = 2017
 #mg_area = "Lower Chatham Strait GKC"
 
-lbs_per_day_graph <- function(str_yr, end_yr, mg_area){
+lbs_per_day_graph <- function(str_yr, end_yr, mg_area, lbs_per_day){
+
+lbs_per_day %>% 
+  group_by(I_FISHERY) %>% 
+  filter(YEAR >= str_yr & end_yr) %>%
+  summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
 
 avg_ten %>% 
   filter(I_FISHERY == mg_area) %>% 
