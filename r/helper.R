@@ -63,3 +63,37 @@ fig1
 ggsave(paste0('./output/', mg_area, '.png'), fig1,  
        dpi = 600, width = 10.5, height = 5.5)
 }
+
+lbs_per_day_permit_graph <- function(str_yr, end_yr, mg_area, lbs_per_day){
+  
+  lbs_per_day %>% 
+    group_by(I_FISHERY) %>% 
+    filter(YEAR >= str_yr & end_yr) %>%
+    summarise(mean = mean(cpue2, na.rm = TRUE)) -> avg_ten 
+  
+  avg_ten %>% 
+    filter(I_FISHERY == mg_area) %>% 
+    mutate(fifty = mean*0.50, twenty = mean*0.20) -> avg_ten2
+  
+  lbs_per_day %>% 
+    filter(I_FISHERY == mg_area) %>% 
+    ggplot(aes(YEAR, cpue2)) + 
+    geom_line(lwd = 1) + 
+    geom_hline(yintercept = avg_ten2$mean, lwd = 0.5, color = "green") +
+    geom_text(aes(1977, avg_ten2$mean, 
+                  label = paste0("Target Reference Point (avg ", str_yr, "-", end_yr, ")"), vjust = -1, hjust = 0.05)) +
+    geom_hline(yintercept = avg_ten2$fifty, lwd = 0.5, linetype = "dashed",color = "orange") +
+    geom_text(aes(1977, avg_ten2$fifty, label = "Trigger (50% of target)", vjust = -1, hjust = 0.05)) +
+    geom_hline(yintercept = avg_ten2$twenty, lwd = 0.5, color = "red") +
+    geom_text(aes(1976.5, avg_ten2$twenty, label = "Limit Reference Point  (20% of target)", vjust = -1, hjust = 0.05)) +
+    geom_vline(xintercept = str_yr, linetype = "dashed") +
+    geom_vline(xintercept = end_yr, linetype = "dashed") +
+    annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") +
+    geom_point(size = 3, color = "dodgerblue") + 
+    ylab("CPUE (lbs/pot day/permit)") + 
+    xlab("Year") + 
+    ggtitle(paste0(mg_area, " -active fishing season")) -> fig1
+  fig1
+  ggsave(paste0('./output/', mg_area, ' by_permit.png'), fig1,  
+         dpi = 600, width = 10.5, height = 5.5)
+}
