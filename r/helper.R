@@ -26,9 +26,9 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2",
 
 # target ref lbs per fishing day -----------
 
-str_yr = 1983
-end_yr = 2017
-mg_area = "East Central GKC"
+#str_yr = 1983
+#end_yr = 2017
+#mg_area = "Lower Chatham Strait GKC"
 
 lbs_per_day_graph <- function(str_yr, end_yr, mg_area){
 
@@ -42,11 +42,11 @@ lbs_per_day %>%
   geom_line(lwd = 1) + 
   geom_hline(yintercept = avg_ten2$mean, lwd = 0.5, color = "green") +
   geom_text(aes(1977, avg_ten2$mean, 
-                label = paste0("Target Reference Point (avg ", str_yr, "-", end_yr, ")"), vjust = -1)) +
+                label = paste0("Target Reference Point (avg ", str_yr, "-", end_yr, ")"), vjust = -1, hjust = 0.05)) +
   geom_hline(yintercept = avg_ten2$fifty, lwd = 0.5, linetype = "dashed",color = "orange") +
-  geom_text(aes(1977, avg_ten2$fifty, label = "Trigger (50% of target)", vjust = -1)) +
+  geom_text(aes(1977, avg_ten2$fifty, label = "Trigger (50% of target)", vjust = -1, hjust = 0.05)) +
   geom_hline(yintercept = avg_ten2$twenty, lwd = 0.5, color = "red") +
-  geom_text(aes(1976.5, avg_ten2$twenty, label = "Limit Reference Point  (20% of target)", vjust = -1)) +
+  geom_text(aes(1976.5, avg_ten2$twenty, label = "Limit Reference Point  (20% of target)", vjust = -1, hjust = 0.05)) +
   geom_vline(xintercept = str_yr, linetype = "dashed") +
   geom_vline(xintercept = end_yr, linetype = "dashed") +
   annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") +
