@@ -53,5 +53,8 @@ lbs_per_day %>%
   geom_point(size = 3, color = "dodgerblue") + 
   ylab("CPUE (lbs/pot day)") + 
   xlab("Year") + 
-  ggtitle(paste0(mg_area, " -active fishing season"))
+  ggtitle(paste0(mg_area, " -active fishing season")) -> fig1
+fig1
+ggsave(paste0('./output/', mg_area, '.png'), fig1,  
+       dpi = 600, width = 10.5, height = 5.5)
 }
