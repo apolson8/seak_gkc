@@ -148,30 +148,9 @@ lbs_per_day_graph(1983, 2017, "Southern GKC", lbs_per_day)
 
 
 # lbs per pot day per permit -----------
-# Use fishticket data #
-head(gkc_fish)
-
-# Select for mgt areas #
-target <- c("East Central GKC", "Icy Strait GKC", "Lower Chatham Strait GKC", 
-            "Mid-Chatham Strait GKC","North Stephens Passage GKC", "Northern GKC",
-            "Southern GKC")
-# use season_leng from above 
-head(season_leng)
+# these use cpue 2, see seperate function
 
 
-# Harvest by mgt area and year ----------
-gkc_fish %>% 
-  filter(!is.na(CATCH_DATE), !is.na(SELL_DATE), !is.na(POUNDS), I_FISHERY %in% target) %>% 
-  group_by(YEAR, I_FISHERY) %>%
-  summarise(total_lbs = sum(POUNDS), 
-            permits = length(unique(ADFG_NO))) -> harv2 # add permits using number of uniqeu ADF&G no
-
-harv2 %>% 
-  full_join(season_leng) %>% 
-  select(YEAR, I_FISHERY, diff, total_lbs, permits)  %>% 
-  mutate(cpue2 = total_lbs / diff / permits) -> lbs_per_day_permit
-
-head(lbs_per_day_permit)
 
 
 
