@@ -11,12 +11,10 @@ source("./r/helper.R")
 # global ---------
 cur_yr = 2019
 
-
 ## data -------------------------
 # Import fishticket and logbook data from ALEX
 gkc_fish <- read.csv("data/fishery/gkc_fishticket.csv")
 gkc_log <- read.csv("data/fishery/gkc_logbook.csv")
-
 # here or in readme need how to pull this data **FIX**
 
 # Annual harvest regionwide and by mgt area ####
@@ -41,7 +39,6 @@ gkc_fish %>%
 
 ggplot(fish_value, aes(YEAR, total_value)) + geom_line(lwd = 1) + 
   geom_point(size = 3, color = "dodgerblue") + ylab("Ex-vessel value") + xlab("Year")
-
 
 gkc_fish %>% 
   group_by(YEAR) %>% 
