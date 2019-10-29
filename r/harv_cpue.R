@@ -137,14 +137,22 @@ lbs_per_day %>%
   filter(YEAR >= 1983 & 2017) %>%
   summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
 
-#All mgt areas#
-ggplot(lbs_per_day, aes(YEAR, cpue, color = I_FISHERY)) + geom_line(lwd = 1) + geom_point(size = 2) +
-  facet_wrap(~ I_FISHERY, scales = "free_y") + ylab("CPUE (lbs/pot day)") + xlab("Year") + 
+# All mgt areas -----------------
+ggplot(lbs_per_day, aes(YEAR, cpue, color = I_FISHERY)) + 
+  geom_line(lwd = 1) + 
+  geom_point(size = 2) +
+  facet_wrap(~ I_FISHERY, scales = "free_y") + 
+  ylab("CPUE (lbs/pot day)") + 
+  xlab("Year") + 
   theme(legend.position = "none")
 
-ec <- lbs_per_day %>% filter(I_FISHERY == "East Central GKC")
+# make sure functions are loaded from helper.R file
+lbs_per_day_graph(1983, 2017, "East Central GKC")
 
-#East Central#
+
+
+#East Central --- andrew's -----------
+ec <- lbs_per_day %>% filter(I_FISHERY == "East Central GKC")
 ggplot(ec, aes(YEAR, cpue)) + geom_line(lwd = 1) + 
   geom_hline(yintercept = 4797, lwd = 0.5, color = "green") +
   geom_text(aes(1977, 4797, label = "Target Reference Point (avg 1983-2017)", vjust = -1)) +
