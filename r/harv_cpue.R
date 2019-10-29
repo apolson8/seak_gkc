@@ -148,8 +148,12 @@ ggplot(lbs_per_day, aes(YEAR, cpue, color = I_FISHERY)) +
 
 # make sure functions are loaded from helper.R file
 lbs_per_day_graph(1983, 2017, "East Central GKC")
-
-
+lbs_per_day_graph(1983, 2017, "Icy Strait GKC")
+lbs_per_day_graph(1983, 2017, "Lower Chatham Strait GKC") # didn't work
+lbs_per_day_graph(1983, 2017, "Mid-Chatham Strait GKC")
+lbs_per_day_graph(1983, 2017, "North Stephens Passage GKC")
+lbs_per_day_graph(1983, 2017, "Northern GKC")
+lbs_per_day_graph(1983, 2017, "Southern GKC")
 
 #East Central --- andrew's -----------
 ec <- lbs_per_day %>% filter(I_FISHERY == "East Central GKC")
