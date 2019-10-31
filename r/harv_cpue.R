@@ -81,6 +81,16 @@ ggplot(data = cpue_log, aes(YEAR, cpue)) +
   ylab("Mean CPUE (crab/pot)") + xlab("Year") +
   facet_wrap(~mgt_area, scales = "free_y") 
 
+head(cpue_log)
+
+logbk_cpue(2000, 2017, "East Central", cpue_log)
+logbk_cpue(2000, 2017, "Icy Strait", cpue_log)
+logbk_cpue(2000, 2017, "Lower Chatham", cpue_log)
+logbk_cpue(2000, 2017, "Mid-Chatham", cpue_log)
+logbk_cpue(2000, 2017, "North Stephens Passage", cpue_log)
+logbk_cpue(2000, 2017, "Northern", cpue_log)
+logbk_cpue(2000, 2017, "Southern", cpue_log)
+
 # lbs per pot day -----------
 # Use fishticket data #
 head(gkc_fish)
