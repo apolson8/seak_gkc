@@ -1,64 +1,58 @@
-#SEAK GKC Harvest and CPUE trends#####
-library(tidyverse)
-library(lubridate)
-library(readxl)
-library(ggthemes)
-library(gridExtra)
-library(extrafont)
-library(tidyr)
-library(padr)
-library(anytime)
+# a.olson and k.palof ADF&G juneau, ak 
+# date modfied: 2019-10-4
+# Objective:
+# explore and develop management indicators for Southeast Alaska GKC 
 
+# SEAK GKC Harvest and CPUE trends -----------
 
-##THEMES FOR GRAPHS#####
-loadfonts(device="win")
-windowsFonts(Times=windowsFont("TT Times New Roman"))
-theme_set(theme_bw(base_size=14,base_family='Times New Roman')
-          +theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()))
+# load ---------
+source("./r/helper.R")
 
-#COLOR BLIND PALETTE####
-cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+# global ---------
+cur_yr = 2019
 
-#Import fishticket and logbook data from ALEX
+## data -------------------------
+# Import fishticket and logbook data from ALEX
 gkc_fish <- read.csv("data/fishery/gkc_fishticket.csv")
-
 gkc_log <- read.csv("data/fishery/gkc_logbook.csv")
+# here or in readme need how to pull this data **FIX**
 
-
-#Annual harvest regionwide and by mgt area####
+# Annual harvest regionwide and by mgt area ####
 
 ggplot(gkc_fish, aes(YEAR, POUNDS)) + geom_bar(stat = "identity") +
   ylab("Harvest (lbs)") + xlab("Year") +
-  scale_x_continuous(breaks = pretty(gkc_fish$YEAR, n = 5), limits = c(1970, 2020)) +
+  scale_x_continuous(breaks = pretty(gkc_fish$YEAR, n = 5), limits = c(1970, cur_yr+1)) +
   scale_y_continuous(label = scales::comma)
 
 
 ggplot(gkc_fish, aes(YEAR, POUNDS)) + geom_bar(stat = "identity") +
   ylab("Harvest (lbs)") + xlab("Year") +
-  scale_x_continuous(breaks = pretty(gkc_fish$YEAR, n = 5), limits = c(1970, 2020)) +
-  scale_y_continuous(label = scales::comma) + facet_wrap(~I_FISHERY)
+  scale_x_continuous(breaks = pretty(gkc_fish$YEAR, n = 5), limits = c(1970, cur_yr+1)) +
+  scale_y_continuous(label = scales::comma) + facet_wrap(~I_FISHERY, scales = "free_y")
 
-###Avg Ex-Vessel Value###
-gkc_fish
+###Avg Ex-Vessel Value  -----------
+head(gkc_fish)
 
-fish_value <- gkc_fish %>% group_by(YEAR) %>% 
-  summarise(total_value = sum(VALUE))
+gkc_fish %>% 
+  group_by(YEAR) %>% 
+  summarise(total_value = sum(VALUE)) -> fish_value
 
 ggplot(fish_value, aes(YEAR, total_value)) + geom_line(lwd = 1) + 
   geom_point(size = 3, color = "dodgerblue") + ylab("Ex-vessel value") + xlab("Year")
 
-
-price_lb <-gkc_fish %>% group_by(YEAR) %>% filter(VALUE > 0, !is.na(VALUE), !is.na(POUNDS)) %>%
+gkc_fish %>% 
+  group_by(YEAR) %>% 
+  filter(VALUE > 0, !is.na(VALUE), !is.na(POUNDS)) %>%
   mutate(price_per_lb = VALUE / POUNDS) %>%
-  summarise(mean = mean(price_per_lb), sd = sd(price_per_lb))
+  summarise(mean = mean(price_per_lb), sd = sd(price_per_lb)) -> price_lb
 
 ggplot(price_lb, aes(YEAR, mean)) + geom_line(lwd = 1) + geom_point(size = 3, color = "dodgerblue") +
   geom_ribbon(aes(YEAR, ymin = mean - sd, ymax = mean + sd),
               alpha = 0.3, fill = "gray") + ylab("Average $/lb") + xlab("Year") 
 
 
-###Logbook CPUE####
-cpue_log <- gkc_log %>% filter(TARGET_SPECIES_CODE == 923, !is.na(TARGET_SPECIES_RETAINED),
+# Logbook CPUE -----------
+gkc_log %>% filter(TARGET_SPECIES_CODE == 923, !is.na(TARGET_SPECIES_RETAINED),
                                !is.na(NUMBER_POTS_LIFTED), !is.na(I_FISHERY)) %>%
   mutate(mgt_area = ifelse(I_FISHERY == "East Central GKC", "East Central",
                     ifelse(I_FISHERY == "Icy Strait GKC", "Icy Strait", 
@@ -67,7 +61,8 @@ cpue_log <- gkc_log %>% filter(TARGET_SPECIES_CODE == 923, !is.na(TARGET_SPECIES
                     ifelse(I_FISHERY == "North Stephens Passage GKC", "North Stephens Passage",
                     ifelse(I_FISHERY == "Northern GKC", "Northern",
                     ifelse(I_FISHERY == "Southern GKC", "Southern", "Misc"))))))),
-         cpue = TARGET_SPECIES_RETAINED / NUMBER_POTS_LIFTED) %>% select(YEAR, mgt_area, cpue, NUMBER_POTS_LIFTED) %>%
+         cpue = TARGET_SPECIES_RETAINED / NUMBER_POTS_LIFTED) %>% 
+  select(YEAR, mgt_area, cpue, NUMBER_POTS_LIFTED) %>%
   filter(!is.na(cpue), mgt_area != "Misc") %>% #have to add this here since 0 pots lifts for 0 crab is included here
   group_by(YEAR, mgt_area) %>%
   summarise(sd = sd(cpue),
@@ -76,7 +71,7 @@ cpue_log <- gkc_log %>% filter(TARGET_SPECIES_CODE == 923, !is.na(TARGET_SPECIES
             se = sd / sqrt (n),
             total_pots = sum(NUMBER_POTS_LIFTED)) %>%
   mutate(ll = cpue - 2 * se,
-         ul = cpue + 2 * se)
+         ul = cpue + 2 * se) -> cpue_log
 
 ggplot(data = cpue_log, aes(YEAR, cpue)) + 
   geom_line() + 
@@ -86,59 +81,108 @@ ggplot(data = cpue_log, aes(YEAR, cpue)) +
   ylab("Mean CPUE (crab/pot)") + xlab("Year") +
   facet_wrap(~mgt_area, scales = "free_y") 
 
-###lbs per pot day####
-#Use fishticket data#
-gkc_fish
+head(cpue_log)
 
-#Select for mgt areas#
+logbk_cpue(2000, 2017, "East Central", cpue_log)
+logbk_cpue(2000, 2017, "Icy Strait", cpue_log)
+logbk_cpue(2000, 2017, "Lower Chatham", cpue_log)
+logbk_cpue(2000, 2017, "Mid-Chatham", cpue_log)
+logbk_cpue(2000, 2017, "North Stephens Passage", cpue_log)
+logbk_cpue(2000, 2017, "Northern", cpue_log)
+logbk_cpue(2000, 2017, "Southern", cpue_log)
+
+# lbs per pot day -----------
+# Use fishticket data #
+head(gkc_fish)
+
+# Select for mgt areas #
 target <- c("East Central GKC", "Icy Strait GKC", "Lower Chatham Strait GKC", 
             "Mid-Chatham Strait GKC","North Stephens Passage GKC", "Northern GKC",
                  "Southern GKC")
 
 #Fishing season based on first and last haul dates#
-season_leng <- gkc_fish %>% filter(!is.na(CATCH_DATE), !is.na(SELL_DATE), I_FISHERY %in% target) %>% 
+gkc_fish %>% 
+  filter(!is.na(CATCH_DATE), !is.na(SELL_DATE), I_FISHERY %in% target) %>% 
   group_by(YEAR, I_FISHERY) %>% 
   mutate(CATCH_DATE = as.character(CATCH_DATE), mdy = mdy(CATCH_DATE)) %>% 
   select(YEAR, I_FISHERY, mdy) %>%
-  summarise(min = min(mdy), max = max(mdy), diff = max-min)
-  
-season_leng
+  summarise(min = min(mdy), max = max(mdy), diff = max-min) %>% 
+  mutate(diff = as.numeric(diff, units = "days")) %>% 
+  mutate(diff = replace(diff, which(diff == 0), 14)) -> season_leng 
+# change diff that are 0 to 14 days - average "trip" based on tides. pers.comm A.Olson, K.Palof
 
 #Convert difference in season days to a numeric value for further calculations
-season_leng$diff <- as.numeric(season_leng$diff, units = "days")
+  
+head(season_leng)
 
-
-ggplot(season_leng, aes(YEAR, diff, color = I_FISHERY)) + geom_line(lwd = 1) + geom_point(size = 2) +
-  facet_wrap(~ I_FISHERY) + ylab("Season Length (number of days)") + xlab("Year") +
+ggplot(season_leng, aes(YEAR, diff, color = I_FISHERY)) + 
+  geom_line(lwd = 1) + 
+  geom_point(size = 2) +
+  facet_wrap(~ I_FISHERY) + 
+  ylab("Season Length (number of days)") + xlab("Year") +
   theme(legend.position = "none")
 
-#Harvest by mgt area and year#
-harv <- gkc_fish %>% filter(!is.na(CATCH_DATE), !is.na(SELL_DATE), !is.na(POUNDS), I_FISHERY %in% target) %>% group_by(YEAR, I_FISHERY) %>%
-  summarise(total_lbs = sum(POUNDS))
+# Harvest by mgt area and year ----------
+gkc_fish %>% 
+  filter(!is.na(CATCH_DATE), !is.na(SELL_DATE), !is.na(POUNDS), I_FISHERY %in% target) %>% 
+  group_by(YEAR, I_FISHERY) %>%
+  summarise(total_lbs = sum(POUNDS), 
+            permits = length(unique(ADFG_NO))) -> harv # add permits using number of uniqeu ADF&G no
 
-lbs_per_day <- bind_cols(season_leng, harv) %>% 
-  select(YEAR, I_FISHERY, diff, total_lbs)  %>% group_by(YEAR, I_FISHERY, diff, total_lbs) %>%
-  summarise(cpue = total_lbs / diff)
+harv %>% 
+  full_join(season_leng) %>% 
+  select(YEAR, I_FISHERY, diff, total_lbs, permits)  %>% 
+  mutate(cpue = total_lbs / diff, 
+         cpue2 = total_lbs / diff / permits) -> lbs_per_day
 
-lbs_per_day  
+head(lbs_per_day)
 
-View(lbs_per_day)
-
-hist_avg <- lbs_per_day %>% group_by(I_FISHERY) %>% summarise(mean = mean(cpue))
-
-avg_ten <- lbs_per_day %>% group_by(I_FISHERY) %>% filter(YEAR >= 1983 & 2017) %>%
-  summarise(mean = mean(cpue))
-
-avg_ten
-
-#All mgt areas#
-ggplot(lbs_per_day, aes(YEAR, cpue, color = I_FISHERY)) + geom_line(lwd = 1) + geom_point(size = 2) +
-  facet_wrap(~ I_FISHERY, scales = "free_y") + ylab("CPUE (lbs/pot day)") + xlab("Year") + 
+# All mgt areas -----------------
+ggplot(lbs_per_day, aes(YEAR, cpue, color = I_FISHERY)) + 
+  geom_line(lwd = 1) + 
+  geom_point(size = 2) +
+  facet_wrap(~ I_FISHERY, scales = "free_y") + 
+  ylab("CPUE (lbs/pot day)") + 
+  xlab("Year") + 
   theme(legend.position = "none")
 
+# lbs per day figure ------------------
+# make sure functions are loaded from helper.R file
+lbs_per_day_graph(1983, 2017, "East Central GKC", lbs_per_day)
+lbs_per_day_graph(1983, 2017, "Icy Strait GKC", lbs_per_day)
+lbs_per_day_graph(1983, 2017, "Lower Chatham Strait GKC", lbs_per_day) 
+lbs_per_day_graph(1983, 2017, "Mid-Chatham Strait GKC", lbs_per_day)
+lbs_per_day_graph(1983, 2017, "North Stephens Passage GKC", lbs_per_day)
+lbs_per_day_graph(1983, 2017, "Northern GKC", lbs_per_day)
+lbs_per_day_graph(1983, 2017, "Southern GKC", lbs_per_day)
+
+
+# lbs per pot day per permit -----------
+# these use cpue 2, see seperate function
+lbs_per_day_permit_graph(1983, 2017, "East Central GKC", lbs_per_day)
+lbs_per_day_permit_graph(1983, 2017, "Icy Strait GKC", lbs_per_day)
+lbs_per_day_permit_graph(1983, 2017, "Lower Chatham Strait GKC", lbs_per_day) 
+lbs_per_day_permit_graph(1983, 2017, "Mid-Chatham Strait GKC", lbs_per_day)
+lbs_per_day_permit_graph(1983, 2017, "North Stephens Passage GKC", lbs_per_day)
+lbs_per_day_permit_graph(1983, 2017, "Northern GKC", lbs_per_day)
+lbs_per_day_permit_graph(1983, 2017, "Southern GKC", lbs_per_day)
+
+
+
+#### old code ----------------------------
+# lbs per day additional calcs ---
+# these are curretnly in the function call 
+lbs_per_day %>% 
+  group_by(I_FISHERY) %>% 
+  summarise(mean = mean(cpue, na.rm = TRUE)) -> hist_avg
+
+lbs_per_day %>% 
+  group_by(I_FISHERY) %>% 
+  filter(YEAR >= 1983 & 2017) %>%
+  summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
+
+#East Central --- andrew's -----------
 ec <- lbs_per_day %>% filter(I_FISHERY == "East Central GKC")
-
-#East Central#
 ggplot(ec, aes(YEAR, cpue)) + geom_line(lwd = 1) + 
   geom_hline(yintercept = 4797, lwd = 0.5, color = "green") +
   geom_text(aes(1977, 4797, label = "Target Reference Point (avg 1983-2017)", vjust = -1)) +
