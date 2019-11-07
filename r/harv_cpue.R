@@ -19,15 +19,23 @@ gkc_log <- read.csv("data/fishery/gkc_logbook.csv")
 
 # Annual harvest regionwide and by mgt area ####
 
+
 ggplot(gkc_fish, aes(YEAR, POUNDS)) + geom_bar(stat = "identity") +
   ylab("Harvest (lbs)") + xlab("Year") +
-  scale_x_continuous(breaks = pretty(gkc_fish$YEAR, n = 5), limits = c(1970, cur_yr+1)) +
-  scale_y_continuous(label = scales::comma)
+  scale_x_continuous(breaks = seq(0, cur_yr+1, 2)) +
+  scale_y_continuous(label = scales::comma, breaks = seq(0, 2000000, 100000)) 
+
+ggplot(gkc_fish, aes(YEAR, POUNDS)) + geom_col(aes(fill = I_FISHERY)) +
+  ylab("Harvest (lbs)") + xlab("Year") +
+  scale_x_continuous(breaks = seq(0, cur_yr+1, 2)) +
+  scale_y_continuous(label = scales::comma, breaks = seq(0, 2000000, 100000)) + 
+  theme(legend.title = element_blank(), legend.position = c(0.75, 0.75)) +
+  scale_fill_brewer(palette = "RdYlBu")
 
 
 ggplot(gkc_fish, aes(YEAR, POUNDS)) + geom_bar(stat = "identity") +
   ylab("Harvest (lbs)") + xlab("Year") +
-  scale_x_continuous(breaks = pretty(gkc_fish$YEAR, n = 5), limits = c(1970, cur_yr+1)) +
+  scale_x_continuous(breaks = seq(0, cur_yr+1, 10)) +
   scale_y_continuous(label = scales::comma) + facet_wrap(~I_FISHERY, scales = "free_y")
 
 ###Avg Ex-Vessel Value  -----------
@@ -46,12 +54,14 @@ gkc_fish %>%
   mutate(price_per_lb = VALUE / POUNDS) %>%
   summarise(mean = mean(price_per_lb), sd = sd(price_per_lb)) -> price_lb
 
-ggplot(price_lb, aes(YEAR, mean)) + geom_line(lwd = 1) + geom_point(size = 3, color = "dodgerblue") +
+ggplot(price_lb, aes(YEAR, mean)) + geom_line(lwd = 1) + 
+  geom_point(size = 3, color = "dodgerblue") +
   geom_ribbon(aes(YEAR, ymin = mean - sd, ymax = mean + sd),
-              alpha = 0.3, fill = "gray") + ylab("Average $/lb") + xlab("Year") 
+              alpha = 0.3, fill = "gray") + ylab("Average $/lb") + xlab("Year") +
+  scale_y_continuous(breaks = seq(-20, 20, 2))
 
 
-# Logbook CPUE -----------
+ # Logbook CPUE -----------
 gkc_log %>% filter(TARGET_SPECIES_CODE == 923, !is.na(TARGET_SPECIES_RETAINED),
                                !is.na(NUMBER_POTS_LIFTED), !is.na(I_FISHERY)) %>%
   mutate(mgt_area = ifelse(I_FISHERY == "East Central GKC", "East Central",
@@ -79,6 +89,7 @@ ggplot(data = cpue_log, aes(YEAR, cpue)) +
   geom_ribbon(aes(ymin = ll, ymax = ul),
               alpha = 0.3, fill = "gray") +
   ylab("Mean CPUE (crab/pot)") + xlab("Year") +
+  scale_x_continuous(breaks = seq(0, cur_yr+1, 3)) +
   facet_wrap(~mgt_area, scales = "free_y") 
 
 head(cpue_log)
@@ -166,7 +177,6 @@ lbs_per_day_permit_graph(1983, 2017, "Mid-Chatham Strait GKC", lbs_per_day)
 lbs_per_day_permit_graph(1983, 2017, "North Stephens Passage GKC", lbs_per_day)
 lbs_per_day_permit_graph(1983, 2017, "Northern GKC", lbs_per_day)
 lbs_per_day_permit_graph(1983, 2017, "Southern GKC", lbs_per_day)
-
 
 
 #### old code ----------------------------

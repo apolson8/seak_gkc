@@ -13,6 +13,8 @@ library(extrafont)
 library(tidyr)
 library(padr)
 library(anytime)
+library(RColorBrewer)
+library(cowplot)
 
 ##THEMES FOR GRAPHS ---------
 loadfonts(device="win")
@@ -61,7 +63,7 @@ lbs_per_day %>%
   ggtitle(paste0(mg_area, " -active fishing season")) -> fig1
 fig1
 ggsave(paste0('./output/', mg_area, '.png'), fig1,  
-       dpi = 600, width = 10.5, height = 5.5)
+       dpi = 600, width = 8, height = 5.5)
 }
 
 lbs_per_day_permit_graph <- function(str_yr, end_yr, mg_area, lbs_per_day){
