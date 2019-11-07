@@ -19,7 +19,6 @@ gkc_log <- read.csv("data/fishery/gkc_logbook.csv")
 
 # Annual harvest regionwide and by mgt area ####
 
-
 ggplot(gkc_fish, aes(YEAR, POUNDS)) + geom_bar(stat = "identity") +
   ylab("Harvest (lbs)") + xlab("Year") +
   scale_x_continuous(breaks = seq(0, cur_yr+1, 2)) +
@@ -113,10 +112,17 @@ target <- c("East Central GKC", "Icy Strait GKC", "Lower Chatham Strait GKC",
 
 #Fishing season based on first and last haul dates#
 gkc_fish %>% 
-  filter(!is.na(CATCH_DATE), !is.na(SELL_DATE), I_FISHERY %in% target) %>% 
-  group_by(YEAR, I_FISHERY) %>% 
+  filter(!is.na(CATCH_DATE), !is.na(SELL_DATE), I_FISHERY %in% target) %>%
+  mutate(mgt_area = ifelse(I_FISHERY == "East Central GKC", "East Central",
+                           ifelse(I_FISHERY == "Icy Strait GKC", "Icy Strait", 
+                                  ifelse(I_FISHERY == "Lower Chatham Strait GKC", "Lower Chatham",
+                                         ifelse(I_FISHERY == "Mid-Chatham Strait GKC", "Mid-Chatham",
+                                                ifelse(I_FISHERY == "North Stephens Passage GKC", "North Stephens Passage",
+                                                       ifelse(I_FISHERY == "Northern GKC", "Northern",
+                                                              ifelse(I_FISHERY == "Southern GKC", "Southern", "Misc")))))))) %>% 
+  group_by(YEAR, mgt_area) %>% 
   mutate(CATCH_DATE = as.character(CATCH_DATE), mdy = mdy(CATCH_DATE)) %>% 
-  select(YEAR, I_FISHERY, mdy) %>%
+  select(YEAR, mgt_area, mdy) %>%
   summarise(min = min(mdy), max = max(mdy), diff = max-min) %>% 
   mutate(diff = as.numeric(diff, units = "days")) %>% 
   mutate(diff = replace(diff, which(diff == 0), 14)) -> season_leng 
@@ -126,46 +132,53 @@ gkc_fish %>%
   
 head(season_leng)
 
-ggplot(season_leng, aes(YEAR, diff, color = I_FISHERY)) + 
+ggplot(season_leng, aes(YEAR, diff, color = mgt_area)) + 
   geom_line(lwd = 1) + 
   geom_point(size = 2) +
-  facet_wrap(~ I_FISHERY) + 
+  facet_wrap(~ mgt_area) + 
   ylab("Season Length (number of days)") + xlab("Year") +
   theme(legend.position = "none")
 
 # Harvest by mgt area and year ----------
 gkc_fish %>% 
   filter(!is.na(CATCH_DATE), !is.na(SELL_DATE), !is.na(POUNDS), I_FISHERY %in% target) %>% 
-  group_by(YEAR, I_FISHERY) %>%
+  mutate(mgt_area = ifelse(I_FISHERY == "East Central GKC", "East Central",
+                           ifelse(I_FISHERY == "Icy Strait GKC", "Icy Strait", 
+                                  ifelse(I_FISHERY == "Lower Chatham Strait GKC", "Lower Chatham",
+                                         ifelse(I_FISHERY == "Mid-Chatham Strait GKC", "Mid-Chatham",
+                                                ifelse(I_FISHERY == "North Stephens Passage GKC", "North Stephens Passage",
+                                                       ifelse(I_FISHERY == "Northern GKC", "Northern",
+                                                              ifelse(I_FISHERY == "Southern GKC", "Southern", "Misc")))))))) %>%
+  group_by(YEAR, mgt_area) %>%
   summarise(total_lbs = sum(POUNDS), 
             permits = length(unique(ADFG_NO))) -> harv # add permits using number of uniqeu ADF&G no
 
 harv %>% 
   full_join(season_leng) %>% 
-  select(YEAR, I_FISHERY, diff, total_lbs, permits)  %>% 
+  select(YEAR, mgt_area, diff, total_lbs, permits)  %>% 
   mutate(cpue = total_lbs / diff, 
          cpue2 = total_lbs / diff / permits) -> lbs_per_day
 
 head(lbs_per_day)
 
 # All mgt areas -----------------
-ggplot(lbs_per_day, aes(YEAR, cpue, color = I_FISHERY)) + 
+ggplot(lbs_per_day, aes(YEAR, cpue, color = mgt_area)) + 
   geom_line(lwd = 1) + 
   geom_point(size = 2) +
-  facet_wrap(~ I_FISHERY, scales = "free_y") + 
+  facet_wrap(~ mgt_area, scales = "free_y") + 
   ylab("CPUE (lbs/pot day)") + 
   xlab("Year") + 
   theme(legend.position = "none")
 
 # lbs per day figure ------------------
 # make sure functions are loaded from helper.R file
-lbs_per_day_graph(1983, 2017, "East Central GKC", lbs_per_day)
-lbs_per_day_graph(1983, 2017, "Icy Strait GKC", lbs_per_day)
-lbs_per_day_graph(1983, 2017, "Lower Chatham Strait GKC", lbs_per_day) 
-lbs_per_day_graph(1983, 2017, "Mid-Chatham Strait GKC", lbs_per_day)
-lbs_per_day_graph(1983, 2017, "North Stephens Passage GKC", lbs_per_day)
-lbs_per_day_graph(1983, 2017, "Northern GKC", lbs_per_day)
-lbs_per_day_graph(1983, 2017, "Southern GKC", lbs_per_day)
+lbs_per_day_graph(1983, 2017, "East Central", lbs_per_day)
+lbs_per_day_graph(1983, 2017, "Icy Strait", lbs_per_day)
+lbs_per_day_graph(1983, 2017, "Lower Chatham", lbs_per_day) 
+lbs_per_day_graph(1983, 2017, "Mid-Chatham", lbs_per_day)
+lbs_per_day_graph(1983, 2017, "North Stephens Passage", lbs_per_day)
+lbs_per_day_graph(1983, 2017, "Northern", lbs_per_day)
+lbs_per_day_graph(1983, 2017, "Southern", lbs_per_day)
 
 
 # lbs per pot day per permit -----------
