@@ -175,3 +175,81 @@ logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue){
          dpi = 600, width = 10.5, height = 5.5)
 }
 
+
+
+# panel figure ---------------
+# str_yr - start year for lbs per day mean time frame
+# end_yr - end year for lbs per day mean time frame
+# str_yr2 - start year for logbk cpue mean time frame
+# end_yr2 - end year for logbk cpue mean time frame
+# mg_area - for fish ticket data AND logbk data
+# lbs_per_day - summarized harvest data by active fishing season
+# log_cpue - summarized logbook cpue
+panel_figure(1993, 2017, 2000, 2017, "East Central", lbs_per_day, cpue_log)
+panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day, log_cpue){
+  
+  lbs_per_day %>% 
+    group_by(mgt_area) %>% 
+    filter(YEAR >= str_yr & end_yr) %>%
+    summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
+  
+  avg_ten %>% 
+    filter(mgt_area == mg_area) %>% 
+    mutate(fifty = mean*0.50, twenty = mean*0.20) -> avg_ten2
+  
+  lbs_per_day %>% 
+    filter(mgt_area == mg_area) %>% 
+    ggplot(aes(YEAR, cpue)) + 
+    geom_line(lwd = 1) + 
+    geom_hline(yintercept = avg_ten2$mean, lwd = 0.5, color = "green") +
+    geom_text(aes(1970, avg_ten2$mean, 
+                  label = paste0("Target Reference Point (avg ", str_yr, "-", end_yr, ")"), vjust = -1, hjust = 0.05)) +
+    geom_hline(yintercept = avg_ten2$fifty, lwd = 0.5, linetype = "dashed",color = "orange") +
+    geom_text(aes(1970, avg_ten2$fifty, label = "Trigger (50% of target)", vjust = -1, hjust = 0.05)) +
+    geom_hline(yintercept = avg_ten2$twenty, lwd = 0.5, color = "red") +
+    geom_text(aes(1970.5, avg_ten2$twenty, label = "Limit Reference Point  (20% of target)", vjust = -1, hjust = 0.05)) +
+    geom_vline(xintercept = str_yr, linetype = "dashed") +
+    geom_vline(xintercept = end_yr, linetype = "dashed") +
+    annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") +
+    geom_point(size = 3, color = "dodgerblue") + 
+    scale_x_continuous(breaks = seq(min(1970),max(2020), by =5), limits = c(1970, 2020)) +
+    ylab("CPUE (lbs/pot day)") + 
+    xlab("Year") + 
+    ggtitle(paste0(mg_area, " -active fishing season")) -> fig1
+  fig1
+  
+  log_cpue %>% 
+      group_by(mgt_area) %>% 
+      filter(YEAR >= str_yr2 & end_yr2) %>%
+      summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_tenL 
+    
+    avg_tenL %>% 
+      filter(mgt_area == mg_area) %>% 
+      mutate(fifty = mean*0.50, twenty = mean*0.20) -> avg_ten2L
+    
+    log_cpue %>% 
+      filter(mgt_area == mg_area) %>% 
+      ggplot(aes(YEAR, cpue)) + 
+      geom_line(lwd = 1) + 
+      geom_hline(yintercept = avg_ten2L$mean, lwd = 0.5, color = "green") +
+      geom_text(aes((str_yr-10), avg_ten2L$mean, 
+                    label = paste0("Target Reference Point (avg ", str_yr2, "-", end_yr2, ")"), vjust = -1, hjust = 0.05)) +
+      geom_hline(yintercept = avg_ten2L$fifty, lwd = 0.5, linetype = "dashed",color = "orange") +
+      geom_text(aes((str_yr-10), avg_ten2L$fifty, label = "Trigger (50% of target)", vjust = -1, hjust = 0.05)) +
+      geom_hline(yintercept = avg_ten2L$twenty, lwd = 0.5, color = "red") +
+      geom_text(aes((str_yr-10), avg_ten2L$twenty, label = "Limit Reference Point  (20% of target)", vjust = -1, hjust = 0.05)) +
+      geom_vline(xintercept = str_yr2, linetype = "dashed") +
+      geom_vline(xintercept = end_yr2, linetype = "dashed") +
+      annotate("rect", xmin = str_yr2, xmax = end_yr2, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") +
+      geom_point(size = 3, color = "dodgerblue") + 
+      scale_x_continuous(breaks = seq(min(1970),max(2020), by =5), limits = c(1970, 2020)) +
+      ylab("Logbook CPUE (lbs/pot)") + 
+      xlab("Year") + 
+      ggtitle(paste0(mg_area, " logbook data")) -> fig2
+    fig2
+    panel <- plot_grid(fig1, fig2, ncol = 1, align = 'v')
+    ggsave(paste0('./output/', mg_area, '_panel_activeF_and_logbk.png'), panel,  
+           dpi = 800, width = 8, height = 9.5)
+    
+  }
+
