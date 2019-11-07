@@ -19,7 +19,7 @@ library(cowplot)
 ##THEMES FOR GRAPHS ---------
 loadfonts(device="win")
 windowsFonts(Times=windowsFont("TT Times New Roman"))
-theme_set(theme_bw(base_size=14,base_family='Times New Roman')
+theme_set(theme_bw(base_size=12,base_family='Times New Roman')
           +theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()))
 
 #COLOR BLIND PALETTE --------------
@@ -35,16 +35,16 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2",
 lbs_per_day_graph <- function(str_yr, end_yr, mg_area, lbs_per_day){
 
 lbs_per_day %>% 
-  group_by(I_FISHERY) %>% 
+  group_by(mgt_area) %>% 
   filter(YEAR >= str_yr & end_yr) %>%
   summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
 
 avg_ten %>% 
-  filter(I_FISHERY == mg_area) %>% 
+  filter(mgt_area == mg_area) %>% 
   mutate(fifty = mean*0.50, twenty = mean*0.20) -> avg_ten2
 
 lbs_per_day %>% 
-  filter(I_FISHERY == mg_area) %>% 
+  filter(mgt_area == mg_area) %>% 
   ggplot(aes(YEAR, cpue)) + 
   geom_line(lwd = 1) + 
   geom_hline(yintercept = avg_ten2$mean, lwd = 0.5, color = "green") +
@@ -110,16 +110,16 @@ lbs_per_day_permit_graph <- function(str_yr, end_yr, mg_area, lbs_per_day){
 lbs_per_day_graph <- function(str_yr, end_yr, mg_area, lbs_per_day){
   
   lbs_per_day %>% 
-    group_by(I_FISHERY) %>% 
+    group_by(mgt_area) %>% 
     filter(YEAR >= str_yr & end_yr) %>%
     summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
   
   avg_ten %>% 
-    filter(I_FISHERY == mg_area) %>% 
+    filter(mgt_area == mg_area) %>% 
     mutate(fifty = mean*0.50, twenty = mean*0.20) -> avg_ten2
   
   lbs_per_day %>% 
-    filter(I_FISHERY == mg_area) %>% 
+    filter(mgt_area == mg_area) %>% 
     ggplot(aes(YEAR, cpue)) + 
     geom_line(lwd = 1) + 
     geom_hline(yintercept = avg_ten2$mean, lwd = 0.5, color = "green") +
@@ -185,7 +185,7 @@ logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue){
 # mg_area - for fish ticket data AND logbk data
 # lbs_per_day - summarized harvest data by active fishing season
 # log_cpue - summarized logbook cpue
-panel_figure(1993, 2017, 2000, 2017, "East Central", lbs_per_day, cpue_log)
+
 panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day, log_cpue){
   
   lbs_per_day %>% 
@@ -249,7 +249,8 @@ panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day,
     fig2
     panel <- plot_grid(fig1, fig2, ncol = 1, align = 'v')
     ggsave(paste0('./output/', mg_area, '_panel_activeF_and_logbk.png'), panel,  
-           dpi = 800, width = 8, height = 9.5)
+           dpi = 550, width = 8, height = 9.5)
     
   }
 
+panel_figure(1983, 2017, 2000, 2017, "Southern", lbs_per_day, cpue_log)

@@ -10,6 +10,12 @@ source("./r/helper.R")
 
 # global ---------
 cur_yr = 2019
+YEAR <- 2019 # most recent year of data
+fig_path <- paste0('figures/', YEAR) # folder to hold all figs for a given year
+dir.create(fig_path) # creates YEAR subdirectory inside figures folder
+output_path <- paste0('output/', YEAR) # output and results
+dir.create(output_path) 
+
 
 ## data -------------------------
 # Import fishticket and logbook data from ALEX
@@ -26,11 +32,14 @@ ggplot(gkc_fish, aes(YEAR, POUNDS)) + geom_bar(stat = "identity") +
 
 ggplot(gkc_fish, aes(YEAR, POUNDS)) + geom_col(aes(fill = I_FISHERY)) +
   ylab("Harvest (lbs)") + xlab("Year") +
-  scale_x_continuous(breaks = seq(0, cur_yr+1, 2)) +
+  scale_x_continuous(breaks = seq(0, cur_yr+1, 5)) +
   scale_y_continuous(label = scales::comma, breaks = seq(0, 2000000, 100000)) + 
   theme(legend.title = element_blank(), legend.position = c(0.75, 0.75)) +
-  scale_fill_brewer(palette = "RdYlBu")
+  scale_fill_brewer(palette = "RdYlBu") +
+  labs(caption = "*Closures: East Central in 2018 & Northern in 2019")
+  
 
+ggsave(paste0(fig_path, '/gkc_fishery_harvest.png'), width = 10, height = 8, units = "in", dpi = 200)
 
 ggplot(gkc_fish, aes(YEAR, POUNDS)) + geom_bar(stat = "identity") +
   ylab("Harvest (lbs)") + xlab("Year") +
@@ -90,6 +99,8 @@ ggplot(data = cpue_log, aes(YEAR, cpue)) +
   ylab("Mean CPUE (crab/pot)") + xlab("Year") +
   scale_x_continuous(breaks = seq(0, cur_yr+1, 3)) +
   facet_wrap(~mgt_area, scales = "free_y") 
+
+ggsave(paste0(fig_path, '/gkc_logbook_cpue.png'), width = 10, height = 8, units = "in", dpi = 200)
 
 head(cpue_log)
 
@@ -169,6 +180,8 @@ ggplot(lbs_per_day, aes(YEAR, cpue, color = mgt_area)) +
   ylab("CPUE (lbs/pot day)") + 
   xlab("Year") + 
   theme(legend.position = "none")
+
+ggsave(paste0(fig_path, '/gkc_cpue_lbs_day.png'), width = 10, height = 8, units = "in", dpi = 200)
 
 # lbs per day figure ------------------
 # make sure functions are loaded from helper.R file
