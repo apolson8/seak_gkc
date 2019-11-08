@@ -194,13 +194,18 @@ lbs_per_day_graph(1983, 2017, "Northern", lbs_per_day)
 lbs_per_day_graph(1983, 2017, "Southern", lbs_per_day)
 
 ## panel figure for both - need both summary files here -------
-panel_figure(1983, 2017, 2000, 2017, "East Central", lbs_per_day, cpue_log)
-panel_figure(1983, 2017, 2000, 2017, "Icy Strait", lbs_per_day, cpue_log)
-panel_figure(1983, 2017, 2000, 2017, "Lower Chatham", lbs_per_day, cpue_log)
-panel_figure(1983, 2017, 2000, 2017, "Mid-Chatham", lbs_per_day, cpue_log)
-panel_figure(1983, 2017, 2000, 2017, "North Stephens Passage", lbs_per_day, cpue_log)
-panel_figure(1983, 2017, 2000, 2017, "Northern", lbs_per_day, cpue_log)
-panel_figure(1983, 2017, 2000, 2017, "Southern", lbs_per_day, cpue_log)
+panel_figure(1983, 2017, 2000, 2017, "East Central", lbs_per_day, cpue_log, 0.50, 0.20)
+panel_figure(1983, 2017, 2000, 2017, "East Central", lbs_per_day, cpue_log, 0.75, 0.50)
+
+panel_figure(1983, 2017, 2000, 2017, "Icy Strait", lbs_per_day, cpue_log, 0.50, 0.20)
+panel_figure(1983, 2017, 2000, 2017, "Lower Chatham", lbs_per_day, cpue_log, 0.50, 0.20)
+panel_figure(1983, 2017, 2000, 2017, "Mid-Chatham", lbs_per_day, cpue_log, 0.50, 0.20)
+panel_figure(1983, 2017, 2000, 2017, "North Stephens Passage", lbs_per_day, cpue_log, 0.50, 0.20)
+panel_figure(1983, 2017, 2000, 2017, "North Stephens Passage", lbs_per_day, cpue_log, 0.75, 0.50)
+
+panel_figure(1983, 2017, 2000, 2017, "Northern", lbs_per_day, cpue_log, 0.50, 0.20)
+panel_figure(1983, 2017, 2000, 2017, "Southern", lbs_per_day, cpue_log, 0.50, 0.20)
+
 
 # lbs per pot day per permit -----------
 # these use cpue 2, see seperate function
