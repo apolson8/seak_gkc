@@ -185,6 +185,8 @@ logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue){
 # mg_area - for fish ticket data AND logbk data
 # lbs_per_day - summarized harvest data by active fishing season
 # log_cpue - summarized logbook cpue
+# Lper1 - for logbook cpue - percent for trigger reference pt
+# Lper2 - for logbook cpue - percent for limit reference pt
 
 panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day, log_cpue, Lper1, Lper2){
   
