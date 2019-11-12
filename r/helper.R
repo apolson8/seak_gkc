@@ -186,8 +186,10 @@ logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue){
 # mg_area - for fish ticket data AND logbk data
 # lbs_per_day - summarized harvest data by active fishing season
 # log_cpue - summarized logbook cpue
+# Lper1 - for logbook cpue - percent for trigger reference pt
+# Lper2 - for logbook cpue - percent for limit reference pt
 
-panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day, log_cpue){
+panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day, log_cpue, Lper1, Lper2){
   
   lbs_per_day %>% 
     group_by(mgt_area) %>% 
@@ -226,7 +228,7 @@ panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day,
     
     avg_tenL %>% 
       filter(mgt_area == mg_area) %>% 
-      mutate(fifty = mean*0.50, twenty = mean*0.20) -> avg_ten2L
+      mutate(fifty = mean*Lper1, twenty = mean*Lper2) -> avg_ten2L
     
     log_cpue %>% 
       filter(mgt_area == mg_area) %>% 
@@ -236,9 +238,9 @@ panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day,
       geom_text(aes((str_yr-10), avg_ten2L$mean, 
                     label = paste0("Target Reference Point (avg ", str_yr2, "-", end_yr2, ")"), vjust = -1, hjust = 0.05)) +
       geom_hline(yintercept = avg_ten2L$fifty, lwd = 0.5, linetype = "dashed",color = "orange") +
-      geom_text(aes((str_yr-10), avg_ten2L$fifty, label = "Trigger (50% of target)", vjust = -1, hjust = 0.05)) +
+      geom_text(aes((str_yr-10), avg_ten2L$fifty, label = paste0("Trigger (", Lper1*100, "% of target)"), vjust = -1, hjust = 0.05)) +
       geom_hline(yintercept = avg_ten2L$twenty, lwd = 0.5, color = "red") +
-      geom_text(aes((str_yr-10), avg_ten2L$twenty, label = "Limit Reference Point  (20% of target)", vjust = -1, hjust = 0.05)) +
+      geom_text(aes((str_yr-10), avg_ten2L$twenty, label = paste0("Limit Reference Point  (", Lper2*100,"% of target)"), vjust = -1, hjust = 0.05)) +
       geom_vline(xintercept = str_yr2, linetype = "dashed") +
       geom_vline(xintercept = end_yr2, linetype = "dashed") +
       annotate("rect", xmin = str_yr2, xmax = end_yr2, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") +
@@ -254,4 +256,3 @@ panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day,
     
   }
 
-panel_figure(1983, 2017, 2000, 2017, "Southern", lbs_per_day, cpue_log)
