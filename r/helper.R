@@ -15,6 +15,7 @@ library(padr)
 library(anytime)
 library(RColorBrewer)
 library(cowplot)
+library(ggridges)
 
 ##THEMES FOR GRAPHS ---------
 loadfonts(device="win")
