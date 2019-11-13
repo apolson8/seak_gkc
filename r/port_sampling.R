@@ -43,7 +43,8 @@ port_summary %>%
     alpha = 0.7, color = "white"
   ) + 
   scale_fill_cyclical(
-    breaks = c("Recruit", "Post-Recruit"),
+    breaks = c("2000 Recruit", "2000 Post-Recruit"),
+    labels = c(`2000 Recruit`= "Recruit", `2000 Post-Recruit` = "Post Recruit"),
     values = c("dark blue", "dark orange", "blue", "orange"),
     name = "Recruit_status", guide = "legend"
   ) + 
@@ -52,25 +53,23 @@ port_summary %>%
   ylab("Year") +
   xlab("Carapace Length (mm)") +
   facet_wrap(~mgt_area, scales = "free_y") +
-  theme(strip.background = element_blank())
+  theme(strip.background = element_blank(),
+        legend.position = c(0.9, 0.9))
 
 
-
+#Stacked Bar Chart
+port_summary %>%
+  filter(mgt_area == "East Central",
+         YEAR > 1999) %>%
+  ggplot(aes(YEAR)) +
+  geom_bar(aes(fill = recruit_status)) +
+  scale_y_continuous(breaks = seq(0, 3000, 100), labels = scales::comma) +
+  ylab("Count") +
+  xlab("Year") +
+  ggtitle("East Central") +
+  theme(legend.position = c(0.8, 0.8))
   
-port_summary %>% 
-  ggplot(aes(LENGTH_MILLIMETERS, YEAR, color = recruit_status, point_color = recruit_status, fill = recruit_status)) +
-  geom_density_ridges(y = YEAR) +
-  ylab("Year") + xlab("Carapace Length (mm)") + #scale_y_reverse() +
-  facet_wrap(~mgt_area) +
-  ggridges::scale_discrete_manual(aesthetics = "point_color", 
-                                  values = c("#999999", "#E69F00", "#56B4E9", "#009E73", 
-                                             "#F0E442", "#0072B2", "#D55E00", "#CC79A7")) +
-  ggridges::scale_discrete_manual(aesthetics = "point_fill", 
-                                  values = c("#999999", "#E69F00", "#56B4E9", "#009E73", 
-                                             "#F0E442", "#0072B2", "#D55E00", "#CC79A7")) +
-  ggridges::scale_discrete_manual(aesthetics = "point_shape", values = c(22, 24))
 
-ggsave(paste0(fig_path, '/nsp_length_comps.png'), width = 10, height = 8, units = "in", dpi = 200)
 
 
 
