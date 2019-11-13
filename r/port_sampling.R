@@ -31,22 +31,36 @@ gkc_port %>% mutate(recruit_status = ifelse(RECRUIT_STATUS == "Recruit", "Recrui
                                                 ifelse(I_FISHERY == "Southern GKC", "Southern", "Misc")))))))) %>%
   filter(recruit_status != "Misc", mgt_area != "Misc") -> port_summary
 
-target <- c("Mid-Chatham", "Lower Chatham")
-
-mc <- port_summary %>% filter(mgt_area == target)
-
 #Figures
+
+port_summary %>%
+  filter(mgt_area == "East Central",
+         YEAR > 1999) %>%
+  mutate(YEAR = fct_rev(as.factor(YEAR))) %>%
+  ggplot(aes(y = YEAR)) + 
+  geom_density_ridges(
+    aes(x = LENGTH_MILLIMETERS, fill = paste(YEAR, recruit_status)), 
+    alpha = 0.7, color = "white"
+  ) + 
+  scale_fill_cyclical(
+    breaks = c("Recruit", "Post-Recruit"),
+    values = c("dark blue", "dark orange", "blue", "orange"),
+    name = "Recruit_status", guide = "legend"
+  ) + 
+  scale_y_discrete(expand = c(0.01, 0)) +
+  scale_x_continuous(breaks = seq(0, 200, 10), limits = c(150, 200)) +
+  ylab("Year") +
+  xlab("Carapace Length (mm)") +
+  facet_wrap(~mgt_area, scales = "free_y") +
+  theme(strip.background = element_blank())
+
+
+
   
 port_summary %>% 
-  filter(mgt_area == "North Stephens Passage") %>%
-  ggplot(aes(LENGTH_MILLIMETERS, YEAR, group = YEAR)) +
-  geom_density_ridges(aes(point_fill = recruit_status, 
-                          point_color = recruit_status,
-                          point_shape = recruit_status),
-                      jittered_points = TRUE, scale = 3.0, alpha= 0.3, 
-                      point_alpha = 1, 
-                      point_size = 0.9, lwd = 0.75) +
-  ylab("Year") + xlab("Carapace Length (mm)") + scale_y_reverse() +
+  ggplot(aes(LENGTH_MILLIMETERS, YEAR, color = recruit_status, point_color = recruit_status, fill = recruit_status)) +
+  geom_density_ridges(y = YEAR) +
+  ylab("Year") + xlab("Carapace Length (mm)") + #scale_y_reverse() +
   facet_wrap(~mgt_area) +
   ggridges::scale_discrete_manual(aesthetics = "point_color", 
                                   values = c("#999999", "#E69F00", "#56B4E9", "#009E73", 
