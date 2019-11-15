@@ -1,3 +1,6 @@
+# A.Olson 
+# Objective: Summarize and visualize port sampling data for GKC in SE Alaska 
+
 source("./r/helper.R")
 
 # global ---------
@@ -31,7 +34,14 @@ gkc_port %>% mutate(recruit_status = ifelse(RECRUIT_STATUS == "Recruit", "Recrui
                                                 ifelse(I_FISHERY == "Southern GKC", "Southern", "Misc")))))))) %>%
   filter(recruit_status != "Misc", mgt_area != "Misc") -> port_summary
 
-#Figures
+### Sample size ---------
+port_summary %>% 
+  filter(mgt_area == "East Central", YEAR > 1999) %>%
+  group_by(YEAR, I_FISHERY) %>% 
+  summarise(count = n()) -> sample_size
+
+
+# Figures ------------
 
 port_summary %>%
   filter(mgt_area == "East Central",
