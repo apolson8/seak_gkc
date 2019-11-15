@@ -56,6 +56,25 @@ port_summary %>%
   theme(strip.background = element_blank(),
         legend.position = c(0.9, 0.9))
 
+#Histogram
+
+port_summary %>%
+  filter(mgt_area == "East Central",
+         YEAR > 1999) %>%
+ ggplot(aes(LENGTH_MILLIMETERS)) + 
+ geom_histogram() +
+facet_wrap(~YEAR) +
+  ggtitle("East Central GKC CL Frequencies")
+
+
+port_summary %>%
+  filter(mgt_area == "East Central",
+         YEAR > 2004) %>%
+  mutate(YEAR = fct_rev(as.factor(YEAR))) %>%
+  ggplot(aes(LENGTH_MILLIMETERS, color = YEAR)) + 
+  geom_freqpoly(size = 1.2) +
+  ggtitle("East Central GKC CL Frequencies")
+
 
 #Stacked Bar Chart
 port_summary %>%
@@ -70,8 +89,19 @@ port_summary %>%
   theme(legend.position = c(0.8, 0.8))
   
 
-
-
+port_summary %>%
+  filter(mgt_area == "East Central",
+         YEAR > 1999) %>% 
+  group_by(YEAR) %>%
+  count(recruit_status) %>%
+  ggplot(aes(YEAR, n, color = recruit_status)) +
+  geom_line() + 
+  geom_point(size = 2) +
+  scale_y_continuous(breaks = seq(0, 3000, 100), labels = scales::comma) +
+  ylab("Count") +
+  xlab("Year") +
+  ggtitle("East Central") +
+  theme(legend.position = c(0.8, 0.8))
 
 
 
