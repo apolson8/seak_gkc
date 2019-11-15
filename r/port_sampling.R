@@ -37,9 +37,15 @@ gkc_port %>% mutate(recruit_status = ifelse(RECRUIT_STATUS == "Recruit", "Recrui
 ### Sample size ---------
 port_summary %>% 
   filter(mgt_area == "East Central", YEAR > 1999) %>%
+  mutate(YEAR = fct_rev(as.factor(YEAR))) %>% 
   group_by(YEAR, I_FISHERY) %>% 
   summarise(count = n()) -> sample_size
 
+port_summary %>% 
+  filter(mgt_area == "East Central",
+         YEAR > 1999) %>%
+  mutate(YEAR = fct_rev(as.factor(YEAR))) %>% 
+  left_join(sample_size)-> eastc
 
 # Figures ------------
 
@@ -62,7 +68,29 @@ port_summary %>%
   scale_x_continuous(breaks = seq(0, 200, 10), limits = c(150, 200)) +
   ylab("Year") +
   xlab("Carapace Length (mm)") +
-  facet_wrap(~mgt_area, scales = "free_y") +
+  #facet_wrap(~mgt_area, scales = "free_y") +
+  theme(strip.background = element_blank(),
+        legend.position = c(0.9, 0.9))
+
+# Figure with sample size --------------
+eastc %>%
+  ggplot(aes(y = YEAR)) + 
+  geom_density_ridges(
+    aes(x = LENGTH_MILLIMETERS, fill = paste(YEAR, recruit_status)), 
+    alpha = 0.7, color = "white"
+  ) + 
+  scale_fill_cyclical(
+    breaks = c("2000 Recruit", "2000 Post-Recruit"),
+    labels = c(`2000 Recruit`= "Recruit", `2000 Post-Recruit` = "Post Recruit"),
+    values = c("dark blue", "dark orange", "blue", "orange"),
+    name = "Recruit_status", guide = "legend"
+  ) + 
+  scale_y_discrete(expand = c(0.01, 0)) +
+  scale_x_continuous(breaks = seq(0, 200, 10), limits = c(150, 200)) +
+  geom_text(aes(x = 188, y = YEAR, label = count), position = position_nudge(y = 0.3)) +
+  ylab("Year") +
+  xlab("Carapace Length (mm)") +
+  #facet_wrap(~mgt_area, scales = "free_y") +
   theme(strip.background = element_blank(),
         legend.position = c(0.9, 0.9))
 
