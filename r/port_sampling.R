@@ -70,7 +70,7 @@ port_summary2 %>%
         legend.position = c(0.9, 0.9))
 
 
-#Histogram
+# Histogram -----------
 
 port_summary %>%
   filter(mgt_area == "East Central",
@@ -90,7 +90,7 @@ port_summary %>%
   ggtitle("East Central GKC CL Frequencies")
 
 
-#Stacked Bar Chart
+# Stacked Bar Chart -----------
 port_summary %>%
   filter(mgt_area == "East Central",
          YEAR > 1999) %>%
