@@ -37,7 +37,7 @@ lbs_per_day_graph <- function(str_yr, end_yr, mg_area, lbs_per_day){
 
 lbs_per_day %>% 
   group_by(mgt_area) %>% 
-  filter(YEAR >= str_yr & end_yr) %>%
+  filter(YEAR >= str_yr & YEAR <= end_yr) %>%
   summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
 
 avg_ten %>% 
@@ -112,7 +112,7 @@ lbs_per_day_graph <- function(str_yr, end_yr, mg_area, lbs_per_day){
   
   lbs_per_day %>% 
     group_by(mgt_area) %>% 
-    filter(YEAR >= str_yr & end_yr) %>%
+    filter(YEAR >= str_yr & YEAR <= end_yr) %>%
     summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
   
   avg_ten %>% 
@@ -146,7 +146,7 @@ logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue){
   
   log_cpue %>% 
     group_by(mgt_area) %>% 
-    filter(YEAR >= str_yr & end_yr) %>%
+    filter(YEAR >= str_yr & YEAR <= end_yr) %>%
     summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
   
   avg_ten %>% 
@@ -193,7 +193,7 @@ panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day,
   
   lbs_per_day %>% 
     group_by(mgt_area) %>% 
-    filter(YEAR >= str_yr & end_yr) %>%
+    filter(YEAR >= str_yr & YEAR <= end_yr) %>%
     summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
   
   avg_ten %>% 
@@ -223,7 +223,7 @@ panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day,
   
   log_cpue %>% 
       group_by(mgt_area) %>% 
-      filter(YEAR >= str_yr2 & end_yr2) %>%
+      filter(YEAR >= str_yr2 & YEAR <= end_yr2) %>%
       summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_tenL 
     
     avg_tenL %>% 
@@ -248,6 +248,7 @@ panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day,
       scale_x_continuous(breaks = seq(min(1970),max(2020), by =5), limits = c(1970, 2020)) +
       ylab("Logbook CPUE (lbs/pot)") + 
       xlab("Year") + 
+      #ylim(0, range) +
       ggtitle(paste0(mg_area, " logbook data")) -> fig2
     fig2
     panel <- plot_grid(fig1, fig2, ncol = 1, align = 'v')
