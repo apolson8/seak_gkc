@@ -104,13 +104,6 @@ ggsave(paste0(fig_path, '/gkc_logbook_cpue.png'), width = 10, height = 8, units 
 
 head(cpue_log)
 
-logbk_cpue(2000, 2017, "East Central", cpue_log)
-logbk_cpue(2000, 2017, "Icy Strait", cpue_log)
-logbk_cpue(2000, 2017, "Lower Chatham", cpue_log)
-logbk_cpue(2000, 2017, "Mid-Chatham", cpue_log)
-logbk_cpue(2000, 2017, "North Stephens Passage", cpue_log)
-logbk_cpue(2000, 2017, "Northern", cpue_log)
-logbk_cpue(2000, 2017, "Southern", cpue_log)
 
 # lbs per pot day -----------
 # Use fishticket data #
@@ -183,31 +176,20 @@ ggplot(lbs_per_day, aes(YEAR, cpue, color = mgt_area)) +
 
 ggsave(paste0(fig_path, '/gkc_cpue_lbs_day.png'), width = 10, height = 8, units = "in", dpi = 200)
 
-# lbs per day figure ------------------
-# make sure functions are loaded from helper.R file
-lbs_per_day_graph(1983, 2010, "East Central", lbs_per_day)
-lbs_per_day_graph(1983, 2017, "Icy Strait", lbs_per_day)
-lbs_per_day_graph(1983, 2017, "Lower Chatham", lbs_per_day) 
-lbs_per_day_graph(1983, 2017, "Mid-Chatham", lbs_per_day)
-lbs_per_day_graph(1983, 2017, "North Stephens Passage", lbs_per_day)
-lbs_per_day_graph(1983, 2017, "Northern", lbs_per_day)
-lbs_per_day_graph(1983, 2017, "Southern", lbs_per_day)
-
-
 
 ## panel figure for both - need both summary files here -------
-panel_figure(1983, 2017, 2000, 2017, "East Central", lbs_per_day, cpue_log, 0.50, 0.20)
-panel_figure(1983, 2010, 2000, 2017, "East Central", lbs_per_day, cpue_log, 0.75, 0.50)
+panel_figure(1983, 2017, 2000, 2017, "East Central", lbs_per_day, cpue_log, 0.50, 0.20, cur_yr)
+panel_figure(1983, 2010, 2000, 2017, "East Central", lbs_per_day, cpue_log, 0.75, 0.50, cur_yr)
 
-panel_figure(1983, 2011, 2000, 2017, "Icy Strait", lbs_per_day, cpue_log, 0.75, 0.50)
-panel_figure(1983, 2017, 2000, 2012, "Lower Chatham", lbs_per_day, cpue_log, 0.75, 0.50)
+panel_figure(1983, 2011, 2000, 2017, "Icy Strait", lbs_per_day, cpue_log, 0.75, 0.50, cur_yr)
+panel_figure(1983, 2017, 2000, 2012, "Lower Chatham", lbs_per_day, cpue_log, 0.75, 0.50, cur_yr)
 
-panel_figure(1983, 2007, 2000, 2017, "Mid-Chatham", lbs_per_day, cpue_log, 0.75, 0.50)
+panel_figure(1983, 2007, 2000, 2017, "Mid-Chatham", lbs_per_day, cpue_log, 0.75, 0.50, cur_yr)
 
-panel_figure(1983, 2017, 2000, 2017, "North Stephens Passage", lbs_per_day, cpue_log, 0.50, 0.20)
-panel_figure(1983, 2017, 2001, 2017, "North Stephens Passage", lbs_per_day, cpue_log, 0.75, 0.50)
+panel_figure(1983, 2017, 2000, 2017, "North Stephens Passage", lbs_per_day, cpue_log, 0.50, 0.20, cur_yr)
+panel_figure(1983, 2017, 2001, 2017, "North Stephens Passage", lbs_per_day, cpue_log, 0.75, 0.50, cur_yr)
 
-panel_figure(1983, 2017, 2000, 2017, "Northern", lbs_per_day, cpue_log, 0.75, 0.50)
+panel_figure(1983, 2017, 2000, 2017, "Northern", lbs_per_day, cpue_log, 0.75, 0.50, cur_yr)
 
 panel_figure(1983, 2017, 2000, 2017, "Southern", lbs_per_day, cpue_log, 0.75, 0.50)
 
