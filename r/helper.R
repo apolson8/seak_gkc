@@ -63,11 +63,11 @@ lbs_per_day %>%
   xlab("Year") + 
   ggtitle(paste0(mg_area, " -active fishing season")) -> fig1
 fig1
-ggsave(paste0('./output/', mg_area, '_lbs_activeF.png'), fig1,  
+ggsave(paste0('./figures/', cur_yr, '/', mg_area, '_lbs_activeF.png'), fig1,  
        dpi = 600, width = 8, height = 5.5)
 }
 
-lbs_per_day_permit_graph <- function(str_yr, end_yr, mg_area, lbs_per_day){
+lbs_per_day_permit_graph <- function(str_yr, end_yr, mg_area, lbs_per_day, cur_yr){
   
   lbs_per_day %>% 
     group_by(mgt_area) %>% 
@@ -102,7 +102,7 @@ lbs_per_day_permit_graph <- function(str_yr, end_yr, mg_area, lbs_per_day){
 }
 
 ### logbook data -------------
-logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue){
+logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue, cur_yr){
   
   log_cpue %>% 
     group_by(mgt_area) %>% 
@@ -132,7 +132,7 @@ logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue){
     xlab("Year") + 
     ggtitle(paste0(mg_area, " logbook data")) -> fig1
   fig1
-  ggsave(paste0('./output/', mg_area, ' logbook_cpue.png'), fig1,  
+  ggsave(paste0('./figures/', cur_yr, '/', mg_area, ' logbook_cpue.png'), fig1,  
          dpi = 600, width = 10.5, height = 5.5)
 }
 
@@ -149,7 +149,7 @@ logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue){
 # Lper1 - for logbook cpue - percent for trigger reference pt
 # Lper2 - for logbook cpue - percent for limit reference pt
 
-panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day, log_cpue, Lper1, Lper2){
+panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day, log_cpue, Lper1, Lper2, cur_yr){
   
   lbs_per_day %>% 
     group_by(mgt_area) %>% 
@@ -212,7 +212,7 @@ panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day,
       ggtitle(paste0(mg_area, " logbook data")) -> fig2
     fig2
     panel <- plot_grid(fig1, fig2, ncol = 1, align = 'v')
-    ggsave(paste0('./output/', mg_area, '_panel_activeF_and_logbk.png'), panel,  
+    ggsave(paste0('./figures/', cur_yr, '/', mg_area, '_panel_activeF_and_logbk.png'), panel,  
            dpi = 550, width = 8, height = 9.5)
     
   }
