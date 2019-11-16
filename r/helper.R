@@ -97,7 +97,7 @@ lbs_per_day_permit_graph <- function(str_yr, end_yr, mg_area, lbs_per_day){
     xlab("Year") + 
     ggtitle(paste0(mg_area, " -active fishing season")) -> fig1
   fig1
-  ggsave(paste0('./output/', cur_yr, '/', mg_area, ' _lb_activeF_by_permit.png'), fig1,  
+  ggsave(paste0('./figures/', cur_yr, '/', mg_area, ' _lb_activeF_by_permit.png'), fig1,  
          dpi = 600, width = 10.5, height = 5.5)
 }
 
