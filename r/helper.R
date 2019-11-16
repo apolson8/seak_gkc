@@ -33,7 +33,7 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2",
 #end_yr = 2017
 #mg_area = "Lower Chatham Strait GKC"
 
-lbs_per_day_graph <- function(str_yr, end_yr, mg_area, lbs_per_day){
+lbs_per_day_graph <- function(str_yr, end_yr, mg_area, lbs_per_day, cur_yr){
 
 lbs_per_day %>% 
   group_by(mgt_area) %>% 
@@ -97,7 +97,7 @@ lbs_per_day_permit_graph <- function(str_yr, end_yr, mg_area, lbs_per_day){
     xlab("Year") + 
     ggtitle(paste0(mg_area, " -active fishing season")) -> fig1
   fig1
-  ggsave(paste0('./output/', mg_area, ' _lb_activeF_by_permit.png'), fig1,  
+  ggsave(paste0('./output/', cur_yr, '/', mg_area, ' _lb_activeF_by_permit.png'), fig1,  
          dpi = 600, width = 10.5, height = 5.5)
 }
 
