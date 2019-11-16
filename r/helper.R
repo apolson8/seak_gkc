@@ -130,6 +130,7 @@ logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue, Lper1, Lper2, cur_yr){
     geom_vline(xintercept = end_yr, linetype = "dashed") +
     annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") +
     geom_point(size = 3, color = "dodgerblue") + 
+    expand_limits(y = 0) +
     ylab("Logbook CPUE (lbs/pot)") + 
     xlab("Year") + 
     ggtitle(paste0(mg_area, " logbook data")) -> fig1
@@ -208,6 +209,7 @@ panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day,
       annotate("rect", xmin = str_yr2, xmax = end_yr2, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") +
       geom_point(size = 3, color = "dodgerblue") + 
       scale_x_continuous(breaks = seq(min(1970),max(2020), by =5), limits = c(1970, 2020)) +
+      expand_limits(y = 0) +
       ylab("Logbook CPUE (lbs/pot)") + 
       xlab("Year") + 
       #ylim(0, range) +
