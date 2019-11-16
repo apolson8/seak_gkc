@@ -102,7 +102,7 @@ lbs_per_day_permit_graph <- function(str_yr, end_yr, mg_area, lbs_per_day, cur_y
 }
 
 ### logbook data -------------
-logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue, cur_yr){
+logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue, Lper1, Lper2, cur_yr){
   
   log_cpue %>% 
     group_by(mgt_area) %>% 
@@ -111,7 +111,7 @@ logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue, cur_yr){
   
   avg_ten %>% 
     filter(mgt_area == mg_area) %>% 
-    mutate(fifty = mean*0.50, twenty = mean*0.20) -> avg_ten2
+    mutate(fifty = mean*Lper1, twenty = mean*Lper2) -> avg_ten2
   
   log_cpue %>% 
     filter(mgt_area == mg_area) %>% 
@@ -121,9 +121,11 @@ logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue, cur_yr){
     geom_text(aes((str_yr-10), avg_ten2$mean, 
                   label = paste0("Target Reference Point (avg ", str_yr, "-", end_yr, ")"), vjust = -1, hjust = 0.05)) +
     geom_hline(yintercept = avg_ten2$fifty, lwd = 0.5, linetype = "dashed",color = "orange") +
-    geom_text(aes((str_yr-10), avg_ten2$fifty, label = "Trigger (50% of target)", vjust = -1, hjust = 0.05)) +
+    geom_text(aes((str_yr-10), avg_ten2$fifty, 
+                  label = paste0("Trigger (", Lper1*100, "% of target)"), vjust = -1, hjust = 0.05)) +
     geom_hline(yintercept = avg_ten2$twenty, lwd = 0.5, color = "red") +
-    geom_text(aes((str_yr-10), avg_ten2$twenty, label = "Limit Reference Point  (20% of target)", vjust = -1, hjust = 0.05)) +
+    geom_text(aes((str_yr-10), avg_ten2$twenty, 
+                  label = paste0("Limit Reference Point (", Lper2*100, "% of target)"), vjust = -1, hjust = 0.05)) +
     geom_vline(xintercept = str_yr, linetype = "dashed") +
     geom_vline(xintercept = end_yr, linetype = "dashed") +
     annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") +
