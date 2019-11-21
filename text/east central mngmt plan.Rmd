@@ -1,0 +1,33 @@
+---
+title: "East Central Golden King crab management plan"
+author: "Andre Olson & Katie Palof"
+date: "`r format(Sys.time(), '%B %Y')`"
+output:
+  bookdown::pdf_document2:
+    fig_caption: true
+    includes: null
+    toc: no
+---
+
+
+```{r global_options, include=FALSE, echo = FALSE, message = FALSE, warning=FALSE}
+library(knitr)
+opts_chunk$set(fig.width = 6, fig.height = 12, echo = FALSE, warning = FALSE, message = FALSE,  dpi=300)
+```
+
+# East Central GKC {-}
+
+Description of the mananagement area. Where it is located, typical participation from fleet and brief history of fishing pressure. 
+
+
+## Proposed plan {-}
+Metrics to assess stock health and fishery performance.
+
+
+```{r distribution, fig.cap = " ", out.width= "500px"}
+knitr::include_graphics("../figures/2019/East Central_panel_activeF_and_logbk.png")
+```
+
+
+
+## Other considerations for managment {-}
