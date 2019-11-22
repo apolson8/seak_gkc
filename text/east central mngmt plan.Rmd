@@ -1,6 +1,6 @@
 ---
 title: "East Central Golden King crab management plan"
-author: "Andre Olson & Katie Palof"
+author: "Andrew Olson & Katie Palof"
 date: "`r format(Sys.time(), '%B %Y')`"
 output:
   bookdown::pdf_document2:
@@ -23,6 +23,52 @@ Description of the mananagement area. Where it is located, typical participation
 ## Proposed plan {-}
 Metrics to assess stock health and fishery performance.
 
+### Operational Objective {-}
+Maintain the average commercial catch per unit effort (CPUE) at or above 3.38 crab per pot and XX lbs per day.
+
+## Performance Indicators {-}
+The primary performance indiactor used in this harvest strategy is commercial catch rate defined as logbook CPUE calculated from the CPUE at each logbook entry and averaged for the entire season. Commercial catch rate is the number of of legal sized male golden king crab per potlift. 
+
+## Reference Points {-}
+The Target Reference Point (RP~targ~) is set at the average logbook CPUE for the years 2000--2017 as these years capture when logbooks were required for the fishery in 2000 and represents contrasting data (highs and lows) in fishery performance. The Trigger Regerence Point (RP~trig~) is set at 75% of the RP~targ~ and the Limit Reference Point (RP~lim~) is set at 50% of the RP~targ~.
+
+
+```{r}
+library(dplyr)
+knitr::kable(data.frame(
+  Indicators = c("Target Reference Point",
+                 "Trigger Reference Point",
+                 "Limit Reference Point"),
+  `Reference Point`= c("3.4 crab/pot",
+                       "2.5 crab/pot",
+                       "1.7 crab/pot"),
+  Description = c("Average Commercial logbook CPUE from 2000-2017",
+                  "75% of the Target Reference Point",
+                  "50% of the Target Reference Point")
+))
+
+```
+```{r, out.width= "500px"}
+knitr::include_graphics("../figures/2019/East Central logbook_cpue.png")
+```
+
+
+### Monitoring Strategy {-}
+
+### Decision Rules {-}
+Considering the primary performance indicator (logbook CPUE) being the most readily available estimate of fishery performance the folowing decision rules will be considered to guide in-season and post-season management decions.
+
+* **Option A**
+    + If logbook CPUE is $>=$ the RP~targ~ increase the guideline harvest level (GHL) the following season;
+    + If logbook CPUE is $>=$ the RP~trig~ increase the GHL the following season;
+    + If logbook CPUE is $<$ the RP ~trig~ close fishery early and decrease GHL the following season;
+    + If logbook CPUE is $<=$ the RP~lim~ close fishery early, subjec to multiple year closure, and upon re-opening set GHL at a reduced level
+
+* **Option B**
+    + If logbook CPUE is $>=$ RP~targ~ for 1 year increase GHL 0%-10% the following season and if logbook CPUE is $>$ RP~targ~ for at least 3 years 0-15% increase in GHL the following season;
+    + If logbook CPUE is $>=$ RP~trig~ but $<$ RP~targ~ increase GHL 0%-10% the following season;
+    + If logbook CPUE is $>$ RP~lim~ but $<$ RP~trig~ close fishery early, decrease GHL 0%-20% the following season;
+    + If logbook CPUE is $<=$ RP~lim~ close fishery early, subject to multipler year closure, and upon re-opening set GHL at a reduced level
 
 ```{r distribution, fig.cap = " ", out.width= "500px"}
 knitr::include_graphics("../figures/2019/East Central_panel_activeF_and_logbk.png")
