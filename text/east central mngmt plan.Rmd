@@ -35,7 +35,10 @@ The Target Reference Point (RP~targ~) is set at the average logbook CPUE for the
 
 ```{r}
 library(dplyr)
-knitr::kable(data.frame(
+library(kableExtra)
+options(kableExtra.html.bsTable = T)
+
+dt <- data.frame(
   Indicators = c("Target Reference Point",
                  "Trigger Reference Point",
                  "Limit Reference Point"),
@@ -44,10 +47,19 @@ knitr::kable(data.frame(
                        "1.7 crab/pot"),
   Description = c("Average Commercial logbook CPUE from 2000-2017",
                   "75% of the Target Reference Point",
-                  "50% of the Target Reference Point")
-))
+                  "50% of the Target Reference Point"))
+
+knitr::kable(dt) %>% 
+  kable_styling(c("striped", "condensed"), 
+                latex_options = "striped", 
+                full_width = F) %>% 
+  row_spec(1, bold = T, color = "white", background = "olive") %>% 
+  row_spec(2, bold = T, color = "white", background = "orange") %>% 
+  row_spec(3, bold = T, color = "white", background = "red") 
+
 
 ```
+
 ```{r, out.width= "500px"}
 knitr::include_graphics("../figures/2019/East Central logbook_cpue.png")
 ```
