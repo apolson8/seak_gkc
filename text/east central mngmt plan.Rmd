@@ -17,8 +17,9 @@ opts_chunk$set(fig.width = 6, fig.height = 12, echo = FALSE, warning = FALSE, me
 
 # East Central GKC {-}
 
-Description of the mananagement area. Where it is located, typical participation from fleet and brief history of fishing pressure. 
+The East Central management area is centrally located in Southeast Alaska as described in [5 AAC 34.107(d)] and has the largest guidline harvest range (GHR) 0-225,000 lbs. Historically, the East Central management area has had the highest fishing pressure and resulting harvest for the golden king crab (*Lithodes aequispinus*) compared to other areas (Northern, Icy Strait, North Stephens Passage, Mid-Chatham Strait, Lower Chatham Strait, and Southern). Harvest peaked in 1989 at 496,722 lbs from 35 permit holders participated and again in 2011 at 305,659 lbs from 20 permits holders and has since collapsed and remains in a depressed state with harvest in 2017 at 972 lbs from 4 permit holders, was subsequently closed in 2018, and re-opened in 2019 with harvest of 6,749 from 5 permit holders.    
 
+INSERT EC MAP, HARVEST AND # OF PERMIT HOLDERS GRAPH
 
 ## Proposed plan {-}
 Metrics to assess stock health and fishery performance.
@@ -28,6 +29,10 @@ Maintain the average commercial catch per unit effort (CPUE) at or above 3.38 cr
 
 ## Performance Indicators {-}
 The primary performance indiactor used in this harvest strategy is commercial catch rate defined as logbook CPUE calculated from the CPUE at each logbook entry and averaged for the entire season. Commercial catch rate is the number of of legal sized male golden king crab per potlift. 
+
+The secondary perfomance indicator used in this harvest strategy is commercial catch rate obtained from fishticket defined as CPUE calculated from each harvest landing for the entire season divided by the difference of the first and last catch date which is defined as active fishing season. This secondary CPUE indicator is defined as pounds per pot day. 
+
+The biological performance indicator used in this harvest strategy is size and recruit class distributions of golden king crab sampled during commercial landings. Size is defined as the carapace length (CL) mm measurement and recruit class is used as an indicator of shell age and is defined as recruit (new shell) and post-recruit (old shell).
 
 ## Reference Points {-}
 The Target Reference Point (RP~targ~) is set at the average logbook CPUE for the years 2000--2017 as these years capture when logbooks were required for the fishery in 2000 and represents contrasting data (highs and lows) in fishery performance. The Trigger Regerence Point (RP~trig~) is set at 75% of the RP~targ~ and the Limit Reference Point (RP~lim~) is set at 50% of the RP~targ~.
@@ -45,7 +50,7 @@ dt <- data.frame(
   `Reference Point`= c("3.4 crab/pot",
                        "2.5 crab/pot",
                        "1.7 crab/pot"),
-  Description = c("Average Commercial logbook CPUE from 2000-2017",
+  Description = c("Average Commercial Logbook CPUE from 2000-2017",
                   "75% of the Target Reference Point",
                   "50% of the Target Reference Point"))
 
@@ -53,6 +58,7 @@ knitr::kable(dt) %>%
   kable_styling(c("striped", "condensed"), 
                 latex_options = "striped", 
                 full_width = F) %>% 
+  row_spec(0, bold = T, color = "black") %>%
   row_spec(1, bold = T, color = "white", background = "olive") %>% 
   row_spec(2, bold = T, color = "white", background = "orange") %>% 
   row_spec(3, bold = T, color = "white", background = "red") 
@@ -74,7 +80,7 @@ Considering the primary performance indicator (logbook CPUE) being the most read
     + If logbook CPUE is $>=$ the RP~targ~ increase the guideline harvest level (GHL) the following season;
     + If logbook CPUE is $>=$ the RP~trig~ increase the GHL the following season;
     + If logbook CPUE is $<$ the RP ~trig~ close fishery early and decrease GHL the following season;
-    + If logbook CPUE is $<=$ the RP~lim~ close fishery early, subjec to multiple year closure, and upon re-opening set GHL at a reduced level
+    + If logbook CPUE is $<=$ the RP~lim~ close fishery early, subject to multiple year closure, and upon re-opening set GHL at a reduced level
 
 * **Option B**
     + If logbook CPUE is $>=$ RP~targ~ for 1 year increase GHL 0%-10% the following season and if logbook CPUE is $>$ RP~targ~ for at least 3 years 0-15% increase in GHL the following season;
