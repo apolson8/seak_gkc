@@ -1,5 +1,5 @@
 ---
-title: "East Central Golden King crab management plan"
+title: "Golden King Crab Managemetn Plan: East Central"
 author: "Andrew Olson & Katie Palof"
 date: "`r format(Sys.time(), '%B %Y')`"
 output:
@@ -15,7 +15,7 @@ library(knitr)
 opts_chunk$set(fig.width = 6, fig.height = 12, echo = FALSE, warning = FALSE, message = FALSE,  dpi=300)
 ```
 
-# East Central GKC {-}
+# Background {-}
 
 The East Central management area is centrally located in Southeast Alaska as described in [5 AAC 34.107(d)] and has the largest guidline harvest range (GHR) 0-225,000 lbs. Historically, the East Central management area has had the highest fishing pressure and resulting harvest for the golden king crab (*Lithodes aequispinus*) compared to other areas (Northern, Icy Strait, North Stephens Passage, Mid-Chatham Strait, Lower Chatham Strait, and Southern). Harvest peaked in 1989 at 496,722 lbs from 35 permit holders participated and again in 2011 at 305,659 lbs from 20 permits holders and has since collapsed and remains in a depressed state with harvest in 2017 at 972 lbs from 4 permit holders, was subsequently closed in 2018, and re-opened in 2019 with harvest of 6,749 from 5 permit holders.    
 
@@ -54,19 +54,17 @@ dt <- data.frame(
                   "75% of the Target Reference Point",
                   "50% of the Target Reference Point"))
 
-knitr::kable(dt) %>% 
+knitr::kable(dt, caption = "Golden King Crab logbook catch per unit effort (CPUE) reference points") %>% 
   kable_styling(c("striped", "condensed"), 
                 latex_options = "striped", 
                 full_width = F) %>% 
   row_spec(0, bold = T, color = "black") %>%
   row_spec(1, bold = T, color = "white", background = "olive") %>% 
   row_spec(2, bold = T, color = "white", background = "orange") %>% 
-  row_spec(3, bold = T, color = "white", background = "red") 
-
-
+  row_spec(3, bold = T, color = "white", background = "red")
 ```
 
-```{r, out.width= "500px"}
+```{r, fig.cap = " ", out.width= "500px"}
 knitr::include_graphics("../figures/2019/East Central logbook_cpue.png")
 ```
 
