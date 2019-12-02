@@ -16,6 +16,12 @@ library(anytime)
 library(RColorBrewer)
 library(cowplot)
 library(ggridges)
+library(rgeos)
+library(maptools)
+library(rgdal)
+library(ggmap)
+library(ggrepel)
+library(PBSmapping)
 
 ##THEMES FOR GRAPHS ---------
 loadfonts(device="win")

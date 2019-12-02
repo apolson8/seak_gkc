@@ -46,6 +46,49 @@ ggplot(gkc_fish, aes(YEAR, POUNDS)) + geom_bar(stat = "identity") +
   scale_x_continuous(breaks = seq(0, cur_yr+1, 10)) +
   scale_y_continuous(label = scales::comma) + facet_wrap(~I_FISHERY, scales = "free_y")
 
+###non-confidential harvest, less than 3 permit holders
+gkc_fish %>% 
+  group_by(YEAR, I_FISHERY) %>% 
+  filter(!is.na(POUNDS)) %>%
+  summarise(no_permits = n_distinct(CFEC_NO), total_lbs = sum(POUNDS)) %>%
+  filter(no_permits >= 3) -> gkc_nonconf
+
+ggplot(gkc_nonconf, aes(YEAR, total_lbs)) +
+  geom_col(aes(fill = I_FISHERY)) + 
+  ylab("Harvest (lbs)") + xlab("Year") +
+  scale_x_continuous(breaks = seq(0, cur_yr+1, 5)) +
+  scale_y_continuous(label = scales::comma, breaks = seq(0, 2000000, 100000)) + 
+  theme(legend.title = element_blank(), legend.position = c(0.75, 0.75)) +
+  scale_fill_brewer(palette = "RdYlBu") +
+  labs(caption = "*Closures: East Central in 2018 & Northern in 2019")
+
+###east central harvest
+gkc_nonconf %>%
+  filter(I_FISHERY == "East Central GKC") %>%
+  ggplot(aes(YEAR, total_lbs)) +
+  geom_bar(stat = "identity") + 
+  ylab("Harvest (lbs)") + xlab("Year") +
+  scale_x_continuous(breaks = seq(0, cur_yr+1, 5)) +
+  scale_y_continuous(label = scales::comma, breaks = seq(0, 2000000, 25000)) + 
+  theme(legend.title = element_blank(), legend.position = c(0.75, 0.75)) +
+  scale_fill_brewer(palette = "RdYlBu") +
+  labs(caption = "*Closed in 2018") 
+
+ggsave(paste0(fig_path, '/gkc_fishery_harvest_ec.png'), width = 8, height = 4, units = "in", dpi = 200)
+
+gkc_nonconf %>%
+  filter(I_FISHERY == "East Central GKC") %>%
+  ggplot(aes(YEAR, no_permits)) +
+  geom_line(size = 0.5) +
+  geom_point(size = 2.5) +
+  ylab("Number of Permits") +
+  xlab("Year") +
+  scale_x_continuous(breaks = seq(0, cur_yr+1, 5)) +
+  scale_y_continuous(breaks = seq(0, 40, 3), limits = c(0, 40)) +
+  labs(caption = "*Closed in 2018")
+
+ggsave(paste0(fig_path, '/permit_effort_ec.png'), width = 8, height = 4, units = "in", dpi = 200)
+
 ###Avg Ex-Vessel Value  -----------
 head(gkc_fish)
 

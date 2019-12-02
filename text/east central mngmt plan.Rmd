@@ -1,5 +1,5 @@
 ---
-title: "Golden King Crab Managemetn Plan: East Central"
+title: "Golden King Crab Management Plan: East Central"
 author: "Andrew Olson & Katie Palof"
 date: "`r format(Sys.time(), '%B %Y')`"
 output:
@@ -12,20 +12,32 @@ output:
 
 ```{r global_options, include=FALSE, echo = FALSE, message = FALSE, warning=FALSE}
 library(knitr)
-opts_chunk$set(fig.width = 6, fig.height = 12, echo = FALSE, warning = FALSE, message = FALSE,  dpi=300)
+opts_chunk$set(fig.width = 6, fig.height = 12, fig.pos = "H", echo = FALSE, warning = FALSE, message = FALSE,  dpi=300)
 ```
+
+
 
 # Background {-}
 
-The East Central management area is centrally located in Southeast Alaska as described in [5 AAC 34.107(d)] and has the largest guidline harvest range (GHR) 0-225,000 lbs. Historically, the East Central management area has had the highest fishing pressure and resulting harvest for the golden king crab (*Lithodes aequispinus*) compared to other areas (Northern, Icy Strait, North Stephens Passage, Mid-Chatham Strait, Lower Chatham Strait, and Southern). Harvest peaked in 1989 at 496,722 lbs from 35 permit holders participated and again in 2011 at 305,659 lbs from 20 permits holders and has since collapsed and remains in a depressed state with harvest in 2017 at 972 lbs from 4 permit holders, was subsequently closed in 2018, and re-opened in 2019 with harvest of 6,749 from 5 permit holders.    
+The East Central management area is centrally located in Southeast Alaska as described in [5 AAC 34.107(d)] and has the largest guidline harvest range (GHR) 0-225,000 lbs. Historically, the East Central management area has had the highest fishing pressure and resulting harvest for the golden king crab (*Lithodes aequispinus*) compared to other areas (Northern, Icy Strait, North Stephens Passage, Mid-Chatham Strait, Lower Chatham Strait, and Southern). Harvest peaked in 1989 at 496,722 lbs from 35 permit holders participated and again in 2011 at 305,659 lbs from 20 permits holders and has since collapsed and remains in a depressed state with harvest in 2017 at 972 lbs from 4 permit holders, was subsequently closed in 2018, and re-opened in 2019 with harvest of 6,749 from 5 permit holders.
 
-INSERT EC MAP, HARVEST AND # OF PERMIT HOLDERS GRAPH
+```{r, fig.cap = paste("The East Central management area (dark grey)"), out.height = "60%", out.width= "100%"}
+knitr::include_graphics("../figures/2019/ec_map3.jpg")
+```
+
+
+```{r, fig.cap = "Golden king crab harvest in the East Central management area. Harvest excludes less than 3 permits in a given year for confidentiality. East Central was closed to fishing in 2018", out.width= "500px"}
+knitr::include_graphics("../figures/2019/gkc_fishery_harvest_ec.png")
+```
+```{r, fig.cap = "East Central golden king crab permit effort. East Central was closed to fishing in 2018", out.width= "500px"}
+knitr::include_graphics("../figures/2019/permit_effort_ec.png")
+```
 
 ## Proposed plan {-}
-Metrics to assess stock health and fishery performance.
+Metrics to assess stock health and fishery performance. In-season fishery perfomance data will be reviewed and analyzed bi-weekly to monthly to inform harvest strategy decision rules. 
 
 ### Operational Objective {-}
-Maintain the average commercial catch per unit effort (CPUE) at or above 3.38 crab per pot and XX lbs per day.
+Maintain the average commercial catch per unit effort (CPUE) at or above 3.38 crab per pot and 3,980 lbs per day. Maintain multiple size and shell age compositions for reproductive viability. 
 
 ## Performance Indicators {-}
 The primary performance indiactor used in this harvest strategy is commercial catch rate defined as logbook CPUE calculated from the CPUE at each logbook entry and averaged for the entire season. Commercial catch rate is the number of of legal sized male golden king crab per potlift. 
@@ -35,7 +47,7 @@ The secondary perfomance indicator used in this harvest strategy is commercial c
 The biological performance indicator used in this harvest strategy is size and recruit class distributions of golden king crab sampled during commercial landings. Size is defined as the carapace length (CL) mm measurement and recruit class is used as an indicator of shell age and is defined as recruit (new shell) and post-recruit (old shell).
 
 ## Reference Points {-}
-The Target Reference Point (RP~targ~) is set at the average logbook CPUE for the years 2000--2017 as these years capture when logbooks were required for the fishery in 2000 and represents contrasting data (highs and lows) in fishery performance. The Trigger Regerence Point (RP~trig~) is set at 75% of the RP~targ~ and the Limit Reference Point (RP~lim~) is set at 50% of the RP~targ~.
+The primary indicator Target Reference Point (RP~targ~) is set at the average logbook CPUE for the years 2000--2017 as these years capture when logbooks were required for the fishery in 2000 and represents contrasting data (highs and lows) in fishery performance. The Trigger Regerence Point (RP~trig~) is set at 75% of the RP~targ~ and the Limit Reference Point (RP~lim~) is set at 50% of the RP~targ~.
 
 
 ```{r}
@@ -56,16 +68,47 @@ dt <- data.frame(
 
 knitr::kable(dt, caption = "Golden King Crab logbook catch per unit effort (CPUE) reference points") %>% 
   kable_styling(c("striped", "condensed"), 
-                latex_options = "striped", 
+                latex_options = c("striped", "hold_position"), 
                 full_width = F) %>% 
   row_spec(0, bold = T, color = "black") %>%
   row_spec(1, bold = T, color = "white", background = "olive") %>% 
   row_spec(2, bold = T, color = "white", background = "orange") %>% 
-  row_spec(3, bold = T, color = "white", background = "red")
+  row_spec(3, bold = T, color = "white", background = "red") 
 ```
 
-```{r, fig.cap = " ", out.width= "500px"}
+```{r, fig.cap = "East Central golden king crab reference points (Target, Trigger, and Limit) utilizing logbook CPUE.", out.width= "500px"}
 knitr::include_graphics("../figures/2019/East Central logbook_cpue.png")
+```
+
+The secondary indicator Target Reference Point (RP~targ~) is set at the average CPUE (lbs/pot day) for the years 1983--2010 as these years capture the development of the GKC fishery and captures constrasting data (highs and lows) in fishery peformance from a longer time-series. The Trigger Regerence Point (RP~trig~) is set at 50% of the RP~targ~ and the Limit Reference Point (RP~lim~) is set at 25% of the RP~targ~.
+
+```{r}
+library(dplyr)
+library(kableExtra)
+options(kableExtra.html.bsTable = T)
+
+dt <- data.frame(
+  Indicators = c("Target Reference Point",
+                 "Trigger Reference Point",
+                 "Limit Reference Point"),
+  `Reference Point`= c("3,980 lbs per pot day",
+                       "1,975 lbs per pot day",
+                       "995 lbs per pot day"),
+  Description = c("Average CPUE (lbs per pot day) from 2000-2017",
+                  "50% of the Target Reference Point",
+                  "25% of the Target Reference Point"))
+
+knitr::kable(dt, caption = "Golden King Crab CPUE (lbs per pot day) reference points") %>% 
+  kable_styling(c("striped", "condensed"), 
+                latex_options = c("striped", "hold_position"), 
+                full_width = F) %>% 
+  row_spec(0, bold = T, color = "black") %>%
+  row_spec(1, bold = T, color = "white", background = "olive") %>% 
+  row_spec(2, bold = T, color = "white", background = "orange") %>% 
+  row_spec(3, bold = T, color = "white", background = "red") 
+```
+```{r, fig.cap = "East Central golden king crab reference points (Target, Trigger, and Limit) utilizing lbs per pot day CPUE.", out.width= "500px"}
+knitr::include_graphics("../figures/2019/East Central_lbs_activeF.png")
 ```
 
 
@@ -77,19 +120,22 @@ Considering the primary performance indicator (logbook CPUE) being the most read
 * **Option A**
     + If logbook CPUE is $>=$ the RP~targ~ increase the guideline harvest level (GHL) the following season;
     + If logbook CPUE is $>=$ the RP~trig~ increase the GHL the following season;
-    + If logbook CPUE is $<$ the RP ~trig~ close fishery early and decrease GHL the following season;
-    + If logbook CPUE is $<=$ the RP~lim~ close fishery early, subject to multiple year closure, and upon re-opening set GHL at a reduced level
+    + If logbook CPUE is $<$ the RP ~trig~ close fishery early, decrease GHL the following season, and reduce personal use fishery bag and possession limits;
+    + If logbook CPUE is $<=$ the RP~lim~ close fishery early, subject to multiple year closure for commercial and personal use fisheries, and upon re-opening set GHL, bag and possessio limits at a reduced level
 
 * **Option B**
     + If logbook CPUE is $>=$ RP~targ~ for 1 year increase GHL 0%-10% the following season and if logbook CPUE is $>$ RP~targ~ for at least 3 years 0-15% increase in GHL the following season;
     + If logbook CPUE is $>=$ RP~trig~ but $<$ RP~targ~ increase GHL 0%-10% the following season;
-    + If logbook CPUE is $>$ RP~lim~ but $<$ RP~trig~ close fishery early, decrease GHL 0%-20% the following season;
-    + If logbook CPUE is $<=$ RP~lim~ close fishery early, subject to multipler year closure, and upon re-opening set GHL at a reduced level
+    + If logbook CPUE is $>$ RP~lim~ but $<$ RP~trig~ close fishery early, decrease GHL 0%-20% the following season, and reduce personal use fishery bag and possession limits;
+    + If logbook CPUE is $<=$ RP~lim~ close fishery early, subject to multiple year closure for commercial and personal use fisheries, and upon re-opening set GHL, bag and possessio limits at a reduced level
 
-```{r distribution, fig.cap = " ", out.width= "500px"}
-knitr::include_graphics("../figures/2019/East Central_panel_activeF_and_logbk.png")
-```
+* **Option C**
+    + Utilize options A or B in conjuntion with the secondary performance indicator (lbs per pot day CPUE) to inform fishery management decision in- and post-season.
+  
+* **Option D**
+    + Utilize options A or B in conjunction with the secondary (lbs per pot day CPUE) and biological peformance indicators (i.e. size length frequncies, shell condition, etc.)
 
 
+## Other Considerations for Managment {-}
+Logbook CPUE currently lacks a soak time data field and cannot be standardized for comparsion across years thus, CPUE values have bias. Soak time will be introduced as a reporting field in logbooks for the 2020 fishing season. In the future, if standardized CPUE is availble to inform the decision in the harvest strategy, this harvest strategy may be amended. 
 
-## Other considerations for managment {-}

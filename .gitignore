@@ -8,6 +8,7 @@
 *figures
 *output
 *.pdf
+*shape_files
  
 #Survey data no uploaded due to file size
 *survey
