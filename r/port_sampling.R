@@ -46,7 +46,7 @@ port_summary %>%
 # Figures ------------
 # Figure with sample size --------------
 port_summary2 %>%
-  filter(mgt_area == "East Central",
+  filter(mgt_area == "Icy Strait",
          YEAR > 1999) %>%
   mutate(YEAR = fct_rev(as.factor(YEAR))) %>%
   ggplot(aes(y = YEAR)) + 
@@ -68,6 +68,8 @@ port_summary2 %>%
   #facet_wrap(~mgt_area, scales = "free_y") +
   theme(strip.background = element_blank(),
         legend.position = c(0.9, 0.9))
+
+ggsave(paste0(fig_path, '/gkc_southern_lengths.png'), width = 7, height = 8, units = "in", dpi = 200)
 
 
 # Histogram -----------
