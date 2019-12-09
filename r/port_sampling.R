@@ -45,7 +45,16 @@ port_summary %>%
 
 # Figures ------------
 # Figure with sample size --------------
+# deal with small sample size in 2014 for ICY and graphing issues. 
+port_summary2 %>% 
+  filter(mgt_area == "Icy Strait",
+         YEAR == 2014) %>%
+  filter(recruit_status == "Recruit") %>% 
+  mutate(TICKET_NO = 12345) -> fill_icy
+
+
 port_summary2 %>%
+  bind_rows(fill_icy) %>% 
   filter(mgt_area == "Icy Strait",
          YEAR > 1999) %>%
   mutate(YEAR = fct_rev(as.factor(YEAR))) %>%
