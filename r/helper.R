@@ -136,8 +136,10 @@ logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue, Lper1, Lper2, cur_yr){
     geom_vline(xintercept = end_yr, linetype = "dashed") +
     annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") +
     geom_point(size = 3, color = "dodgerblue") + 
+    scale_y_continuous(breaks = seq(0.0, 7.0, 0.5)) +
+    scale_x_continuous(breaks = seq(1983, 2020, 2)) +
     expand_limits(y = 0) +
-    ylab("Logbook CPUE (lbs/pot)") + 
+    ylab("Logbook CPUE (no. of crab/pot)") + 
     xlab("Year") + 
     ggtitle(paste0(mg_area, " logbook data")) -> fig1
   fig1
