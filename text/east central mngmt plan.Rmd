@@ -121,13 +121,13 @@ Considering the primary performance indicator (logbook CPUE) being the most read
     + If logbook CPUE is $>=$ the RP~targ~ increase the guideline harvest level (GHL) the following season;
     + If logbook CPUE is $>=$ the RP~trig~ increase the GHL the following season;
     + If logbook CPUE is $<$ the RP ~trig~ close fishery early, decrease GHL the following season, and reduce personal use fishery bag and possession limits;
-    + If logbook CPUE is $<=$ the RP~lim~ close fishery early, subject to multiple year closure for commercial and personal use fisheries, and upon re-opening set GHL, bag and possessio limits at a reduced level
+    + If logbook CPUE is $<=$ the RP~lim~ close fishery early, subject to multiple year closure for commercial and personal use fisheries, and upon re-opening set GHL, bag and possession limits at a reduced level
 
 * **Option B**
     + If logbook CPUE is $>=$ RP~targ~ for 1 year increase GHL 0%-10% the following season and if logbook CPUE is $>$ RP~targ~ for at least 3 years 0-15% increase in GHL the following season;
     + If logbook CPUE is $>=$ RP~trig~ but $<$ RP~targ~ increase GHL 0%-10% the following season;
     + If logbook CPUE is $>$ RP~lim~ but $<$ RP~trig~ close fishery early, decrease GHL 0%-20% the following season, and reduce personal use fishery bag and possession limits;
-    + If logbook CPUE is $<=$ RP~lim~ close fishery early, subject to multiple year closure for commercial and personal use fisheries, and upon re-opening set GHL, bag and possessio limits at a reduced level
+    + If logbook CPUE is $<=$ RP~lim~ close fishery early, subject to multiple year closure for commercial and personal use fisheries, and upon re-opening set GHL, bag and possession limits at a reduced level
 
 * **Option C**
     + Utilize options A or B in conjuntion with the secondary performance indicator (lbs per pot day CPUE) to inform fishery management decision in- and post-season.
