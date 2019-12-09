@@ -247,6 +247,9 @@ lbs_per_day_permit_graph(1983, 2017, "North Stephens Passage GKC", lbs_per_day)
 lbs_per_day_permit_graph(1983, 2017, "Northern GKC", lbs_per_day)
 lbs_per_day_permit_graph(1983, 2017, "Southern GKC", lbs_per_day)
 
+#logbook cpue
+logbk_cpue(2000, 2017, "East Central", cpue_log, 0.75, 0.50, cur_yr)
+
 
 #### old code ----------------------------
 # lbs per day additional calcs ---
