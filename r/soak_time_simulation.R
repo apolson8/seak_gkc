@@ -8,6 +8,7 @@ source("./r/helper.R")
 
 # global ---------
 YEAR <- 2019 # most recent year of data
+fig_path <- paste0('figures/', YEAR) # folder to hold all figs for a given year
 
 ## data -------------------------
 # Import logbook data from ALEX
@@ -51,8 +52,8 @@ gkc_log_ec_raw %>%
             avg_soak3 = mean(soak21),
             n = n(),
             total_pots = sum(NUMBER_POTS_LIFTED)) %>% 
-  select(YEAR, mgt_area, avg_soak, cpue_14day, cpue_7day, cpue_21day, cpue_2day) %>% 
-  gather("type", "value", 4:7) %>% 
+  select(YEAR, mgt_area, avg_soak, cpue_14day, cpue_7day, cpue_21day, cpue_2day, cpue) %>% 
+  gather("type", "value", 4:8) %>% 
   ggplot(aes(YEAR, value, group = type, color = type)) + 
   geom_line() + 
   geom_point(size = 2) +
@@ -61,7 +62,40 @@ gkc_log_ec_raw %>%
   ylab("Mean CPUE (crab/day/pot)") + xlab("Year") 
   #scale_x_continuous(breaks = seq(0, cur_yr+1, 3)) +
   
-  
+ggsave(paste0(fig_path, '/gkc_soak_time_sim_all.png'), width = 10, height = 6, units = "in", dpi = 200)
+
+# East central soak simulation high soaks -----------
+gkc_log_ec_raw %>% 
+  mutate(soak14 = 14, 
+         soak7 = sample(2:14, 5986, replace = T), # randomly generated soak time 
+         soak21 = sample(17:25, 5986, replace = T),
+         soak2 = sample(1:3, 5986, replace = T),
+         cpue = TARGET_SPECIES_RETAINED / NUMBER_POTS_LIFTED,
+         cpue_14day = (TARGET_SPECIES_RETAINED/soak14)/NUMBER_POTS_LIFTED,  # assumed 14 days
+         cpue_7day = (TARGET_SPECIES_RETAINED/soak7)/NUMBER_POTS_LIFTED, 
+         cpue_21day = (TARGET_SPECIES_RETAINED/soak21)/NUMBER_POTS_LIFTED, 
+         cpue_2day = (TARGET_SPECIES_RETAINED/soak2)/NUMBER_POTS_LIFTED) %>% 
+  filter(!is.na(cpue)) %>% #have to add this here since 0 pots lifts for 0 crab is included here
+  group_by(YEAR, mgt_area) %>%
+  summarise(cpue = mean(cpue),
+            cpue_14day = mean(cpue_14day), 
+            cpue_7day = mean(cpue_7day),
+            cpue_21day = mean(cpue_21day),
+            cpue_2day = mean(cpue_2day),
+            avg_soak = mean(soak7),
+            avg_soak3 = mean(soak21),
+            n = n(),
+            total_pots = sum(NUMBER_POTS_LIFTED)) %>% 
+  select(YEAR, mgt_area, avg_soak, cpue_14day, cpue_7day, cpue_21day) %>% 
+  gather("type", "value", 4:6) %>% 
+  ggplot(aes(YEAR, value, group = type, color = type)) + 
+  geom_line() + 
+  geom_point(size = 2) +
+  #geom_ribbon(aes(ymin = ll, ymax = ul),
+  #            alpha = 0.3, fill = "gray") +
+  ylab("Mean CPUE (crab/day/pot)") + xlab("Year") 
+#scale_x_continuous(breaks = seq(0, cur_yr+1, 3)) +
+
   
 
 
