@@ -78,7 +78,7 @@ port_summary2 %>%
   theme(strip.background = element_blank(),
         legend.position = c(0.9, 0.9))
 
-ggsave(paste0(fig_path, '/gkc_southern_lengths.png'), width = 7, height = 8, units = "in", dpi = 200)
+ggsave(paste0(fig_path, '/gkc_icystrait_lengths.png'), width = 7, height = 8, units = "in", dpi = 200)
 
 
 # Histogram -----------
