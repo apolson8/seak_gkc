@@ -22,6 +22,9 @@ library(rgdal)
 library(ggmap)
 library(ggrepel)
 library(PBSmapping)
+library(janitor)
+library(here)
+library(tidyquant)
 
 ##THEMES FOR GRAPHS ---------
 loadfonts(device="win")
@@ -31,6 +34,26 @@ theme_set(theme_bw(base_size=12,base_family='Times New Roman')
 
 #COLOR BLIND PALETTE --------------
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+
+#harvest by area --------------
+hvst_area <- function(mg_area, harv_ghl, cur_yr) {
+  
+  harv_ghl %>%
+  filter(mgt_area == mg_area) %>%
+  ggplot(aes(year, total_lbs)) + 
+    geom_col() +
+    #geom_line(aes(x = year, y = ghl)) + #need to draw GHL line across bar plot
+    ylab("Harvest (lbs)") + xlab("Year") +
+    scale_x_continuous(breaks = seq(0, cur_yr+1, 5)) +
+    scale_y_continuous(label = scales::comma, breaks = seq(0, 3500000, 25000)) + 
+    ggtitle(paste0(mg_area)) +
+    theme(legend.title = element_blank(), legend.position = c(0.75, 0.75)) -> fig1
+  fig1
+  ggsave(paste0('./figures/', cur_yr, '/', mg_area, '_harvest.png'), fig1,  
+         dpi = 600, width = 8, height = 5.5)
+
+  }
 
 
 # target ref lbs per fishing day -----------
@@ -43,7 +66,7 @@ lbs_per_day_graph <- function(str_yr, end_yr, mg_area, lbs_per_day, cur_yr){
 
 lbs_per_day %>% 
   group_by(mgt_area) %>% 
-  filter(YEAR >= str_yr & YEAR <= end_yr) %>%
+  filter(year >= str_yr & year <= end_yr) %>%
   summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
 
 avg_ten %>% 
@@ -52,8 +75,9 @@ avg_ten %>%
 
 lbs_per_day %>% 
   filter(mgt_area == mg_area) %>% 
-  ggplot(aes(YEAR, cpue)) + 
+  ggplot(aes(year, cpue)) + 
   geom_line(lwd = 1) + 
+  geom_ma(ma_fun = SMA, n = 3) + #adds 3 yr simple moving average
   geom_hline(yintercept = avg_ten2$mean, lwd = 0.5, color = "green") +
   geom_text(aes(1977, avg_ten2$mean, 
                 label = paste0("Target Reference Point (avg ", str_yr, "-", end_yr, ")"), vjust = -1, hjust = 0.05)) +
@@ -77,7 +101,7 @@ lbs_per_day_permit_graph <- function(str_yr, end_yr, mg_area, lbs_per_day, cur_y
   
   lbs_per_day %>% 
     group_by(mgt_area) %>% 
-    filter(YEAR >= str_yr & YEAR <= end_yr) %>%
+    filter(year >= str_yr & year <= end_yr) %>%
     summarise(mean = mean(cpue2, na.rm = TRUE)) -> avg_ten 
   
   avg_ten %>% 
@@ -86,7 +110,7 @@ lbs_per_day_permit_graph <- function(str_yr, end_yr, mg_area, lbs_per_day, cur_y
   
   lbs_per_day %>% 
     filter(mgt_area == mg_area) %>% 
-    ggplot(aes(YEAR, cpue2)) + 
+    ggplot(aes(year, cpue2)) + 
     geom_line(lwd = 1) + 
     geom_hline(yintercept = avg_ten2$mean, lwd = 0.5, color = "green") +
     geom_text(aes(1977, avg_ten2$mean, 
@@ -112,31 +136,32 @@ logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue, Lper1, Lper2, cur_yr){
   
   log_cpue %>% 
     group_by(mgt_area) %>% 
-    filter(YEAR >= str_yr & YEAR <= end_yr) %>%
+    filter(year >= str_yr & year <= end_yr) %>%
     summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
   
   avg_ten %>% 
     filter(mgt_area == mg_area) %>% 
-    mutate(fifty = mean*Lper1, twenty = mean*Lper2) -> avg_ten2
+    mutate(seventy_five = mean*Lper1, fifty = mean*Lper2) -> avg_ten2
   
   log_cpue %>% 
     filter(mgt_area == mg_area) %>% 
-    ggplot(aes(YEAR, cpue)) + 
+    ggplot(aes(year, cpue)) + 
     geom_line(lwd = 1) + 
+    geom_ma(ma_fun = SMA, n = 3) + #adds 3yr simple moving average 
     geom_hline(yintercept = avg_ten2$mean, lwd = 0.5, color = "green") +
     geom_text(aes((str_yr-10), avg_ten2$mean, 
                   label = paste0("Target Reference Point (avg ", str_yr, "-", end_yr, ")"), vjust = -1, hjust = 0.05)) +
-    geom_hline(yintercept = avg_ten2$fifty, lwd = 0.5, linetype = "dashed",color = "orange") +
-    geom_text(aes((str_yr-10), avg_ten2$fifty, 
+    geom_hline(yintercept = avg_ten2$seventy_five, lwd = 0.5, linetype = "dashed",color = "orange") +
+    geom_text(aes((str_yr-10), avg_ten2$seventy_five, 
                   label = paste0("Trigger (", Lper1*100, "% of target)"), vjust = -1, hjust = 0.05)) +
-    geom_hline(yintercept = avg_ten2$twenty, lwd = 0.5, color = "red") +
-    geom_text(aes((str_yr-10), avg_ten2$twenty, 
+    geom_hline(yintercept = avg_ten2$fifty, lwd = 0.5, color = "red") +
+    geom_text(aes((str_yr-10), avg_ten2$fifty, 
                   label = paste0("Limit Reference Point (", Lper2*100, "% of target)"), vjust = -1, hjust = 0.05)) +
     geom_vline(xintercept = str_yr, linetype = "dashed") +
     geom_vline(xintercept = end_yr, linetype = "dashed") +
     annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") +
     geom_point(size = 3, color = "dodgerblue") + 
-    scale_y_continuous(breaks = seq(0.0, 7.0, 0.5)) +
+    scale_y_continuous(breaks = seq(0.0, 15.0, 0.5)) +
     scale_x_continuous(breaks = seq(1983, 2020, 2)) +
     expand_limits(y = 0) +
     ylab("Logbook CPUE (no. of crab/pot)") + 
@@ -164,7 +189,7 @@ panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day,
   
   lbs_per_day %>% 
     group_by(mgt_area) %>% 
-    filter(YEAR >= str_yr & YEAR <= end_yr) %>%
+    filter(year >= str_yr & year <= end_yr) %>%
     summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
   
   avg_ten %>% 
@@ -173,7 +198,7 @@ panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day,
   
   lbs_per_day %>% 
     filter(mgt_area == mg_area) %>% 
-    ggplot(aes(YEAR, cpue)) + 
+    ggplot(aes(year, cpue)) + 
     geom_line(lwd = 1) + 
     geom_hline(yintercept = avg_ten2$mean, lwd = 0.5, color = "green") +
     geom_text(aes(1970, avg_ten2$mean, 
@@ -194,7 +219,7 @@ panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day,
   
   log_cpue %>% 
       group_by(mgt_area) %>% 
-      filter(YEAR >= str_yr2 & YEAR <= end_yr2) %>%
+      filter(year >= str_yr2 & year <= end_yr2) %>%
       summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_tenL 
     
     avg_tenL %>% 
@@ -203,7 +228,7 @@ panel_figure <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day,
     
     log_cpue %>% 
       filter(mgt_area == mg_area) %>% 
-      ggplot(aes(YEAR, cpue)) + 
+      ggplot(aes(year, cpue)) + 
       geom_line(lwd = 1) + 
       geom_hline(yintercept = avg_ten2L$mean, lwd = 0.5, color = "green") +
       geom_text(aes((str_yr-10), avg_ten2L$mean, 
