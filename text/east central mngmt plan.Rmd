@@ -22,7 +22,7 @@ opts_chunk$set(fig.width = 6, fig.height = 12, fig.pos = "H", echo = FALSE, warn
 The East Central management area is centrally located in Southeast Alaska as described in [5 AAC 34.107(d)] and has the largest guidline harvest range (GHR) 0-225,000 lbs. Historically, the East Central management area has had the highest fishing pressure and resulting harvest for the golden king crab (*Lithodes aequispinus*) compared to other areas (Northern, Icy Strait, North Stephens Passage, Mid-Chatham Strait, Lower Chatham Strait, and Southern). Harvest peaked in 1989 at 496,722 lbs from 35 permit holders participated and again in 2011 at 305,659 lbs from 20 permits holders and has since collapsed and remains in a depressed state with harvest in 2017 at 972 lbs from 4 permit holders, was subsequently closed in 2018, and re-opened in 2019 with harvest of 6,749 from 5 permit holders.
 
 ```{r, fig.cap = paste("The East Central management area (dark grey)"), out.height = "60%", out.width= "100%"}
-knitr::include_graphics("../figures/2019/ec_map3.jpg")
+knitr::include_graphics("../figures/2019/ec_map.jpg")
 ```
 
 
