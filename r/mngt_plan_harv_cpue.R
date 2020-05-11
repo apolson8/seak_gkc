@@ -10,22 +10,30 @@
 source("./r/helper.R")
 
 # global ---------
-cur_yr = 2019 # most recent year of data
+cur_yr = 2020 # most recent year of data
 fig_path <- paste0('figures/', cur_yr) # folder to hold all figs for a given year
 dir.create(fig_path) # creates YEAR subdirectory inside figures folder
 output_path <- paste0('output/', cur_yr) # output and results
 dir.create(output_path) 
+
+
+
+# load data ------------
+# Import fishticket and logbook data from ALEX
+read.csv("data/fishery/gkc_fishticket.csv") %>% 
+  clean_names () -> gkc_fish
+read.csv("data/fishery/gkc_logbook.csv") %>%
+  clean_names() -> gkc_log
+read.csv("data/fishery/gkc_ghls.csv") %>%
+  clean_names() -> gkc_ghl
 
 # Select for mgt areas #
 target <- c("East Central GKC", "Icy Strait GKC", "Lower Chatham Strait GKC", 
             "Mid-Chatham Strait GKC","North Stephens Passage GKC", "Northern GKC",
             "Southern GKC")
 
-# load data ------------
-# Import fishticket and logbook data from ALEX
-gkc_fish <- read.csv("data/fishery/gkc_fishticket.csv")
-gkc_log <- read.csv("data/fishery/gkc_logbook.csv")
 # here or in readme need how to pull this data **FIX**
+
 
 # process data ----------------
 # lbs per pot day -----------
@@ -35,17 +43,17 @@ head(gkc_fish)
 # Active fishing season -----------
 # based on first and last haul dates
 gkc_fish %>% 
-  filter(!is.na(CATCH_DATE), !is.na(SELL_DATE), I_FISHERY %in% target) %>%
-  mutate(mgt_area = ifelse(I_FISHERY == "East Central GKC", "East Central",
-                           ifelse(I_FISHERY == "Icy Strait GKC", "Icy Strait", 
-                                  ifelse(I_FISHERY == "Lower Chatham Strait GKC", "Lower Chatham",
-                                         ifelse(I_FISHERY == "Mid-Chatham Strait GKC", "Mid-Chatham",
-                                                ifelse(I_FISHERY == "North Stephens Passage GKC", "North Stephens Passage",
-                                                       ifelse(I_FISHERY == "Northern GKC", "Northern",
-                                                              ifelse(I_FISHERY == "Southern GKC", "Southern", "Misc")))))))) %>% 
-  group_by(YEAR, mgt_area) %>% 
-  mutate(CATCH_DATE = as.character(CATCH_DATE), mdy = mdy(CATCH_DATE)) %>% 
-  select(YEAR, mgt_area, mdy) %>%
+  filter(!is.na(catch_date), !is.na(sell_date), i_fishery %in% target) %>%
+  mutate(mgt_area = ifelse(i_fishery == "East Central GKC", "East Central",
+                           ifelse(i_fishery == "Icy Strait GKC", "Icy Strait", 
+                                  ifelse(i_fishery == "Lower Chatham Strait GKC", "Lower Chatham",
+                                         ifelse(i_fishery == "Mid-Chatham Strait GKC", "Mid-Chatham",
+                                                ifelse(i_fishery == "North Stephens Passage GKC", "North Stephens Passage",
+                                                       ifelse(i_fishery == "Northern GKC", "Northern",
+                                                              ifelse(i_fishery == "Southern GKC", "Southern", "Misc")))))))) %>% 
+  group_by(year, mgt_area) %>% 
+  mutate(catch_date = as.character(catch_date), mdy = mdy(catch_date)) %>% 
+  select(year, mgt_area, mdy) %>%
   summarise(min = min(mdy), max = max(mdy), diff = max-min) %>% 
   mutate(diff = as.numeric(diff, units = "days")) %>% 
   mutate(diff = replace(diff, which(diff == 0), 14)) -> season_leng 
@@ -54,21 +62,38 @@ gkc_fish %>%
 
 # Harvest by mgt area and year ----------
 gkc_fish %>% 
-  filter(!is.na(CATCH_DATE), !is.na(SELL_DATE), !is.na(POUNDS), I_FISHERY %in% target) %>% 
-  mutate(mgt_area = ifelse(I_FISHERY == "East Central GKC", "East Central",
-                           ifelse(I_FISHERY == "Icy Strait GKC", "Icy Strait", 
-                                  ifelse(I_FISHERY == "Lower Chatham Strait GKC", "Lower Chatham",
-                                         ifelse(I_FISHERY == "Mid-Chatham Strait GKC", "Mid-Chatham",
-                                                ifelse(I_FISHERY == "North Stephens Passage GKC", "North Stephens Passage",
-                                                       ifelse(I_FISHERY == "Northern GKC", "Northern",
-                                                              ifelse(I_FISHERY == "Southern GKC", "Southern", "Misc")))))))) %>%
-  group_by(YEAR, mgt_area) %>%
-  summarise(total_lbs = sum(POUNDS), 
-            permits = length(unique(ADFG_NO))) -> harv # add permits using number of uniqeu ADF&G no
+  filter(!is.na(catch_date), !is.na(sell_date), !is.na(pounds), i_fishery %in% target) %>% 
+  mutate(mgt_area = ifelse(i_fishery == "East Central GKC", "East Central",
+                           ifelse(i_fishery == "Icy Strait GKC", "Icy Strait", 
+                                  ifelse(i_fishery == "Lower Chatham Strait GKC", "Lower Chatham",
+                                         ifelse(i_fishery == "Mid-Chatham Strait GKC", "Mid-Chatham",
+                                                ifelse(i_fishery == "North Stephens Passage GKC", "North Stephens Passage",
+                                                       ifelse(i_fishery == "Northern GKC", "Northern",
+                                                              ifelse(i_fishery == "Southern GKC", "Southern", "Misc")))))))) %>%
+  group_by(year, mgt_area) %>%
+  summarise(total_lbs = sum(pounds), 
+            permits = length(unique(adfg_no))) -> harv # add permits using number of uniqeu ADF&G no
+
+harv %>%
+  full_join(gkc_ghl) %>%
+  select(year, mgt_area, ghl, total_lbs) %>%
+  mutate(ghl = as.numeric(ghl)) -> harv_ghl
+
+
+
+#harvest by mgt area figures -----
+#need to add GHLs to figures
+hvst_area("Northern", harv_ghl, cur_yr)
+hvst_area("East Central", harv, cur_yr)
+hvst_area("Icy Strait", harv, cur_yr)
+hvst_area("Lower Chatham", harv, cur_yr)
+hvst_area("Mid-Chatham", harv, cur_yr)
+hvst_area("Southern", harv, cur_yr)
+hvst_area("North Stephens Passage", harv, cur_yr)
 
 harv %>% 
   full_join(season_leng) %>% 
-  select(YEAR, mgt_area, diff, total_lbs, permits)  %>% 
+  select(year, mgt_area, diff, total_lbs, permits)  %>% 
   mutate(cpue = total_lbs / diff, 
          cpue2 = total_lbs / diff / permits) -> lbs_per_day
 
@@ -83,24 +108,24 @@ lbs_per_day_graph(1983, 2017, "Northern", lbs_per_day, cur_yr)
 lbs_per_day_graph(1983, 2017, "Southern", lbs_per_day, cur_yr)
 
 # Logbook CPUE -----------
-gkc_log %>% filter(TARGET_SPECIES_CODE == 923, !is.na(TARGET_SPECIES_RETAINED),
-                   !is.na(NUMBER_POTS_LIFTED), !is.na(I_FISHERY)) %>%
-  mutate(mgt_area = ifelse(I_FISHERY == "East Central GKC", "East Central",
-                           ifelse(I_FISHERY == "Icy Strait GKC", "Icy Strait", 
-                                  ifelse(I_FISHERY == "Lower Chatham Strait GKC", "Lower Chatham",
-                                         ifelse(I_FISHERY == "Mid-Chatham Strait GKC", "Mid-Chatham",
-                                                ifelse(I_FISHERY == "North Stephens Passage GKC", "North Stephens Passage",
-                                                       ifelse(I_FISHERY == "Northern GKC", "Northern",
-                                                              ifelse(I_FISHERY == "Southern GKC", "Southern", "Misc"))))))),
-         cpue = TARGET_SPECIES_RETAINED / NUMBER_POTS_LIFTED) %>% 
-  select(YEAR, mgt_area, cpue, NUMBER_POTS_LIFTED) %>%
+gkc_log %>% filter(target_species_code == 923, !is.na(target_species_retained),
+                   !is.na(number_pots_lifted), !is.na(i_fishery)) %>%
+  mutate(mgt_area = ifelse(i_fishery == "East Central GKC", "East Central",
+                           ifelse(i_fishery == "Icy Strait GKC", "Icy Strait", 
+                                  ifelse(i_fishery == "Lower Chatham Strait GKC", "Lower Chatham",
+                                         ifelse(i_fishery == "Mid-Chatham Strait GKC", "Mid-Chatham",
+                                                ifelse(i_fishery == "North Stephens Passage GKC", "North Stephens Passage",
+                                                       ifelse(i_fishery == "Northern GKC", "Northern",
+                                                              ifelse(i_fishery == "Southern GKC", "Southern", "Misc"))))))),
+         cpue = target_species_retained / number_pots_lifted) %>% 
+  select(year, mgt_area, cpue, number_pots_lifted) %>%
   filter(!is.na(cpue), mgt_area != "Misc") %>% #have to add this here since 0 pots lifts for 0 crab is included here
-  group_by(YEAR, mgt_area) %>%
+  group_by(year, mgt_area) %>%
   summarise(sd = sd(cpue),
             cpue = mean(cpue),
             n = n(),
             se = sd / sqrt (n),
-            total_pots = sum(NUMBER_POTS_LIFTED)) %>%
+            total_pots = sum(number_pots_lifted)) %>%
   mutate(ll = cpue - 2 * se,
          ul = cpue + 2 * se) -> cpue_log
 
