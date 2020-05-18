@@ -130,3 +130,6 @@ port_summary %>%
 
 
 
+port_summary2 %>% select(YEAR, LENGTH_MILLIMETERS) %>%
+  group_by(LENGTH_MILLIMETERS) %>% tally()
+

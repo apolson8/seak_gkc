@@ -47,53 +47,68 @@ knitr::kable(dt, caption = "Golden king crab guideline harvest ranges for Regist
 ```
 
 
-##Biology {-}
+## Biology {-}
+Golden king crab are widely distributed across the North Pacific inhabiting depths from 100 to 1,000 m making biological information difficult to obtain and limited ot inform management decisions. Golden king crab reach morphometric maturity at approximately 8 years, have a 20-month asynchronous reproductive cycle, and lecitrophic larvae. Spatial variaibility in SMM and SAM has been observesed across the North Pacific and varies within Southeast Alaska across 7 different management areas with size in maturity increases with increases in latitude.  
+
 Golden king crab are relatively long-lived slow growing species that have an asychronous 20-month reproductive cycle, mature at approxmiate 6 years of age, and exhibit spatial variability across the North Pacific and among the 7 management areas withing Southeast Alaska. Certain aspects of this species' life history are well documented whereas other critical compenents such as, growth rates, age at maturity, longevity, molt timing, etc.) are unknown.  
+ADD LITERATURE REFERENCES HERE
 
 ## Proposed plan {-}
 Metrics to assess stock health and fishery performance. In-season fishery perfomance data will be reviewed and analyzed bi-weekly to monthly to inform harvest strategy decision rules. 
 
-### Operational Objective {-}
-Maintain the average commercial catch per unit effort (CPUE) at or above 3.38 crab per pot and 3,980 lbs per day. Maintain multiple size and shell age compositions for reproductive viability. 
+### Fishery Objective {-}
+The primary objective is to rebuild the Southeast Alaska golden king crab resource to sustainable levels while minimizing and mitigating ecological risks from fishing related activites, maximizing profitability for the commercial sectot, monitoriing social and economic benefits of the fishery to the community, and maintain long term reproductive potential of the stock.  Maintain multiple size and shell age compositions for reproductive viability. EDIT AND ADD LANGUAGE FROM BOF GUIDELINES ON MANAGEING KING CRAB RESOURCE
 
 ## Performance Indicators {-}
-The primary performance indiactor used in this harvest strategy is commercial catch rate defined as logbook CPUE calculated from the CPUE at each logbook entry and averaged for the entire season. Commercial catch rate is the number of of legal sized male golden king crab per potlift. 
+The primary performance indicator used in this harvest strategy is commercial catch rate defined as logbook CPUE calculated from the CPUE at each logbook entry and averaged for the entire season. Commercial catch rate is the number of of legal sized male golden king crab per pot lift. Future updates plan to incorporate soak time component in order to standardize CPUE (similar to Aleutian GKC)
 
-The secondary perfomance indicator used in this harvest strategy is commercial catch rate obtained from fishticket defined as CPUE calculated from each harvest landing for the entire season divided by the difference of the first and last catch date which is defined as active fishing season. This secondary CPUE indicator is defined as pounds per pot day. 
+The secondary perfomance indicator used in this harvest strategy is commercial catch rate obtained from fishticket defined as CPUE calculated from each harvest landing for the entire season divided by the difference of the first and last catch date which is defined as active fishing season. This secondary CPUE indicator is defined as pounds per pot day. This is a similar metric as lbs/boat/day and provides peformance information regardless if GKC were targeted or bycatch in lieu of soak time information. NOTE: THIS METRIC MAY CONFLICT WITH LOGBOOK CPUE AND BE CONFUSING FOR BIOLOGIST AND INDUSTRY, HOWEVER, IT HELPS EXPLAIN WHEN LOGBOOK CPUE IS LOW DUE TO BYCATCH EFFORT AND USES ENTIRE CATCH HISTORY
 
-The biological performance indicator used in this harvest strategy is size and recruit class distributions of golden king crab sampled during commercial landings. Size is defined as the carapace length (CL) mm measurement and recruit class is used as an indicator of shell age and is defined as recruit (new shell) and post-recruit (old shell).
+Supplementary biological information by analyzing recruit class distributions of golden king crab sampled during commercial landings. Size is defined as the carapace length (CL) mm measurement and recruit class is used as an indicator of shell age and is defined as recruit (new shell) and post-recruit (old shell).
+
+Future iterations will continue to be refined and evolve through utilization of data limited tools to predict biomass such as, length-based SPR and through industry feedback and input. 
 
 ## Reference Points {-}
 The primary indicator Target Reference Point (RP~targ~) is set at the average logbook CPUE for the years 2000--2017 as these years capture when logbooks were required for the fishery in 2000 and represents contrasting data (highs and lows) in fishery performance. The Trigger Regerence Point (RP~trig~) is set at 75% of the RP~targ~ and the Limit Reference Point (RP~lim~) is set at 50% of the RP~targ~.
-
-The secondary indicator Target Reference Point (RP~targ~) is set at the average CPUE (lbs/pot day) for the years 1983--2010 as these years capture the development of the GKC fishery and captures constrasting data (highs and lows) in fishery peformance from a longer time-series. The Trigger Regerence Point (RP~trig~) is set at 50% of the RP~targ~ and the Limit Reference Point (RP~lim~) is set at 25% of the RP~targ~.
 
 ### Monitoring Strategy {-}
 
 ### Decision Rules {-}
 Considering the primary performance indicator (logbook CPUE) being the most readily available estimate of fishery performance the folowing decision rules will be considered to guide in-season and post-season management decions.
 
-* **Option A**
-    + If logbook CPUE is $>=$ the RP~targ~ increase the guideline harvest level (GHL) the following season;
-    + If logbook CPUE is $>=$ the RP~trig~ increase the GHL the following season;
-    + If logbook CPUE is $<$ the RP ~trig~ close fishery early, decrease GHL the following season, and reduce personal use fishery bag and possession limits;
-    + If logbook CPUE is $<=$ the RP~lim~ close fishery early, subject to multiple year closure for commercial and personal use fisheries, and upon re-opening set GHL, bag and possession limits at a reduced level
 
-* **Option B**
-    + If logbook CPUE is $>=$ RP~targ~ for 1 year increase GHL 0%-10% the following season and if logbook CPUE is $>$ RP~targ~ for at least 3 years 0-15% increase in GHL the following season;
-    + If logbook CPUE is $>=$ RP~trig~ but $<$ RP~targ~ increase GHL 0%-10% the following season;
-    + If logbook CPUE is $>$ RP~lim~ but $<$ RP~trig~ close fishery early, decrease GHL 0%-20% the following season, and reduce personal use fishery bag and possession limits;
-    + If logbook CPUE is $<=$ RP~lim~ close fishery early, subject to multiple year closure for commercial and personal use fisheries, and upon re-opening set GHL, bag and possession limits at a reduced level
+* **In-Season**
+    + If logbook CPUE is $>=$ RP~targ~ manage to GHL in-season;
+    + If logbook CPUE is $>=$ RP~trig~ but $<$ RP~targ~ manage to GHL in-season and monitor closely;
+    + If logbook CPUE is $>$ RP~lim~ and $<$ RP~trig~ and less than the previous year CPUE close fishery early inseason and reduce personal use fishery bag and possession limits following season;
+    + If logbook CPUE is $<=$ RP~lim~ close fishery early inseason subject to multiple year closure (1 year min.)
+    
+* **Post-Season **
+    + **Increase in the GHL**
+      - The 3 year running average is greater than then RP~targ~ and the most recent logbook CPUE is greater than the previous year
+      - If the above conditions are met the GHL increases will be equal to:
+      - The proportion of change between the current logbook CPUE and the previous year CPUE; with
+      - A limit of no more than X lbs to be issued in any give year; and notwithstanding that
+      - The new GHL must note exceed the are management GHR
+      
+    + **Decrease in the GHL**
+      - The 3 year running average is less than the RP~targ~ and the most recent logbook CPUE is less than the previous year;
+      - If the above conditions are met the GHL decrease will be equal to:
+      - The proportion of chnage between the current logbook CPUE and the previous year CPUE; with
+      -A limit of not more than X lbs to be decremented in any given year; and notwithstanding that;
+      -The new GHL must not be less than 5,000 lbs
+      
+    + **Closure**
+      - THe GHL will be equal to zero if the 3 yr running avg of logbook CPUE is less than the RP~lim~
+      
+    + **No change in GHL**
+     - None of the above conditions are met or
+     - the new GHL is within X lbs of the current GHL
+      
 
-* **Option C**
-    + Utilize options A or B in conjuntion with the secondary performance indicator (lbs per pot day CPUE) to inform fishery management decision in- and post-season.
-  
-* **Option D**
-    + Utilize options A or B in conjunction with the secondary (lbs per pot day CPUE) and biological peformance indicators (i.e. size length frequncies, shell condition, etc.)
 
-
-## Other Considerations for Managment {-}
-Logbook CPUE currently lacks a soak time data field and cannot be standardized for comparsion across years thus, CPUE values have bias. Soak time will be introduced as a reporting field in logbooks for the 2020 fishing season. In the future, if standardized CPUE is availble to inform the decision in the harvest strategy, this harvest strategy may be amended. 
+## Other Considerations for Management and Future Outlook {-}
+Logbook CPUE currently lacks a soak time data field and cannot be standardized for comparsion across years thus, CPUE values have bias. Soak time was introduced as a reporting field in logbooks for the 2020 fishing season and will be used in informing the harvest strategy in the future. In the interim active fishing season may be looked out as a secondary performance indicator to assess fishery performance in lieu of soak time and when golden king crab catch cannot be differentiated between direct and indirect. Data-limited models are continously being expored to provid an estimate of biomass and reproductive potential such as a length-based spawning potential ratio (SPR). This harvest strategy may be amended in future iterations as more information becomes avaible in collaboration with industry. 
 
 # Area Reports
 
