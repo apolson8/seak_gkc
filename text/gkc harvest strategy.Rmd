@@ -109,9 +109,13 @@ Due to the GKC and Tanner crab fishery occurring concurrently, permit holders mu
 * **Review of GHLs or Decision Rules**
     + If the the most recent CPUE is 40% or more below the previous year's index, determine why decline occured and whether further management intervention is required to reduce the risk of localized depeletion; or
     + If and when new information becomes available indicating that the assessment and GHL setting decision rules are not consistent with the Board's policy in managing the GKC resource sustainably, the decision rules must be reviewed and if apporpirate the reference points must be adjusted.
+    
+## Insert Flow Chart of Decision Rule Process
       
-## Other Considerations for Management and Future Outlook {-}
-Logbook CPUE currently lacks a soak time data field and cannot be standardized for comparsion across years thus, CPUE values have bias. Soak time was introduced as a reporting field in logbooks for the 2020 fishing season and will be used in informing this harvest strategy in future iterations. In the interim active fishing season may be looked at as a secondary performance indicator to assess fishery performance in lieu of soak time and when GKC harvest cannot be determined if the effort was targeted or bycatch due to the concurrent GKC and Tanner crab fisheries. This harvest strategy may be amended in future iterations as more information and tools becomes avaible in collaboration with industry. 
+## Other Considerations for Management and Future Recommendations {-}
+Logbook CPUE currently lacks a soak time data field and cannot be standardized for comparsion across years thus, CPUE values have bias. Soak time was introduced as a reporting field in logbooks for the 2020 fishing season and will be used in informing this harvest strategy in future iterations. In the interim active fishing season may be looked at as a secondary performance indicator to assess fishery performance in lieu of soak time and when GKC harvest cannot be determined if the effort was targeted or bycatch due to the concurrent GKC and Tanner crab fisheries. 
+
+This harvest strategy may be amended in future iterations as more information and tools becomes avaible, drivers external to the management of the fishery that increase the risk to crab stocks, or the harvest strategy is not working effectively all of which should be conducted collaboratively with industry. This harvest strategy provides a first step in increasing transparency regarding management metrics utilized in and post season and it is recommened that this harvest strategy is further developed through the use of a management strategy evaluation (MSE) to provided robustness and stability. 
 
 # Area Reports
 
