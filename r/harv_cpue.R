@@ -26,27 +26,81 @@ read.csv("data/fishery/gkc_logbook.csv") %>%
   clean_names() -> gkc_log
 # here or in readme need how to pull this data **FIX**
 
+
+gkc_fish %>% 
+  filter(!is.na(catch_date), !is.na(sell_date), !is.na(pounds)) %>% 
+  mutate(mgt_area = ifelse(i_fishery == "East Central GKC", "East Central",
+                           ifelse(i_fishery == "Icy Strait GKC", "Icy Strait", 
+                                  ifelse(i_fishery == "Lower Chatham Strait GKC", "Lower Chatham",
+                                         ifelse(i_fishery == "Mid-Chatham Strait GKC", "Mid-Chatham",
+                                                ifelse(i_fishery == "North Stephens Passage GKC", "North Stephens Passage",
+                                                       ifelse(i_fishery == "Northern GKC", "Northern",
+                                                              ifelse(i_fishery == "Southern GKC", "Southern", "Misc")))))))) -> gkc_fish
+
+
 # Annual harvest regionwide and by mgt area ####
 #remove NAs and misc. i_fishery areas
+
 gkc_fish %>%
-  group_by(year, i_fishery) %>%
+  group_by(year, season_ref, mgt_area) %>%
   na_if("") %>%
   summarize(total_lbs = sum(pounds)) -> harvest
 
+factor(harvest$season_ref, levels = c("68-69", "69-70", "70-71", "71-72", "72-73", "73-74", "74-75", "75-76",
+                                         "76-77", "77-78", "78-79", "79-80", "80-81", "81-82", "82-83", "83-84", "84-85", "85-86", "86-87",
+                                         "87-88", "88-89", "89-90", "90-91", "91-92", "92-93", "93-94", "94-95", "95-96", "96-97", "97-98",
+                                         "98-99", "99-00", "00-01", "01-02", "02-03", "03-04", "04-05", "05-06", "06-07", "07-08", "08-09",
+                                         "09-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18", "18-19", "19-20")) -> harvest$season_ref
+
 harvest %>%
-  filter(year < 2020, 
-         i_fishery != "Misc. Golden King Crab" & i_fishery != "") %>%
-ggplot(aes(year, total_lbs)) + geom_col(aes(fill = i_fishery), color = "white") +
-  ylab("Harvest (lbs)") + xlab("Year") +
-  scale_x_continuous(breaks = seq(0, cur_yr+1, 5)) +
+  filter(season_ref != "19-20", 
+         mgt_area != "Misc" & mgt_area != "") %>%
+ggplot(aes(season_ref, total_lbs)) + geom_col(aes(fill = mgt_area), color = "white") +
+  ylab("Harvest (lbs)") + xlab("Season") +
+  #scale_x_continuous(breaks = seq(0, cur_yr+1, 5)) +
   scale_y_continuous(label = scales::comma, breaks = seq(0, 2000000, 100000)) + 
   theme(legend.title = element_blank(), legend.position = c(0.75, 0.75)) +
-  #scale_fill_viridis_d() +
-  scale_fill_grey() +
-  labs(caption = "*Closures: East Central in 2018 & Northern in 2019")
+  scale_fill_viridis_d() +
+  #scale_fill_grey() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  #labs(caption = "*Closures: East Central in 2018 & Northern in 2019")
 
 
-ggsave(paste0(fig_path, '/gkc_fishery_harvest.png'), width = 10, height = 8, units = "in", dpi = 200)
+ggsave(paste0(fig_path, '/gkc_fishery_harvest_season.png'), width = 10, height = 8, units = "in", dpi = 400)
+
+#non-confidential version of harvest data-----
+gkc_fish %>%
+  group_by(year, season_ref, mgt_area) %>%
+  summarise(no_permits = n_distinct(cfec_no), 
+            total_lbs = sum(pounds)) %>%
+  filter(no_permits >= 3) %>%
+  na_if("") -> harv_nonconf
+
+
+factor(harv_nonconf$season_ref, levels = c("68-69", "69-70", "70-71", "71-72", "72-73", "73-74", "74-75", "75-76",
+                                      "76-77", "77-78", "78-79", "79-80", "80-81", "81-82", "82-83", "83-84", "84-85", "85-86", "86-87",
+                                      "87-88", "88-89", "89-90", "90-91", "91-92", "92-93", "93-94", "94-95", "95-96", "96-97", "97-98",
+                                      "98-99", "99-00", "00-01", "01-02", "02-03", "03-04", "04-05", "05-06", "06-07", "07-08", "08-09",
+                                      "09-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18", "18-19", "19-20")) -> harv_nonconf$season_ref
+
+
+harv_nonconf %>%
+  filter(season_ref != "19-20", 
+         mgt_area != "Misc" & mgt_area != "") %>%
+  ggplot(aes(season_ref, total_lbs)) + geom_col(aes(fill = mgt_area)) +
+  ylab("Harvest (lbs)") + xlab("Season") +
+  #scale_x_continuous(breaks = seq(0, cur_yr+1, 5)) +
+  scale_y_continuous(label = scales::comma, breaks = seq(0, 2000000, 100000)) + 
+  theme(legend.title = element_blank(), legend.position = c(0.75, 0.75)) +
+  scale_fill_viridis_d() +
+  #scale_fill_grey() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        legend.position = c(0.8, 0.85),
+        axis.title = element_text(face = "bold"))
+#labs(caption = "*Closures: East Central in 2018 & Northern in 2019")
+
+ggsave(paste0(fig_path, '/gkc_fishery_harvest_nonconf_season.png'), 
+       width = 10, height = 8, units = "in", dpi = 600)
 
 ggplot(harvest, aes(year, total_lbs)) + geom_bar(stat = "identity") +
   ylab("Harvest (lbs)") + xlab("Year") +
@@ -221,9 +275,9 @@ gkc_log %>% filter(target_species_code == 923, !is.na(target_species_retained),
                     ifelse(i_fishery == "Northern GKC", "Northern",
                     ifelse(i_fishery == "Southern GKC", "Southern", "Misc"))))))),
          cpue = target_species_retained / number_pots_lifted) %>% 
-  select(YEAR, mgt_area, cpue, number_pots_lifted) %>%
+  select(year, mgt_area, cpue, number_pots_lifted) %>%
   filter(!is.na(cpue), mgt_area != "Misc") %>% #have to add this here since 0 pots lifts for 0 crab is included here
-  group_by(YEAR, mgt_area) %>%
+  group_by(year, mgt_area) %>%
   summarise(sd = sd(cpue),
             cpue = mean(cpue),
             n = n(),
