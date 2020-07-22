@@ -1,0 +1,677 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
+\usepackage[unicode=true]{hyperref}
+\hypersetup{
+            pdftitle={Southeast Alaska Golden King Crab Harvest Strategy},
+            pdfauthor={Andrew Olson and Katie Palof},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+\usepackage{eso-pic,graphicx,transparent}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+
+\title{Southeast Alaska Golden King Crab Harvest Strategy}
+\author{Andrew Olson and Katie Palof}
+\date{07/21/2020}
+
+\begin{document}
+\maketitle
+
+\AddToShipoutPictureFG{
+  \AtPageCenter{% or \AtTextCenter
+    \makebox[0pt]{\rotatebox[origin=c]{45}{%
+      \scalebox{5}{\texttransparent{0.3}{DRAFT}}%
+    }}
+  }
+}
+
+\section*{Fishery Overview}\label{fishery-overview}
+\addcontentsline{toc}{section}{Fishery Overview}
+
+The Alaska Department of Fish and Game (Department) GKC fishery is a
+data-limited fishery that is managed in Southeast using a 3-S management
+system that is composed of a minimum legal size of 7.0 in/177.8 mm
+carapace width (CW), male-only, and a season from February--November.
+The majority of the harvest occurs in the commercial sector where the
+fishery extends across 7 management areas (Northern, Icy Strait, North
+Stephens Passage, East Central, Mid and Lower Chatham Strait, and
+Southern). Annually the Department evaluates stock status and
+establishes guideline harvest levels (GHLs) for each management area
+using fishery dependent data (Olson, Siddon, and Eckert 2018, Stratman
+et al. (2017)).
+
+The GKC fishery rapidly developed after the collapse of the red and blue
+king crab fisheries in the early 1980s with harvest subsequently harvest
+peaking in the late 1980s and early 2010s while also experiencing a
+period of collapse in the 1990s. Harvest has been steadily declining
+since 2011 and many of the management areas are currently in a collapsed
+state (Olson, Siddon, and Eckert 2018, Stratman et al. (2017), Stratman
+(2020)).
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-1}Golden king crab guideline harvest ranges for Registration Area A [5 AAC 34.115]}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|l}
+\hline
+\rowcolor{gray}  \textcolor{white}{\textbf{Management.Area}} & \textcolor{white}{\textbf{Guideline.Harvest.Range..lbs.}}\\
+\hline
+\rowcolor{gray!6}  Northern & 0--175,000\\
+\hline
+Icy Strait & 0--75,000\\
+\hline
+\rowcolor{gray!6}  North Stephens Passage & 0--25,000\\
+\hline
+East Central & 0--300,000\\
+\hline
+\rowcolor{gray!6}  Mid-Chatham Strait & 0--150,000\\
+\hline
+Lower Chatham Strait & 0--50,000\\
+\hline
+\rowcolor{gray!6}  Southern & 0--25,000\\
+\hline
+\end{tabular}}
+\end{table}
+
+\subsection*{Biology}\label{biology}
+\addcontentsline{toc}{subsection}{Biology}
+
+Golden king crab are relatively long-lived slow growing species that
+have an asychronous 20-month reproductive cycle, morphometric maturity
+at approximately 8 years of age, lecithtrophic larvae that remain at
+depth,and exhibit spatial variability in size at maturity across the
+North Pacific and among the 7 management areas within Southeast Alaska
+where size at matruity increases with increases in latitude. Certain
+aspects of this species' life history are well documented whereas other
+critical compenents such as, growth rates, age at maturity, longevity,
+etc.) are unknown (Hebert et al. 2008, Christopher Long and Van Sant
+(2016), Nizyaev (2005), Olson, Siddon, and Eckert (2018), Sloan (1985),
+Somerton and Otto (1986)).
+
+\subsection*{Proposed plan}\label{proposed-plan}
+\addcontentsline{toc}{subsection}{Proposed plan}
+
+Metrics to assess stock health and fishery performance. In-season
+fishery perfomance data will be reviewed and analyzed bi-weekly to
+inform harvest strategy decision rules in-season and determine GHLs
+post-season.
+
+\subsubsection*{Fishery Objective}\label{fishery-objective}
+\addcontentsline{toc}{subsubsection}{Fishery Objective}
+
+The primary objective of this harvest strategy is to rebuild the
+Southeast Alaska GKC resource to sustainable levels while minimizing and
+mitigating ecological risks from fishing related activites, maximizing
+profitability for the commercial sector, monitoring social and economic
+benefits of the fishery to the community, maintain various size and age
+compositions of stocks in order to maintain longterm reproductive
+viability, minimize handling and unnecessary mortality of non-legal GKC
+and non-target species, and reducing dependency on annual recruitment.
+These objectives remain consistent with Board of Fisheries' Policy on
+King and Tanner Crab Resource Management (90-04-FB, March 23, 1990).
+
+\subsection*{Performance Indicators}\label{performance-indicators}
+\addcontentsline{toc}{subsection}{Performance Indicators}
+
+The primary performance indicator used in this harvest strategy is
+commercial catch rate defined as logbook catch per unit of effort (CPUE)
+calculated from the CPUE at each logbook entry and averaged for the
+entire season. Commercial catch rate is the number of of legal sized
+male golden king crab per pot lift. Future iterations will incorporate
+soak time component in order to standardize CPUE.
+
+The secondary perfomance indicator used in this harvest strategy is
+commercial catch rate obtained from fishticket where CPUE is calculated
+from each harvest landing for the entire season divided by the
+difference of the first and last catch date which is defined as active
+fishing season. This secondary CPUE indicator is defined as pounds per
+pot day. This is a similar metric as lbs/boat/day and provides
+performance information that will be sued when GKC cannot be determined
+if they were harvested as bycatch or were targeted during the concurrent
+Tanner crab fishery.
+
+Supplementary biological information by analyzing recruit class
+distributions of GKC sampled during commercial landings. Size is defined
+as the carapace length (CL) mm measurement and recruit class is used as
+an indicator of shell age and is defined as recruit (new shell) and
+post-recruit (old shell).
+
+\subsection*{Reference Points}\label{reference-points}
+\addcontentsline{toc}{subsection}{Reference Points}
+
+The primary indicator Target Reference Point (RP\textsubscript{targ}) is
+set at the average logbook CPUE for the years 2000--2017 as these years
+capture when logbooks were required for the fishery in 2000 and
+represents contrasting data (highs and lows) in fishery performance. The
+Trigger Reference Point (RP\textsubscript{trig}) is set at 75\% of the
+RP\textsubscript{targ} and the Limit Reference Point
+(RP\textsubscript{lim}) is set at 50\% of the RP\textsubscript{targ}.
+
+\subsection*{Monitoring Strategy}\label{monitoring-strategy}
+\addcontentsline{toc}{subsection}{Monitoring Strategy}
+
+\subsubsection*{Decision Rules}\label{decision-rules}
+\addcontentsline{toc}{subsubsection}{Decision Rules}
+
+The primary performance indicator (logbook CPUE rounded to the nearest
+tenth) being the most readily available estimate of fishery performance
+the folowing decision rules will be considered to guide in-season and
+post-season management decions.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{In-Season}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Fishery performance will be monitored bi-weekly and/or with a
+    minimum of 500 pot lifts being required before taking management
+    action whichever is the least restrictive under the following
+    guidelines:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      If logbook CPUE is \(\geq\) RP\textsubscript{targ} manage to GHL
+      in-season;
+    \item
+      If logbook CPUE is \(\geq\) RP\textsubscript{trig} but \(<\)
+      RP\textsubscript{targ} manage to GHL in-season and monitor
+      closely;
+    \item
+      If logbook CPUE is \(\geq\) RP\textsubscript{lim} and \(<\)
+      RP\textsubscript{trig} and less than the previous year CPUE close
+      fishery early inseason, decrease GHL and personal use fishery bag
+      and possession limits the following season;
+    \item
+      If logbook CPUE is \(<\) RP\textsubscript{lim} close fishery early
+      inseason and subject to multiple year closure (1 year min.) for
+      commercial and personal use fisheries the following season upon
+      post-season review.
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+Due to the GKC and Tanner crab fishery occurring concurrently, permit
+holders must indicate when they are targeting GKC, otherwise this can
+bias CPUE low and trigger the aforementioned management actions.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Post-Season }
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Increase in the GHL}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      If the most recent CPUE is \(>\) than the previous season and is
+      \(>\) RP\textsubscript{targ} the GHL will increase up to a maximum
+      of 20\% and not less than 10\% the following season;
+    \item
+      If the most recent CPUE is \(>\) than the previous season and
+      \(\leq\) RP\textsubscript{targ} and \(>\) RP\textsubscript{trig}
+      the GHL will remain the same or increase up to a maximum of 10\%
+      the following season;
+    \item
+      If the most recent CPUE is \(>\) than the previous season and is
+      \(\leq\) RP\textsubscript{trig} and \(>\) RP\textsubscript{limit}
+      the GHL will will remain the same or increase up to a maximum of
+      5\% the following season;
+    \item
+      New GHLs may not exceed respective managent area GHRs;
+    \end{itemize}
+  \item
+    \textbf{Decrease in the GHL}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \textbf{If the fishery closed short of a GHL in-season due to poor
+      fishery performance and/or the most recent CPUE is \(<\) than the
+      previous season the GHL will be decreased based on the following
+      conditions:}
+    \item
+      If CPUE is \(<\) the previous season and \(>\)
+      RP\textsubscript{targ} the GHL will be reduced up to a maximum of
+      20\% the following season;
+    \item
+      If CPUE is \(<\) than the previous season and is \(>\)
+      RP\textsubscript{trig} and \(\leq\) RP\textsubscript{targ} the GHL
+      will be reduced up to a maximum of 40\% the following season;
+    \item
+      If the fishery closed short in-season due to poor fishery
+      performance and the most recent CPUE is \(<\) than the previous
+      season and \(>\) RP\textsubscript{lim} than the previous season
+      then the GHL decrease the following season will be within 20\% of
+      the total harvest at the time of closure during the most recent
+      season and not less than 5,000 lbs
+    \end{itemize}
+  \item
+    \textbf{Closure and Re-opening}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      The GHL will be equal to zero if logbook CPUE is \(<\) the
+      RP\textsubscript{lim} warranting an area closure for a minimum of
+      1 year and a maximum of 3 years.
+    \item
+      Upon re-opening an area after a closure the GHL will be equal to
+      the harvest at the time of closure rounded to the nearest 1,000
+      lbs or 5,000 lbs whichever is greatest
+    \end{itemize}
+  \item
+    \textbf{No change in GHL}
+
+    \begin{itemize}
+    \tightlist
+    \item
+      None of the above conditions are met.
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{Review of GHLs or Decision Rules}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    If the the most recent CPUE is 40\% or more below the previous
+    year's index, determine why decline occured and whether further
+    management intervention is required to reduce the risk of localized
+    depeletion; or
+  \item
+    If and when new information becomes available indicating that the
+    assessment and GHL setting decision rules are not consistent with
+    the Board's policy in managing the GKC resource sustainably, the
+    decision rules must be reviewed and if apporpirate the reference
+    points must be adjusted.
+  \end{itemize}
+\end{itemize}
+
+\subsubsection*{Other Considerations for Management and Future
+Recommendations}\label{other-considerations-for-management-and-future-recommendations}
+\addcontentsline{toc}{subsubsection}{Other Considerations for Management
+and Future Recommendations}
+
+Logbook CPUE currently lacks a soak time data field and cannot be
+standardized for comparsion across years. Soak time was introduced as a
+reporting field in logbooks for the 2020 fishing season and will be used
+in informing this harvest strategy in future iterations. In the interim
+active fishing season may be looked at as a secondary performance
+indicator to assess fishery performance in lieu of soak time and when
+GKC harvest cannot be determined if the effort was targeted or bycatch
+due to the concurrent GKC and Tanner crab fisheries.
+
+This harvest strategy may be amended in future iterations as more
+information and tools becomes avaible, drivers external to the
+management of the fishery that increase the risk to crab stocks, or the
+harvest strategy is not working effectively all of which should be
+conducted collaboratively with industry. This harvest strategy provides
+a first step in increasing transparency regarding management metrics
+utilized in and post season and it is recommened that this harvest
+strategy is further developed through the use of a management strategy
+evaluation (MSE) to provided robustness and stability.
+
+\subsection{References}\label{references}
+
+\hypertarget{refs}{}
+\hypertarget{ref-long2016}{}
+Christopher Long, W, and Scott B Van Sant. 2016. ``Embryo Development in
+Golden King Crab (Lithodes Aequispinus).'' \emph{Fishery Bulletin} 114
+(1).
+
+\hypertarget{ref-hebert2008}{}
+Hebert, Kyle, W Davidson, Joe Stratman, Karla Bush, Gretchen Bishop,
+Chris Siddon, Julie Bednarski, Adam Messmer, and Kellii Wood. 2008.
+``2009 Report to the Alaska Board of Fisheries on Region 1 Shrimp, Crab,
+and Scallop Fisheries.'' \emph{Alaska Department of Fish and Game,
+Fishery Management Report}, no. 08-62. Anchorage.
+
+\hypertarget{ref-nizyaev2005}{}
+Nizyaev, SA. 2005. ``Biology of Golden King Crab (Lithodes Aequispinus
+Benedict) Along the Islands of Kuril Ridge.'' \emph{Sakhalin Institute
+of Fishery and Oceanography Publication, Yuzhno-Sakhalinsk (in
+Russian)}.
+
+\hypertarget{ref-olson2018spatial}{}
+Olson, AP, CE Siddon, and GL Eckert. 2018. ``Spatial Variability in Size
+at Maturity of Golden King Crab (Lithodes Aequispinus) and Implications
+for Fisheries Management.'' \emph{Royal Society Open Science} 5 (3). The
+Royal Society Publishing: 171802.
+
+\hypertarget{ref-sloan1985}{}
+Sloan, NA. 1985. ``Life History Characteristics of Fjord-Dwelling Golden
+King Crabs Lithodes Aequispina.'' \emph{Marine Ecology Progress Series.
+Oldendorf} 22 (3): 219--28.
+
+\hypertarget{ref-somerton1986}{}
+Somerton, David A, and RS Otto. 1986. ``Distribution and Reproductive
+Biology of the Golden King Crab, Lithodes Aequispina, in the Eastern
+Bering Sea.'' \emph{Fishery Bulletin} 84 (3). The Service: 571--84.
+
+\hypertarget{ref-stratman2020}{}
+Stratman, Joe. 2020. ``2019 Golden King Crab Stock Status and Management
+Plan for the 2019/2020 Season.'' \emph{Alaska Department of Fish and
+Game, Regional Information Report}, no. 1J20-11. Anchorage.
+
+\hypertarget{ref-stratman2017}{}
+Stratman, Joe, Tessa Bergmann, Kellii Wood, and Adam Messmer. 2017.
+``Annual Management Report for the 2016/2017 Southeast Alaska/Yakutat
+Golden King Crab Fisheries.'' \emph{Alaska Department of Fish and Game,
+Fishery Management Report}, no. 17-57. Anchorage.
+
+\section{Area Reports}\label{area-reports}
+
+\subsection{Northern}\label{northern}
+
+\subsubsection{Season Overview}\label{season-overview}
+
+The Northern management area was closed for the 2020 season.
+
+\begin{figure}[H]
+\includegraphics[width=500px]{../figures/2020/Northern_harvest} \caption{Commercial fishery harvest from the Northern management area. Dots represents the GHL in a given year (2001–Present)}\label{fig:unnamed-chunk-2}
+\end{figure}
+
+\subsubsection{Reference Points}\label{reference-points-1}
+
+The primary indicator Target Reference Point (RP\textsubscript{targ}) is
+set at the average logbook CPUE (2.7) for the years 2000--2017 as these
+years capture when logbooks were required for the fishery in 2000 and
+represents contrasting data (highs and lows) in fishery performance. The
+Trigger Regerence Point (RP\textsubscript{trig}) is set at 75\% of the
+RP\textsubscript{targ} (2.0) and the Limit Reference Point
+(RP\textsubscript{lim}) is set at 50\% of the RP\textsubscript{targ}
+(1.3).
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-3}Golden King Crab logbook catch per unit effort (CPUE) reference points}
+\centering
+\begin{tabular}[t]{l|l|l}
+\hline
+\textcolor{black}{\textbf{Indicators}} & \textcolor{black}{\textbf{Reference.Point}} & \textcolor{black}{\textbf{Description}}\\
+\hline
+\rowcolor{gray!6}  \rowcolor{olive}  \textcolor{white}{\textbf{Target Reference Point}} & \textcolor{white}{\textbf{2.7 crab/pot}} & \textcolor{white}{\textbf{Average Commercial Logbook CPUE from 2000-2017}}\\
+\hline
+\rowcolor{orange}  \textcolor{white}{\textbf{Trigger Reference Point}} & \textcolor{white}{\textbf{2.0 crab/pot}} & \textcolor{white}{\textbf{75\% of the Target Reference Point}}\\
+\hline
+\rowcolor{gray!6}  \rowcolor{red}  \textcolor{white}{\textbf{Limit Reference Point}} & \textcolor{white}{\textbf{1.3 crab/pot}} & \textcolor{white}{\textbf{50\% of the Target Reference Point}}\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\includegraphics[width=500px]{../figures/2020/Northern logbook_cpue} \caption{Northern golden king crab reference points (Target, Trigger, and Limit) utilizing logbook CPUE. Dotted line represents a 3-year rolling average}\label{fig:unnamed-chunk-4}
+\end{figure}
+
+\subsection{Icy Strait}\label{icy-strait}
+
+\subsubsection{Season Overview}\label{season-overview-1}
+
+\begin{figure}[H]
+\includegraphics[width=500px]{../figures/2020/Icy Strait_harvest} \caption{Commercial fishery harvest from the Icy Strait management area. Dots represents the GHL in a given year (2001–Present)}\label{fig:unnamed-chunk-5}
+\end{figure}
+
+\subsubsection{Reference Points}\label{reference-points-2}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-6}Golden King Crab logbook catch per unit effort (CPUE) reference points}
+\centering
+\begin{tabular}[t]{l|l|l}
+\hline
+\textcolor{black}{\textbf{Indicators}} & \textcolor{black}{\textbf{Reference.Point}} & \textcolor{black}{\textbf{Description}}\\
+\hline
+\rowcolor{gray!6}  \rowcolor{olive}  \textcolor{white}{\textbf{Target Reference Point}} & \textcolor{white}{\textbf{2.2 crab/pot}} & \textcolor{white}{\textbf{Average Commercial Logbook CPUE from 2000-2017}}\\
+\hline
+\rowcolor{orange}  \textcolor{white}{\textbf{Trigger Reference Point}} & \textcolor{white}{\textbf{1.6 crab/pot}} & \textcolor{white}{\textbf{75\% of the Target Reference Point}}\\
+\hline
+\rowcolor{gray!6}  \rowcolor{red}  \textcolor{white}{\textbf{Limit Reference Point}} & \textcolor{white}{\textbf{1.1 crab/pot}} & \textcolor{white}{\textbf{50\% of the Target Reference Point}}\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\includegraphics[width=500px]{../figures/2020/Icy Strait logbook_cpue} \caption{Icy Strait golden king crab reference points (Target, Trigger, and Limit) utilizing logbook CPUE. Dotted line represents a 3-year rolling average}\label{fig:unnamed-chunk-7}
+\end{figure}
+
+\subsection{North Stephens Passage}\label{north-stephens-passage}
+
+\subsubsection{Season Overview}\label{season-overview-2}
+
+\begin{figure}[H]
+\includegraphics[width=500px]{../figures/2020/North Stephens Passage_harvest} \caption{Commercial fishery harvest from the North Stephens Passage management area. Dots represents the GHL in a given year (2001–Present)}\label{fig:unnamed-chunk-8}
+\end{figure}
+
+\subsubsection{Reference Points}\label{reference-points-3}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-9}Golden King Crab logbook catch per unit effort (CPUE) reference points}
+\centering
+\begin{tabular}[t]{l|l|l}
+\hline
+\textcolor{black}{\textbf{Indicators}} & \textcolor{black}{\textbf{Reference.Point}} & \textcolor{black}{\textbf{Description}}\\
+\hline
+\rowcolor{gray!6}  \rowcolor{olive}  \textcolor{white}{\textbf{Target Reference Point}} & \textcolor{white}{\textbf{1.6 crab/pot}} & \textcolor{white}{\textbf{Average Commercial Logbook CPUE from 2001-2017}}\\
+\hline
+\rowcolor{orange}  \textcolor{white}{\textbf{Trigger Reference Point}} & \textcolor{white}{\textbf{1.2 crab/pot}} & \textcolor{white}{\textbf{75\% of the Target Reference Point}}\\
+\hline
+\rowcolor{gray!6}  \rowcolor{red}  \textcolor{white}{\textbf{Limit Reference Point}} & \textcolor{white}{\textbf{0.8 crab/pot}} & \textcolor{white}{\textbf{50\% of the Target Reference Point}}\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\includegraphics[width=500px]{../figures/2020/North Stephens Passage logbook_cpue} \caption{North Stephens Passage golden king crab reference points (Target, Trigger, and Limit) utilizing logbook CPUE. Dotted line represents a 3-year rolling average}\label{fig:unnamed-chunk-10}
+\end{figure}
+
+\subsection{East Central}\label{east-central}
+
+\subsubsection{Season Overview}\label{season-overview-3}
+
+The East Central management area was closed for the 2020 season.
+
+\begin{figure}[H]
+\includegraphics[width=500px]{../figures/2020/East Central_harvest} \caption{Commercial fishery harvest from the East Central management area. Dots represents the GHL in a given year (2001–Present)}\label{fig:unnamed-chunk-11}
+\end{figure}
+
+\subsubsection{Reference Points}\label{reference-points-4}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-12}Golden King Crab logbook catch per unit effort (CPUE) reference points}
+\centering
+\begin{tabular}[t]{l|l|l}
+\hline
+\textcolor{black}{\textbf{Indicators}} & \textcolor{black}{\textbf{Reference.Point}} & \textcolor{black}{\textbf{Description}}\\
+\hline
+\rowcolor{gray!6}  \rowcolor{olive}  \textcolor{white}{\textbf{Target Reference Point}} & \textcolor{white}{\textbf{3.4 crab/pot}} & \textcolor{white}{\textbf{Average Commercial Logbook CPUE from 2000-2017}}\\
+\hline
+\rowcolor{orange}  \textcolor{white}{\textbf{Trigger Reference Point}} & \textcolor{white}{\textbf{2.5 crab/pot}} & \textcolor{white}{\textbf{75\% of the Target Reference Point}}\\
+\hline
+\rowcolor{gray!6}  \rowcolor{red}  \textcolor{white}{\textbf{Limit Reference Point}} & \textcolor{white}{\textbf{1.7 crab/pot}} & \textcolor{white}{\textbf{50\% of the Target Reference Point}}\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\includegraphics[width=500px]{../figures/2020/East Central logbook_cpue} \caption{East Central golden king crab reference points (Target, Trigger, and Limit) utilizing logbook CPUE. Dotted line represents a 3-year rolling average}\label{fig:unnamed-chunk-13}
+\end{figure}
+
+\subsection{Mid-Chatham Strait}\label{mid-chatham-strait}
+
+\subsubsection{Season Overview}\label{season-overview-4}
+
+The Mid-Chatham Strait management area was closed for the 2020 season.
+
+\begin{figure}[H]
+\includegraphics[width=500px]{../figures/2020/Mid-Chatham_harvest} \caption{Commercial fishery harvest from the Mid-Chatham Strait management area. Dots represents the GHL in a given year (2001–Present)}\label{fig:unnamed-chunk-14}
+\end{figure}
+
+\subsubsection{Reference Points}\label{reference-points-5}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-15}Golden King Crab logbook catch per unit effort (CPUE) reference points}
+\centering
+\begin{tabular}[t]{l|l|l}
+\hline
+\textcolor{black}{\textbf{Indicators}} & \textcolor{black}{\textbf{Reference.Point}} & \textcolor{black}{\textbf{Description}}\\
+\hline
+\rowcolor{gray!6}  \rowcolor{olive}  \textcolor{white}{\textbf{Target Reference Point}} & \textcolor{white}{\textbf{3.4 crab/pot}} & \textcolor{white}{\textbf{Average Commercial Logbook CPUE from 2000-2017}}\\
+\hline
+\rowcolor{orange}  \textcolor{white}{\textbf{Trigger Reference Point}} & \textcolor{white}{\textbf{2.5 crab/pot}} & \textcolor{white}{\textbf{75\% of the Target Reference Point}}\\
+\hline
+\rowcolor{gray!6}  \rowcolor{red}  \textcolor{white}{\textbf{Limit Reference Point}} & \textcolor{white}{\textbf{1.7 crab/pot}} & \textcolor{white}{\textbf{50\% of the Target Reference Point}}\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\includegraphics[width=500px]{../figures/2020/Mid-Chatham logbook_cpue} \caption{Mid-Chatham Strait golden king crab reference points (Target, Trigger, and Limit) utilizing logbook CPUE. Dotted line represents a 3-year rolling average}\label{fig:unnamed-chunk-16}
+\end{figure}
+
+\subsection{Lower Chatham Strait}\label{lower-chatham-strait}
+
+\subsubsection{Season Overview}\label{season-overview-5}
+
+The Lower Chatham Strait management area was closed for the 2020 season.
+
+\begin{figure}[H]
+\includegraphics[width=500px]{../figures/2020/Lower Chatham_harvest} \caption{Commercial fishery harvest from the Lower Chatham Strait management area. Dots represents the GHL in a given year (2001–Present)}\label{fig:unnamed-chunk-17}
+\end{figure}
+
+\subsubsection{Reference Points}\label{reference-points-6}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-18}Golden King Crab logbook catch per unit effort (CPUE) reference points}
+\centering
+\begin{tabular}[t]{l|l|l}
+\hline
+\textcolor{black}{\textbf{Indicators}} & \textcolor{black}{\textbf{Reference.Point}} & \textcolor{black}{\textbf{Description}}\\
+\hline
+\rowcolor{gray!6}  \rowcolor{olive}  \textcolor{white}{\textbf{Target Reference Point}} & \textcolor{white}{\textbf{3.2 crab/pot}} & \textcolor{white}{\textbf{Average Commercial Logbook CPUE from 2000-2012}}\\
+\hline
+\rowcolor{orange}  \textcolor{white}{\textbf{Trigger Reference Point}} & \textcolor{white}{\textbf{2.4 crab/pot}} & \textcolor{white}{\textbf{75\% of the Target Reference Point}}\\
+\hline
+\rowcolor{gray!6}  \rowcolor{red}  \textcolor{white}{\textbf{Limit Reference Point}} & \textcolor{white}{\textbf{1.6 crab/pot}} & \textcolor{white}{\textbf{50\% of the Target Reference Point}}\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\includegraphics[width=500px]{../figures/2020/Lower Chatham logbook_cpue} \caption{Lower Chatham Strait golden king crab reference points (Target, Trigger, and Limit) utilizing logbook CPUE. Dotted line represents a 3-year rolling average}\label{fig:unnamed-chunk-19}
+\end{figure}
+
+\subsection{Southern}\label{southern}
+
+\subsubsection{Season Overview}\label{season-overview-6}
+
+\begin{figure}[H]
+\includegraphics[width=500px]{../figures/2020/Southern_harvest} \caption{Commercial fishery harvest from the Southern management area. Dots represents the GHL in a given year (2001–Present)}\label{fig:unnamed-chunk-20}
+\end{figure}
+
+\subsubsection{Reference Points}\label{reference-points-7}
+
+\begin{table}[!h]
+
+\caption{\label{tab:unnamed-chunk-21}Golden King Crab logbook catch per unit effort (CPUE) reference points}
+\centering
+\begin{tabular}[t]{l|l|l}
+\hline
+\textcolor{black}{\textbf{Indicators}} & \textcolor{black}{\textbf{Reference.Point}} & \textcolor{black}{\textbf{Description}}\\
+\hline
+\rowcolor{gray!6}  \rowcolor{olive}  \textcolor{white}{\textbf{Target Reference Point}} & \textcolor{white}{\textbf{4.1 crab/pot}} & \textcolor{white}{\textbf{Average Commercial Logbook CPUE from 2000-2017}}\\
+\hline
+\rowcolor{orange}  \textcolor{white}{\textbf{Trigger Reference Point}} & \textcolor{white}{\textbf{3.1 crab/pot}} & \textcolor{white}{\textbf{75\% of the Target Reference Point}}\\
+\hline
+\rowcolor{gray!6}  \rowcolor{red}  \textcolor{white}{\textbf{Limit Reference Point}} & \textcolor{white}{\textbf{2.0 crab/pot}} & \textcolor{white}{\textbf{50\% of the Target Reference Point}}\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{figure}[H]
+\includegraphics[width=500px]{../figures/2020/Southern logbook_cpue} \caption{Southern golden king crab reference points (Target, Trigger, and Limit) utilizing logbook CPUE. Dotted line represents a 3-year rolling average}\label{fig:unnamed-chunk-22}
+\end{figure}
+
+\end{document}

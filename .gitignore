@@ -9,7 +9,8 @@
 *output
 *.pdf
 *shape_files
-*text
+*.html
+*.tex
  
 #Survey data no uploaded due to file size
 *survey
