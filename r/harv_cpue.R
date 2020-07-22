@@ -109,9 +109,9 @@ ggplot(harvest, aes(year, total_lbs)) + geom_bar(stat = "identity") +
 
 
 #mgt_area GHLs compared to harvest
-ec_ghl <- data.frame(YEAR = c(2010:2019), 
+ec_ghl <- data.frame(year = c(2010:2019), 
                      ghl = c(260000, 260000, 260000, 285000, 200000, 115000, 
-                             30000, 15000, NA, 15000))
+                             30000, 15000, 0, 15000))
 
 gkc_fish %>% 
   filter(year >= 2010, i_fishery == "East Central GKC", !is.na(pounds)) %>%
@@ -122,7 +122,7 @@ gkc_fish %>%
   drop_na() %>%
   ggplot(aes(year, total_harvest)) +
   geom_bar(stat = "identity") +
-  geom_point(aes(y = ghl), size = 2) +
+  geom_point(aes(y = ghl), linetype = "dashed", size = 2) +
   ylab("Harvest (lbs)") +
   xlab("Year") +
   scale_x_continuous(breaks = seq(0, 2020, 2)) +
@@ -309,6 +309,31 @@ ggplot(cpue_log, aes(year, cpue)) +
 ggsave(paste0(fig_path, '/gkc_logbook_cpue.png'), width = 10, height = 8, units = "in", dpi = 200)
 
 head(cpue_log)
+
+#### Cumulative Avg Logbook CPUE ------
+gkc_log %>% filter(target_species_code == 923, !is.na(target_species_retained),
+                   !is.na(number_pots_lifted), !is.na(i_fishery)) %>%
+  mutate(mgt_area = ifelse(i_fishery == "East Central GKC", "East Central",
+                           ifelse(i_fishery == "Icy Strait GKC", "Icy Strait", 
+                                  ifelse(i_fishery == "Lower Chatham Strait GKC", "Lower Chatham",
+                                         ifelse(i_fishery == "Mid-Chatham Strait GKC", "Mid-Chatham",
+                                                ifelse(i_fishery == "North Stephens Passage GKC", "North Stephens Passage",
+                                                       ifelse(i_fishery == "Northern GKC", "Northern",
+                                                              ifelse(i_fishery == "Southern GKC", "Southern", "Misc"))))))),
+         cpue = target_species_retained / number_pots_lifted,
+         mdy = mdy(effort_date),
+         doy = yday(mdy),
+         cumcpue = cummean(cpue)) %>%
+  select(year, mgt_area, doy, cpue, cumcpue) %>%
+  filter(!is.na(cpue), mgt_area != "Misc") %>% #have to add this here since 0 pots lifts for 0 crab is included here
+  arrange(mgt_area, year, doy) -> daily_cpue
+
+daily_cpue %>%
+  filter(mgt_area == "East Central", year >= 2012) %>%
+  ggplot(aes(doy, cumcpue)) +
+  geom_line () +
+  geom_point() 
+
 
 
 # lbs per pot day -----------
