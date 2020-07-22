@@ -84,12 +84,12 @@ harv %>%
 #harvest by mgt area figures -----
 #need to add GHLs to figures
 hvst_area("Northern", harv_ghl, cur_yr)
-hvst_area("East Central", harv, cur_yr)
-hvst_area("Icy Strait", harv, cur_yr)
-hvst_area("Lower Chatham", harv, cur_yr)
-hvst_area("Mid-Chatham", harv, cur_yr)
-hvst_area("Southern", harv, cur_yr)
-hvst_area("North Stephens Passage", harv, cur_yr)
+hvst_area("East Central", harv_ghl, cur_yr)
+hvst_area("Icy Strait", harv_ghl, cur_yr)
+hvst_area("Lower Chatham", harv_ghl, cur_yr)
+hvst_area("Mid-Chatham", harv_ghl, cur_yr)
+hvst_area("Southern", harv_ghl, cur_yr)
+hvst_area("North Stephens Passage", harv_ghl, cur_yr)
 
 harv %>% 
   full_join(season_leng) %>% 
@@ -156,3 +156,26 @@ panel_figure(1983, 2017, 2000, 2017, "Northern", lbs_per_day, cpue_log, 0.75, 0.
 
 panel_figure(1983, 2017, 2000, 2017, "Southern", lbs_per_day, cpue_log, 0.75, 0.50, cur_yr)
 
+
+#soak time-----
+gkc_log %>% filter(target_species_code == 923, !is.na(target_species_retained),
+                   !is.na(number_pots_lifted), !is.na(i_fishery)) %>%
+  mutate(mgt_area = ifelse(i_fishery == "East Central GKC", "East Central",
+                           ifelse(i_fishery == "Icy Strait GKC", "Icy Strait", 
+                                  ifelse(i_fishery == "Lower Chatham Strait GKC", "Lower Chatham",
+                                         ifelse(i_fishery == "Mid-Chatham Strait GKC", "Mid-Chatham",
+                                                ifelse(i_fishery == "North Stephens Passage GKC", "North Stephens Passage",
+                                                       ifelse(i_fishery == "Northern GKC", "Northern",
+                                                              ifelse(i_fishery == "Southern GKC", "Southern", "Misc")))))))) %>%
+           group_by(year, mgt_area) -> soak_time
+
+
+soak_time %>%
+  filter(year >= 2020) %>%
+ggplot(aes(mgt_area, soak_time_hours, color = mgt_area)) +
+  geom_boxplot(outlier.shape = NA) +
+  stat_boxplot(geom = 'errorbar') +
+  geom_jitter() +
+  scale_y_continuous(breaks = seq(0, 500, 25))
+         
+                     
