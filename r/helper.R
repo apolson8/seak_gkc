@@ -25,6 +25,7 @@ library(PBSmapping)
 library(janitor)
 library(here)
 library(tidyquant)
+library(DiagrammeR)
 
 ##THEMES FOR GRAPHS ---------
 loadfonts(device="win")
@@ -43,10 +44,10 @@ hvst_area <- function(mg_area, harv_ghl, cur_yr) {
   filter(mgt_area == mg_area) %>%
   ggplot(aes(year, total_lbs)) + 
     geom_col() +
-    #geom_line(aes(x = year, y = ghl)) + #need to draw GHL line across bar plot
+    geom_point(aes(y = ghl)) + #need to draw GHL line across bar plot
     ylab("Harvest (lbs)") + xlab("Year") +
     scale_x_continuous(breaks = seq(0, cur_yr+1, 5)) +
-    scale_y_continuous(label = scales::comma, breaks = seq(0, 3500000, 25000)) + 
+    scale_y_continuous(label = scales::comma, breaks =scales::pretty_breaks(n = 10)) + 
     ggtitle(paste0(mg_area)) +
     theme(legend.title = element_blank(), legend.position = c(0.75, 0.75)) -> fig1
   fig1
