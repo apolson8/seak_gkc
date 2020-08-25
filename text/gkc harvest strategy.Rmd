@@ -13,9 +13,11 @@ opts_chunk$set(fig.width = 6, fig.height = 12, fig.pos = "H", echo = FALSE, warn
 
 
 # Fishery Overview {-}
-The Alaska Department of Fish and Game (Department) GKC fishery is a data-limited fishery that is managed in Southeast using a 3-S management system that is composed of a minimum legal size of 7.0 in/177.8 mm carapace width (CW), male-only, and a season from February--November. The majority of the harvest occurs in the commercial sector where the fishery extends across 7 management areas (Northern, Icy Strait, North Stephens Passage, East Central, Mid and Lower Chatham Strait, and Southern). Annually the Department evaluates stock status and establishes guideline harvest levels (GHLs) for each management area using fishery dependent data  [@olson2018spatial, @stratman2017]. 
+The Alaska Department of Fish and Game (Department) golden king crab (GKC) fishery is a data-limited fishery that is managed in Southeast Alaska using a 3-S management system that is composed of a minimum legal size of 7.0 in/177.8 mm carapace width (CW), male-only, and a season from February--November. The majority of the harvest occurs in the commercial sector where the fishery extends across 7 management areas (Northern, Icy Strait, North Stephens Passage, East Central, Mid and Lower Chatham Strait, and Southern). Annually the Department evaluates stock status and establishes guideline harvest levels (GHLs) for each management area using fishery dependent data  [@olson2018spatial, @stratman2017]. 
 
-The GKC fishery rapidly developed after the collapse of the red and blue king crab fisheries in the early 1980s with harvest subsequently harvest peaking in the late 1980s and early 2010s while also experiencing a period of collapse in the 1990s. Harvest has been steadily declining since 2011 and many of the management areas are currently in a collapsed state [@olson2018spatial, @stratman2017, @stratman2020].
+The GKC fishery rapidly developed after the collapse of the red and blue king crab fisheries in the early 1980s with harvest subsequently peaking in the late 1980s and early 2010s while also experiencing a period of collapse in the 1990s. Harvest has been steadily declining since 2011 and many of the management areas are currently in a collapsed state [@olson2018spatial, @stratman2017, @stratman2020].
+
+The purpose of this document is to lay the framework for a consistent and transparent inseason and post season approach in determining GHLs and closing fisheries if warranted. The harvest strategy described herin will be treated as a guideline for managing golden king crab and not a prescriptive step by step approach. Many other factors and sources of information can affect determining GHLs or closing of fisheries that cannot be simply be captured in a prescriptive framework. 
 
 ```{r}
 library(dplyr)
@@ -30,10 +32,10 @@ dt <- data.frame(
                         "Mid-Chatham Strait",
                         "Lower Chatham Strait",
                         "Southern"),
-  "Guideline Harvest Range (lbs)"= c("0--175,000",
-                                        "0--75,000",
+  "Guideline Harvest Range (lbs)"= c("0--145,000",
+                                        "0--55,000",
                                         "0--25,000",
-                                        "0--300,000",
+                                        "0--225,000",
                                         "0--150,000",
                                         "0--50,000",
                                         "0--25,000"))
@@ -43,75 +45,75 @@ knitr::kable(dt, caption = "Golden king crab guideline harvest ranges for Regist
                            "Guideline Harvest Range (lbs)")) %>% 
   kable_styling(c("striped", "condensed"), 
                 latex_options = c("striped", "hold_position", "scale_down"), 
-                full_width = F) %>% 
+                full_width = F,
+                font_size = 12) %>% 
   row_spec(0, bold = T, color = "white", background = "gray")
 ```
 
 
 ## Biology {-}
-Golden king crab are relatively long-lived slow growing species that have an asychronous 20-month reproductive cycle, morphometric maturity at approximately 8 years of age, lecithtrophic larvae that remain at depth,and exhibit spatial variability in size at maturity across the North Pacific and among the 7 management areas within Southeast Alaska where size at matruity increases with increases in latitude. Certain aspects of this species' life history are well documented whereas other critical compenents such as, growth rates, age at maturity, longevity, etc.) are unknown [@hebert2008, @long2016, @nizyaev2005, @olson2018spatial, @sloan1985, @somerton1986].  
+Golden king crab are relatively long-lived slow growing species that have an asynchronous 20-month reproductive cycle, morphometric maturity at approximately 8 years of age, lecithotrophic larvae that remain at depth,and exhibit spatial variability in size at maturity across the North Pacific and among the 7 management areas within Southeast Alaska where size at maturity increases with increases in latitude. Certain aspects of this species' life history are well documented whereas other critical components such as, growth rates, age at maturity, longevity, etc.) are unknown [@hebert2008, @long2016, @nizyaev2005, @olson2018spatial, @sloan1985, @somerton1986].  
 
 
 ## Proposed plan {-}
-Metrics to assess stock health and fishery performance. In-season fishery perfomance data will be reviewed and analyzed bi-weekly to inform harvest strategy decision rules in-season and determine GHLs post-season. 
+Metrics to assess stock health and fishery performance. In-season fishery performance data will be reviewed and analyzed bi-weekly to inform harvest strategy decision rules in-season and determine GHLs post-season. 
 
 ### Fishery Objective {-}
-The primary objective of this harvest strategy is to rebuild the Southeast Alaska GKC resource to sustainable levels while minimizing and mitigating ecological risks from fishing related activites, maximizing profitability for the commercial sector, monitoring social and economic benefits of the fishery to the community, maintain various size and age compositions of stocks in order to maintain longterm reproductive viability, minimize handling and unnecessary mortality of non-legal GKC and non-target species, and reducing dependency on annual recruitment. These objectives remain consistent with Board of Fisheries' Policy on King and Tanner Crab Resource Management (90-04-FB, March 23, 1990).
+The primary objective of this harvest strategy is to rebuild the Southeast Alaska GKC resource to sustainable levels while minimizing and mitigating ecological risks from fishing related activities, maximizing profitability for the commercial sector, monitoring social and economic benefits of the fishery to the community, maintain various size and age compositions of stocks in order to maintain long-term reproductive viability, minimize handling and unnecessary mortality of non-legal GKC and non-target species, and reducing dependency on annual recruitment. These objectives remain consistent with Board of Fisheries' Policy on King and Tanner Crab Resource Management (90-04-FB, March 23, 1990).
 
 ## Performance Indicators {-}
-The primary performance indicator used in this harvest strategy is commercial catch rate defined as logbook catch per unit of effort (CPUE) calculated from the CPUE at each logbook entry and averaged for the entire season. Commercial catch rate is the number of of legal sized male golden king crab per pot lift. Future iterations will incorporate soak time component in order to standardize CPUE.
+The primary performance indicator used in this harvest strategy is commercial catch rate defined as logbook catch per unit of effort (CPUE) calculated from the CPUE at each logbook entry and averaged for the entire season. Commercial catch rate is the number of legal sized male golden king crab per pot lift. Future iterations will incorporate soak time component in order to standardize CPUE.
 
-The secondary perfomance indicator used in this harvest strategy is commercial catch rate obtained from fishticket where CPUE is calculated from each harvest landing for the entire season divided by the difference of the first and last catch date which is defined as active fishing season. This secondary CPUE indicator is defined as pounds per pot day. This is a similar metric as lbs/boat/day and provides performance information that will be sued when GKC cannot be determined if they were harvested as bycatch or were targeted during the concurrent Tanner crab fishery.
+The secondary performance indicator used in this harvest strategy is commercial catch rate obtained from fish ticket data where CPUE is calculated from each harvest landing for the entire season divided by the difference of the first and last catch date which is defined as active fishing season. This secondary CPUE indicator is defined as pounds per pot day. This is a similar metric as lbs/boat/day and provides performance information that will be used when GKC cannot be determined if they were harvested as bycatch or were targeted during the concurrent Tanner crab fishery.
 
-Supplementary biological information by analyzing recruit class distributions of GKC sampled during commercial landings. Size is defined as the carapace length (CL) mm measurement and recruit class is used as an indicator of shell age and is defined as recruit (new shell) and post-recruit (old shell).
+Supplementary biological information will be evaluated by analyzing recruit class distributions of GKC sampled during commercial landings. Size is defined as the carapace length (CL) mm measurement and recruit class is used as an indicator of shell age and is defined as recruit (new shell) and post-recruit (old shell).
 
 
 ## Reference Points {-}
-The primary indicator Target Reference Point (RP~targ~) is set at the average logbook CPUE for the years 2000--2017 as these years capture when logbooks were required for the fishery in 2000 and represents contrasting data (highs and lows) in fishery performance. The Trigger Reference Point (RP~trig~) is set at 75% of the RP~targ~ and the Limit Reference Point (RP~lim~) is set at 50% of the RP~targ~.
+The primary indicator Target Reference Point (RP~targ~) is set at the average logbook CPUE for the years 2000--2017 as these years capture when logbooks were required for the fishery in 2000 and represents contrasting data (highs and lows) in fishery performance with the exception of North Stephens Passage (2001--2017) and Lower Chatham (2000--2012 and 2014--2017) The Trigger Reference Point (RP~trig~) is set at 75% of the RP~targ~ and the Limit Reference Point (RP~lim~) is set at 50% of the RP~targ~.
 
 ## Monitoring Strategy {-}
 
 ### Decision Rules {-}
-The primary performance indicator (logbook CPUE rounded to the nearest tenth) being the most readily available estimate of fishery performance the folowing decision rules will be considered to guide in-season and post-season management decions.
+The primary performance indicator (logbook CPUE rounded to the nearest tenth) being the most readily available estimate of fishery performance the following decision rules will be considered to guide in-season and post-season management decisions.
 
 
 * **In-Season**
     + Fishery performance will be monitored bi-weekly and/or with a minimum of 500 pot lifts being required before taking management action whichever is the least restrictive under the following guidelines:
         - If logbook CPUE is $\geq$ RP~targ~ manage to GHL in-season;
         - If logbook CPUE is $\geq$ RP~trig~ but $<$ RP~targ~ manage to GHL in-season and monitor closely;
-        - If logbook CPUE is $\geq$ RP~lim~ and $<$ RP~trig~ and less than the previous year CPUE close fishery early inseason, decrease GHL and personal use fishery bag and possession limits the following season;
-        - If logbook CPUE is $<$ RP~lim~ close fishery early inseason and subject to multiple year closure (1 year min.) for commercial and personal use fisheries the following season upon post-season review.
+        - If logbook CPUE is $\geq$ RP~lim~ and $<$ RP~trig~fishery early inseason;
+        - If logbook CPUE is $<$ RP~lim~ close fishery early inseason and subject to multiple year closure (1-year min.) for commercial and personal use fisheries the following season upon post-season review.
     
-Due to the GKC and Tanner crab fishery occurring concurrently, permit holders must indicate when they are targeting GKC, otherwise this can bias CPUE low and trigger the aforementioned management actions.
+GHLs will not be changed in-season and are only subject to change per the post-season decision rules.
+
+Due to the GKC and Tanner crab fishery occurring concurrently permit holders are encouraged to indicate when they are targeting GKC or when GKC was harvested as bycatch as this can bias logbook CPUE and may trigger the aforementioned management actions.
     
 * **Post-Season **
     + **Increase in the GHL**
-        - If the most recent CPUE is $>$ than the previous season and is $>$ RP~targ~ the GHL will increase up to a maximum of 20% and not less than 10% the following season;
-        - If the most recent CPUE is $>$ than the previous season and $\leq$ RP~targ~ and $>$ RP~trig~ the GHL will remain the same or increase up to a maximum of 10% the following season;
-        - If the most recent CPUE is $>$ than the previous season and is $\leq$ RP~trig~ and $>$ RP~limit~ the GHL will will remain the same or increase up to a maximum of 5% the following season;
-        - New GHLs may not exceed respective managent area GHRs;
+        - If the most recent CPUE is $>$ than the most recent season and is $>$ RP~targ~ the GHL may increase up to a maximum of 20% the following season;
+        - If the most recent CPUE is $>$ than the most recent season and $\leq$ RP~targ~ and $>$ RP~trig~ the GHL may increase up to a maximum of 10% the following season;
+        - If the most recent CPUE is $>$ than the most recent season and is $\leq$ RP~trig~ and $>$ RP~limit~ the GHL may increase up to a maximum of 5% the following season;
+        - New GHLs may not exceed respective management area GHRs;
       
     + **Decrease in the GHL**
         - **If the fishery closed short of a GHL in-season due to poor fishery performance and/or the most recent CPUE is $<$ than the previous season the GHL will be decreased based on the following conditions:**
-        - If CPUE is $<$ the previous season and $>$ RP~targ~ the GHL will be reduced up to a maximum of 20% the following season;
-        - If CPUE is $<$ than the previous season and is $>$ RP~trig~ and $\leq$ RP~targ~ the GHL will be reduced up to a maximum of 40% the following season;
-        - If the fishery closed short in-season due to poor fishery performance and the most recent CPUE is $<$ than the previous season and $>$ RP~lim~ than the previous season then the GHL decrease the following season will be within 20% of the total harvest at the time of closure during the most recent season and not less than 5,000 lbs   
+        - If CPUE is $<$ the most recent season and $>$ RP~targ~ the GHL may be reduced up to a maximum of 20% the following season;
+        - If CPUE is $<$ than the most recent season and is $>$ RP~trig~ and $\leq$ RP~targ~ the GHL may be reduced up to a maximum of 40% the following season;
+        - If the fishery closed short in-season due to poor fishery performance and CPUE is $<$ than the most recent season and $>$ RP~lim~ then the GHL decrease the following season may be within 20% of the total harvest at the time of closure during the most recent season, but not less than 7,500 lbs;   
       
     + **Closure and Re-opening**
-        - The GHL will be equal to zero if logbook CPUE is $<$ the RP~lim~ warranting an area closure for a minimum of 1 year and a maximum of 3 years.
-        - Upon re-opening an area after a closure the GHL will be equal to the harvest at the time of closure rounded to the nearest 1,000 lbs and must not be less than 5,000 lbs whichever is greatest. 
-      
-    + **No change in GHL**
-        - None of the above conditions are met.
+        - If logbook CPUE is $<$ the RP~lim~ further management action may be required by implementing an area closure of a minimum of 1 year to reduce the risk of localized depletion;
+        - Upon re-opening an area after a closure the GHL will be equal to the harvest at the time of closure rounded to the nearest 1,000 lbs and must not be less than 7,500 lbs whichever is greatest. 
+
         
 * **Review of GHLs or Decision Rules**
-    + If the the most recent CPUE is 40% or more below the previous year's index, determine why decline occured and whether further management intervention is required to reduce the risk of localized depeletion; or
-    + If and when new information becomes available indicating that the assessment and GHL setting decision rules are not consistent with the Board's policy in managing the GKC resource sustainably, the decision rules must be reviewed and if apporpirate the reference points must be adjusted.
+    + If and when new information becomes available indicating that the assessment and GHL setting decision rules are not consistent with the Board's policy in managing the GKC resource sustainably, the decision rules must be reviewed and if appropriate the reference points must be adjusted.
    
 ### Other Considerations for Management and Future Recommendations {-}
-Logbook CPUE currently lacks a soak time data field and cannot be standardized for comparsion across years. Soak time was introduced as a reporting field in logbooks for the 2020 fishing season and will be used in informing this harvest strategy in future iterations. In the interim active fishing season may be looked at as a secondary performance indicator to assess fishery performance in lieu of soak time and when GKC harvest cannot be determined if the effort was targeted or bycatch due to the concurrent GKC and Tanner crab fisheries. 
+Logbook CPUE currently lacks a soak time data field and cannot be standardized for comparison across years. Soak time was introduced as a reporting field in logbooks for the 2020 fishing season and will be used in informing this harvest strategy in future iterations. In the interim active fishing season may be looked at as a secondary performance indicator to assess fishery performance in lieu of soak time and when GKC harvest cannot be determined if the effort was targeted or bycatch due to the concurrent GKC and Tanner crab fisheries. 
 
-This harvest strategy may be amended in future iterations as more information and tools becomes avaible, drivers external to the management of the fishery that increase the risk to crab stocks, or the harvest strategy is not working effectively all of which should be conducted collaboratively with industry. This harvest strategy provides a first step in increasing transparency regarding management metrics utilized in and post season and it is recommened that this harvest strategy is further developed through the use of a management strategy evaluation (MSE) to provided robustness and stability. 
+This harvest strategy may be amended in future iterations as more information and tools becomes available, drivers external to the management of the fishery such as, environmental, climate, economic, and local ecological knowledge (LEK), or the harvest strategy is not working effectively all of which should be conducted collaboratively with industry. This harvest strategy provides a first step in increasing transparency regarding management metrics utilized in-season and post season and it is recommended that this harvest strategy is further developed through the use of a management strategy evaluation (MSE) to provided robustness and stability. 
 
 
 ## References
@@ -245,6 +247,9 @@ knitr::kable(dt, caption = "Golden King Crab logbook catch per unit effort (CPUE
 ```{r, fig.cap = "North Stephens Passage golden king crab reference points (Target, Trigger, and Limit) utilizing logbook CPUE. Dotted line represents a 3-year rolling average", out.width= "500px"}
 knitr::include_graphics("../figures/2020/North Stephens Passage logbook_cpue.png")
 ```
+
+### Ancedotal Informtion from Tanner Crab Survey
+
 
 ## East Central
 

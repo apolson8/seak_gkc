@@ -11,6 +11,8 @@
 *shape_files
 *.html
 *.tex
+*.docx
+*.doc
  
 #Survey data no uploaded due to file size
 *survey

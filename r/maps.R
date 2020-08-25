@@ -2,73 +2,51 @@
 # load ---------
 source("./r/helper.R")
 
-# global ---------
-cur_yr = 2019
-YEAR <- 2019 # most recent year of data
-fig_path <- paste0('figures/', YEAR) # folder to hold all figs for a given year
-dir.create(fig_path) # creates YEAR subdirectory inside figures folder
-output_path <- paste0('output/', YEAR) # output and results
-dir.create(output_path) 
 
-#add southeast salmon/shellfish stat-area shapefiles
-#map code from Ben Williams ben.williams@alaska.gov
-shellfish_stat <-readOGR("data/shape_files", layer = "cf_SE_stats_area")
-shellfish_stat@data$id = rownames(shellfish_stat@data)
-shellfish_stat.points = fortify(shellfish_stat, region = "id")
-shellfish_stat.df = left_join(shellfish_stat.points, shellfish_stat@data, by = "id")
+#import shellfish stat-areas
 
-data('nepacLLhigh') #load PBSmapping data set for N Pacific - much better resolution than worldHighres...
-nepacLLhigh %>% 
-  dplyr::select(group=PID, POS=POS,long=X,lat=Y) -> ak1
+stat_area <- st_read("data/shape_files/cf_SE_stats_area.shp")
 
+read.csv("data/fishery/gkc_logbook.csv") %>%
+  clean_names() -> gkc_log
 
-ggplot() +
-  geom_polygon(data = ak1, aes(long, lat, group = group), fill = "lightgray") +
-  coord_map(xlim = c(-170, -139), ylim = c(49, 62))+
-  xlab(expression(paste(Longitude^o,~'W'))) +
-  ylab(expression(paste(Latitude^o,~'W'))) +
-  geom_path(data = shellfish_stat.df, aes(long, lat, group = group))
+tm_shape(stat_area) +
+  tm_fill() +
+  tm_borders()
+
+tmap_mode("view")
+tm_shape(stat_area) +
+  tm_polygons(col = "AREA")
 
 
 
-shellfish_stat.df %>%
-  ggplot() +
-  geom_path(data = shellfish_stat.df, aes(long, lat, group = group)) 
+gkc_log %>%
+  dplyr:: select("district", "sub_district", "target_species_retained") %>%
+  group_by("district") %>%
+  summarise(total_crab = sum(target_species_retained))-> gkc_log1
+
+gkc_log1$DISTRICT <- as.character(gkc_log1$DISTRICT)  
+gkc_log1$SUB_DIST <- as.character(gkc_log1$SUB_DIST)  
+
+gkc_map = left_join(stat_area, gkc_log1)
+
+str(gkc_map)
 
 
+gkc_map %>%
+  dplyr::select(geometry, STAT_AREA, target_species_retained) %>%
+  summarise(total_crab = sum(target_species_retained)) -> crab_sum_map
 
-shellfish_stat.df %>%
-  mutate(mgt_area = ifelse(STAT_AREA == 11021, "EC", "Other")) -> mgt_area_map
+ggplot(gkc_map) +
+  geom_sf(aes(fill = "target_species_retained"))
 
-  ggplot() +
-  geom_polygon(data = mgt_area_map, aes(long, lat, group = group, fill = mgt_area)) +
-  geom_path(data = shellfish_stat.df, aes(long, lat, group = group)) 
-
-  
-ec_loc <- c(-134.5, 56, -132.5, 57.5)
-  
-ggmap(get_stamenmap(bbox = ec_loc, maptype = "toner-lite", zoom = 9)) +
-  geom_polygon(data = mgt_area_map, aes(long, lat, group = group, fill = mgt_area)) +
-  geom_path(data = shellfish_stat.df, aes(long, lat, group = group), color = 'black', size = 0.5) 
-  
+tm_shape(gkc_map) +
+  tm_fill(col = "target_species_retained")
 
 
-shellfish_stat_df <-fortify(shellfish_stat)
-
-summary(shellfish_stat@data)
-
-se_map <-readOGR("data/shape_files/p4_se_alaska.shp")
-
-se_map_df <-fortify(se_map)
-
-map <- ggplot() +
-  geom_polygon(data = shellfish_stat_df,
-            aes(x = long, y = lat, group = group),
-            color = 'black', fill = NA)
-
-map + theme_void()
+tm_shape(gkc_map) +
+  tm_borders() +
+  tm_scale_bar(breaks = c(0,100, 200), text.size = 1) +
+  tm_compass(type = "8star", position = c("right", "bottom"))
 
 
-
-
-ggplot() + geom_polygon(data = shellfish_stat_df, aes(x = long, y = lat, group = group, fill = id))

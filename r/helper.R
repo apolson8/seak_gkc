@@ -26,11 +26,12 @@ library(janitor)
 library(here)
 library(tidyquant)
 library(DiagrammeR)
+library(patchwork)
 
 ##THEMES FOR GRAPHS ---------
 loadfonts(device="win")
 windowsFonts(Times=windowsFont("TT Times New Roman"))
-theme_set(theme_bw(base_size=12,base_family='Times New Roman')
+theme_set(theme_bw(base_size=12,base_family='serif')
           +theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()))
 
 #COLOR BLIND PALETTE --------------

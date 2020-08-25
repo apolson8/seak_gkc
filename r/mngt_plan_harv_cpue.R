@@ -177,5 +177,4 @@ ggplot(aes(mgt_area, soak_time_hours, color = mgt_area)) +
   stat_boxplot(geom = 'errorbar') +
   geom_jitter() +
   scale_y_continuous(breaks = seq(0, 500, 25))
-         
-                     
+
