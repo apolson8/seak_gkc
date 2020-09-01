@@ -1,52 +1,74 @@
-#Maps#
-# load ---------
-source("./r/helper.R")
+library(leaflet)
+library(rgdal)
+library(sp)
+library(ggmap)
+library(maptools)
 
-
-#import shellfish stat-areas
-
-stat_area <- st_read("data/shape_files/cf_SE_stats_area.shp")
-
+#Import survey and fishery data
 read.csv("data/fishery/gkc_logbook.csv") %>%
   clean_names() -> gkc_log
 
-tm_shape(stat_area) +
-  tm_fill() +
-  tm_borders()
+read.csv("data/survey/tanner_survey_specimen.csv") %>% #data pre-filtered for GKC in OceanAK
+  clean_names() -> bio_survey
 
-tmap_mode("view")
-tm_shape(stat_area) +
-  tm_polygons(col = "AREA")
+read.csv("data/survey/tanner_survey_pot.csv") %>%
+  clean_names() -> pot_survey
 
+read.csv("data/survey/tanner_survey_pot_and_specimen.csv") %>%
+  clean_names() -> pot_bio_survey
 
+#Summarize and join tables
+bio_survey %>%
+  group_by(i_year, location, species, pot_no) %>%
+  summarise(total_crab = sum(number_of_specimens))-> bio_summary
 
-gkc_log %>%
-  dplyr:: select("district", "sub_district", "target_species_retained") %>%
-  group_by("district") %>%
-  summarise(total_crab = sum(target_species_retained))-> gkc_log1
-
-gkc_log1$DISTRICT <- as.character(gkc_log1$DISTRICT)  
-gkc_log1$SUB_DIST <- as.character(gkc_log1$SUB_DIST)  
-
-gkc_map = left_join(stat_area, gkc_log1)
-
-str(gkc_map)
+rename(bio_summary, year = i_year) -> bio_summary
 
 
-gkc_map %>%
-  dplyr::select(geometry, STAT_AREA, target_species_retained) %>%
-  summarise(total_crab = sum(target_species_retained)) -> crab_sum_map
+left_join(pot_survey, bio_summary, by = c("year", "location", "pot_no")) %>%
+  select(year, location, pot_no, latitude_decimal_degrees,
+         longitude_decimal_degrees, species, total_crab) %>%
+  filter(year > 2013) -> gkc_survey
 
-ggplot(gkc_map) +
-  geom_sf(aes(fill = "target_species_retained"))
+#Import stat-area shapefiles
+readOGR("data/shape_files/cf_SE_stats_area.shp") -> stat_area
 
-tm_shape(gkc_map) +
-  tm_fill(col = "target_species_retained")
+fortify(stat_area) -> stat_area_df
+ 
+#Using Tanner pot and specimen data combined from OceanAK
+#Set location for Holkham Bay
+hlk_bay <- c(-133.7750, 57.6739, -133.4, 57.8354)
 
+pot_bio_survey %>%
+  filter(year > 2013,
+         location == "Holkham Bay",
+         number_of_specimens != 0) -> pot_survey_summary
 
-tm_shape(gkc_map) +
-  tm_borders() +
-  tm_scale_bar(breaks = c(0,100, 200), text.size = 1) +
-  tm_compass(type = "8star", position = c("right", "bottom"))
+ggmap(get_stamenmap(bbox = hlk_bay,
+                    maptype = "terrain",
+                    color = "bw",
+                    force = TRUE)) +
+  geom_point(data = gkc_survey,
+             aes(x = longitude_decimal_degrees,
+                 y = latitude_decimal_degrees,
+                 size = total_crab,
+                 color = total_crab),
+             alpha = 0.6) +
+  scale_color_viridis_c("no.of crab") +
+  scale_size_continuous(range = c(0.5, 11), "no. of crab") +
+  ylab("Latitude (Decimal Degrees)") + 
+  xlab("Longitude (Decimal Degrees)") + 
+  labs(title ="Holkham Bay",
+       subtitle = "Number of GKC caught during the Tanner survey") +
+  facet_wrap(~year, nrow = 2) +
+  theme(legend.position = "bottom")
+  
+ggsave(paste0(fig_path, '/holkham_bay_gkc_survey_bycatch.png'), 
+       width = 8, height = 7, units = "in", dpi = 200)  
+  
+  
+  
+  
+  
 
-
+ 
