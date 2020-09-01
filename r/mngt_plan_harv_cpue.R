@@ -365,17 +365,17 @@ read.csv("data/survey/tanner_survey_specimen.csv") %>%
   clean_names () -> gkc_bio
 
 gkc_bio %>%
-  filter(sex == "Male",
-         location == "Holkham Bay") %>%
+  filter(location == "Holkham Bay") %>%
   mutate(recruit_status = ifelse(recruit_status == "Recruit", "Recruit",
-                                 ifelse(recruit_status == "PR1", "Post-Recruit",
-                                        ifelse(recruit_status == "PR2", "Post-Recruit",
-                                               ifelse(recruit_status == "PR3", "Post-Recruit",
-                                                      ifelse(recruit_status == "PR4", "Post-Recruit",
-                                                             ifelse(recruit_status == "PR5", "Post-Recruit",
-                                                                    ifelse(recruit_status == "PR6", "Post-Recruit",       
-                                                                           ifelse(recruit_status == "Pre_Recruit", "Pre-Recruit",
-                                                                                  ifelse(recruit_status == "Juvenile", "Juvenile", "Unknown")))))))))) %>%
+                          ifelse(recruit_status == "PR1", "Post-Recruit",
+                          ifelse(recruit_status == "PR2", "Post-Recruit",
+                          ifelse(recruit_status == "PR3", "Post-Recruit",
+                          ifelse(recruit_status == "PR4", "Post-Recruit",
+                          ifelse(recruit_status == "PR5", "Post-Recruit",
+                          ifelse(recruit_status == "PR6", "Post-Recruit",       
+                          ifelse(recruit_status == "Pre_Recruit", "Pre-Recruit",
+                          ifelse(sex == "Female", "Female",
+                          ifelse(recruit_status == "Juvenile", "Juvenile", "Unknown"))))))))))) %>%
   group_by(i_year, location, recruit_status) %>%
   summarise(total_crab = sum(number_of_specimens)) %>%
   ggplot(aes(i_year, total_crab, fill = recruit_status)) +
@@ -386,6 +386,7 @@ gkc_bio %>%
        subtitle = "Number of GKC caught during the Tanner survey",
        fill = "Recruit Status") +
   scale_x_continuous(breaks = seq(0, cur_yr+1, 3)) +
+  #scale_fill_colorblind() +
   theme(legend.position = c(0.15, 0.8))
 
 ggsave(paste0(fig_path, '/holkham_bay_gkc_recruit_status.png'), 

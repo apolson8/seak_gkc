@@ -64,7 +64,7 @@ ggmap(get_stamenmap(bbox = hlk_bay,
   theme(legend.position = "bottom")
   
 ggsave(paste0(fig_path, '/holkham_bay_gkc_survey_bycatch.png'), 
-       width = 8, height = 7, units = "in", dpi = 200)  
+       width = 9, height = 8, units = "in", dpi = 200)  
   
   
   
