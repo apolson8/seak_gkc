@@ -312,16 +312,15 @@ gkc_dir_standard <-log_summary %>%
          ul = cpue + 2 * se,
          prop_cpue = "No Change") 
 
-bind_rows(gkc_dir_standard, gkc_dir_100) %>%
-  bind_rows(gkc_dir_90, gkc_dir_80) %>%
-  bind_rows(gkc_dir_70, gkc_dir_60) -> gkc_cpue_prop
+bind_rows(gkc_dir_standard, gkc_dir_60)-> gkc_cpue_prop
+  #bind_rows(gkc_dir_90, gkc_dir_80) %>%
+ # bind_rows(gkc_dir_70, gkc_dir_60) 
 
 write.csv(gkc_cpue_prop, paste0(output_path, '/gkc_logbook_cpue_proportions.csv'))
 
 #Change order of proportions
 gkc_cpue_prop$prop_cpue <- factor(gkc_cpue_prop$prop_cpue, 
-                                  levels = c("No Change", ">=60%", ">=70%",
-                                             ">=80%", ">=90%", "=100%"))
+                                  levels = c("No Change", ">=60%"))
 
 gkc_cpue_prop %>%
   filter(mgt_area == "North Stephens Passage") %>%
