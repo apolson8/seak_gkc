@@ -149,7 +149,7 @@ logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue, Lper1, Lper2, cur_yr){
     filter(mgt_area == mg_area) %>% 
     ggplot(aes(year, cpue)) + 
     geom_line(lwd = 1) + 
-    geom_ma(ma_fun = SMA, n = 3) + #adds 3yr simple moving average 
+    #geom_ma(ma_fun = SMA, n = 3) + #adds 3yr simple moving average 
     geom_hline(yintercept = avg_ten2$mean, lwd = 0.5, color = "green") +
     geom_text(aes((str_yr-10), avg_ten2$mean, 
                   label = paste0("Target Reference Point (avg ", str_yr, "-", end_yr, ")"), vjust = -1, hjust = 0.05)) +
