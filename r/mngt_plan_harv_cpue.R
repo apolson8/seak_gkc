@@ -323,14 +323,14 @@ gkc_cpue_prop$prop_cpue <- factor(gkc_cpue_prop$prop_cpue,
                                   levels = c("No Change", ">=60%"))
 
 gkc_cpue_prop %>%
-  filter(mgt_area == "North Stephens Passage") %>%
+  filter(mgt_area == "Icy Strait") %>%
   ggplot(aes(year, cpue, fill = prop_cpue)) + 
   geom_line() + 
   geom_point(aes(color = prop_cpue), size = 2) +
   geom_ribbon(aes(ymin = ll, ymax = ul), alpha = 0.25) +
   labs(y="Mean CPUE of GKC (crab/pot)", 
        x ="Year",
-       title = "North Stephens Passage",
+       title = "Icy Strait",
        subtitle = "Removing Tanner bycatch based on proportion of harvest from logbooks") +
   scale_x_continuous(breaks = seq(0, cur_yr+1, 3)) +
   #scale_fill_viridis_d() +
@@ -341,7 +341,7 @@ gkc_cpue_prop %>%
 
 #Analyzing pot lifts based on proportion of GKC vs TC harvest
 gkc_cpue_prop %>%
-  filter(mgt_area == "North Stephens Passage") %>%
+  filter(mgt_area == "Icy Strait") %>%
   ggplot(aes(year, total_pots, fill = prop_cpue)) +
   geom_col() +
   labs(y = "Total Pot Lifts (GKC logbook)",
@@ -354,7 +354,7 @@ gkc_cpue_prop %>%
 
 cpue_prop_plot / pots_prop_plot
 
-ggsave(paste0(fig_path, '/North_Stephens_Passage_gkc_cpue_proportion.png'), 
+ggsave(paste0(fig_path, '/Icy Strait_gkc_cpue_proportion.png'), 
        width = 10, height = 9, units = "in", dpi = 200)
 
 
