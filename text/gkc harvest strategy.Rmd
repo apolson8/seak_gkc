@@ -1,11 +1,11 @@
 ---
-title: "Southeast Alaska Golden King Crab Harvest Strategy"
+title: "Southeast Alaska Golden King Crab (*Lithodes aequispinus*) Harvest Strategy"
 author: "Andrew Olson and Katie Palof"
 date: "`r format(Sys.Date(), '%m/%d/%Y')`"
 output: html_document
   #word_document:
     #reference_docx: 
-    #fig_caption: yes
+    #fig_caption: true
 bibliography: refs.bib
 always_allow_html: true
 ---
@@ -58,19 +58,55 @@ knitr::kable(dt, align = "lr", caption = "Golden king crab guideline harvest ran
 ## Biology {-}
 Golden king crab are relatively long-lived slow growing species that have an asynchronous 20-month reproductive cycle [@long2016, @somerton1986], morphometric maturity at approximately 8 years of age [@hebert2008, @koeneman1985, @paul2001], lecithotrophic larvae that remain at depth [@long2016, @shirley1997, @sloan1985]. Golden king crab exhibit spatial variability in size at maturity across the North Pacific and among the seven management areas within Southeast Alaska where size at maturity increases with increases in latitude[@jewett1985, @nizyaev2005, @olson2018spatial, @somerton1986]. Certain aspects of this species' life history are well documented whereas other critical components such as, growth rates, age at maturity, longevity, etc. are unknown. 
 
+## Fishery Objectives {-}
+The primary objective of this harvest strategy is to rebuild and maintain the Southeast Alaska GKC resource to sustainable levels. Additional objectives include minimizing and mitigating ecological risks from fishing related activities, monitoring social and economic benefits of the fishery to the community; maintaining various size and age compositions of stocks in order to maintain long-term reproductive viability; minimizing handling and unnecessary mortality of non-legal GKC and non-target species; and reducing dependency on annual recruitment. These objectives remain consistent with the Board of Fisheries' Policy on King and Tanner Crab Resource Management (90-04-FB, March 23, 1990).
 
 ## Proposed plan {-}
 The plan provides metrics to manage populations based on stock health and fishery performance. Inseason fishery performance data will be reviewed and analyzed biweekly to inform harvest strategy decision rules inseason and determine GHLs postseason. 
 
-### Fishery Objectives {-}
-The primary objective of this harvest strategy is to rebuild and maintain the Southeast Alaska GKC resource to sustainable levels. Additional objectives include minimizing and mitigating ecological risks from fishing related activities, monitoring social and economic benefits of the fishery to the community; maintaining various size and age compositions of stocks in order to maintain long-term reproductive viability; minimizing handling and unnecessary mortality of non-legal GKC and non-target species; and reducing dependency on annual recruitment. These objectives remain consistent with the Board of Fisheries' Policy on King and Tanner Crab Resource Management (90-04-FB, March 23, 1990).
 
-## Performance Indicators {-}
-The primary performance indicator used in this harvest strategy is commercial catch rate defined as logbook catch of GKC per unit of effort (CPUE). The CPUE will be calculated from using the number of legal size male GKC per pot lift, for each logbook entry and averaged for the entire season. Future iterations will incorporate soak time component in order to standardize CPUE.
 
-A secondary performance indicator that may be used in this harvest strategy is commercial catch rate obtained from fish ticket data. With fish ticket data, CPUE is calculated using each harvest landing for the entire season divided by the difference between the first and last catch date (which is defined as active fishing season). This secondary CPUE indicator is defined as "pounds per pot day"" and will aid in understanding catch rates over time, in a given season until enough soak time information is collected to standardize logbook CPUE. 
+### Performance Indicators {-}
+The primary performance indicator used in this harvest strategy is commercial catch rate defined as logbook catch of GKC per unit of effort (CPUE):
 
-Due to the GKC and Tanner crab fishery occurring concurrently, it is difficult to differentiate between GKC that are harvested as bycatch or directly targeted. GKC that are harvested as bycatch can bias logbook CPUE and consequently trigger managment actions during and after the season. In order to evaluate this concern a proportion of $\geq$ 60% will be applied to GKC catch from commercial logbooks.    
+
+\begin{equation}
+CPUE_{le} = \frac{catch}{effort}
+\tag{1.1}
+\end{equation}
+
+where *CPUE* is the catch of legal size male GKC per unit of effort for each logbook entry (*le*). Equation (1.1) is then applied to all logbook entries and averaged for a given management area and season where:
+
+\begin{equation}
+\overline{CPUE_{a,s}} = \frac{\sum{CPUE_{le}}}{n}
+\tag{1.2} 
+\end{equation}
+
+where *a* is a given management area, *s* is a given season, and *n* is the total number of logbook entries.Future iterations will incorporate soak time in order to standardize CPUE.
+
+Due to the GKC and Tanner crab fishery occurring concurrently, it is difficult to differentiate between GKC that are harvested as bycatch or directly targeted. GKC that are harvested as bycatch can bias logbook CPUE and consequently trigger managment actions during and after the season. In order to evaluate this concern a proportion of $\geq$ 60% will be applied to GKC catch from commercial logbooks:
+
+\begin{equation}
+catch_{le}^{\geq{0.6}} = \frac{crab_{gkc}}{({total \ crab}_{gkc + tc})}
+\tag{1.3}
+\end{equation}
+
+where *catch* is for a given logbook entry (*le*), *gkc* is golden king crab and *tc* is Tanner crab.Then subsequently Equations (1.1) and (1.2) will be applied to calcuate CPUE.
+
+A secondary performance indicator that will be used in this harvest strategy is commercial catch rate obtained from fish ticket data. With fish ticket data, CPUE is calculated using each harvest landing for the entire season divided by the difference between the first and last catch date (which is defined as active fishing season). This secondary CPUE indicator is defined as "pounds per pot day" and will aid in understanding catch rates over time, in a given season until enough soak time information is collected to standardize logbook CPUE: 
+
+\begin{equation}
+active \ fishing \ season = (date_{first \ catch} - date_{last \ catch})
+\tag{2.1}
+\end{equation}
+
+
+\begin{equation}
+\overline{CPUE_{a,s}} = \frac {harvest_f} {active \ fishing \ season}
+\tag{2.2}
+\end{equation}
+
+where *a* is a given management area, *s* is a given season, and *f* is fish ticket harvest (lbs). 
 
 Supplementary information that may be evaluated in this harvest strategy includes biological, local ecological knowledge (LEK), and other anecdotal information that may not be captured quantitiativelyin this harvest strategy framework.
   
@@ -84,7 +120,7 @@ The primary indicator Target Reference Point (RP~targ~) is set at the average lo
 ## Monitoring Strategy {-}
 
 ### Decision Rules {-}
-As the primary performance indicator (logbook CPUE rounded to the nearest tenth) is the most readily available estimate of fishery performance the following decision rules will guide inseason and postseason management decisions.
+As the primary performance indicator is the most readily available estimate of fishery performance the following decision rules will guide inseason and postseason management decisions.
 
 
 * **Inseason**
@@ -92,11 +128,10 @@ As the primary performance indicator (logbook CPUE rounded to the nearest tenth)
         - If logbook CPUE is $\geq$ RP~targ~ manage to GHL;
         - If logbook CPUE is $\geq$ RP~trig~ but $<$ RP~targ~ manage to GHL and monitor closely;
         - If logbook CPUE is $\geq$ RP~lim~ and $<$ RP~trig~ fishery close early;
-        - If logbook CPUE is $<$ RP~lim~ close fishery early and closure of management area for a minimum of 1 year for commercial and personal use fisheries the following season, depending upon a postseason review.
+        - If logbook CPUE is $<$ RP~lim~ close fishery early **and** subsequent closure of management area for a minimum of 1 year for commercial and personal use fisheries the following season, depending upon a postseason review.
     
     + GHLs will not be changed inseason and are only subject to change per postseason decision rules.
 
-    + Due to the GKC and Tanner crab fishery occurring concurrently permit holders are encouraged to indicate when they are targeting GKC or when GKC was harvested as bycatch because these differences can bias logbook CPUE.
     
 * **Postseason **
     + **Increase in a GHL**
@@ -142,7 +177,7 @@ knitr::include_graphics("../figures/2020/Northern_harvest.png")
 ### Reference Points
 
 
-```{r}
+```{r, caption = ""}
 library(dplyr)
 #library(kableExtra)
 #options(kableExtra.html.bsTable = T)
@@ -273,7 +308,7 @@ knitr::include_graphics("../figures/2020/North_Stephens_Passage_gkc_cpue_proport
 ```
 
 
-### Anecdotal Informtion from Annual Tanner Crab Stock Assessment Survey
+### Informtion from Annual Tanner Crab Stock Assessment Survey
 The Department conducts an annual stock assessment survey in Holkham Bay where GKC have been caught incidentally. 
 
 ```{r, fig.cap = "Number of golden king crab caught during the annual Tanner crab stock assessment survey in Holkham Bay (2014-2019).", out.width= "500px"}
