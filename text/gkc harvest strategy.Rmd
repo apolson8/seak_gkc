@@ -2,12 +2,13 @@
 title: "Southeast Alaska Golden King Crab (*Lithodes aequispinus*) Harvest Strategy"
 author: "Andrew Olson and Katie Palof"
 date: "`r format(Sys.Date(), '%m/%d/%Y')`"
-output: html_document
-  #word_document:
-    #reference_docx: 
-    #fig_caption: true
+output: pdf_document
+        #html_document
+  #bookdown::word_document2
 bibliography: refs.bib
-always_allow_html: true
+csl: american-fisheries-society.csl
+header-includes: \usepackage{float}
+
 ---
 
 ```{r global_options, include=FALSE, echo = FALSE, message = FALSE, warning=FALSE}
@@ -17,17 +18,18 @@ opts_chunk$set(fig.width = 6, fig.height = 12, fig.pos = "H", echo = FALSE, warn
 
 
 # Fishery Overview {-}
-The Alaska Department of Fish and Game (Department) golden king crab (GKC) fishery in Southeast Alaska is a data-limited fishery that is managed based on a 3-S management system (sex, size, and season). The management has been further developed by limiting the number of participants and gear, establishing guideline harvest levels (GHLs) for each management area, and allowing closure of management areas if there are stock health concerns. The majority of the harvest occurs in the commercial sector where the fishery extends across seven management areas (Northern, Icy Strait, North Stephens Passage, East Central, Mid and Lower Chatham Strait, and Southern). The Department annually evaluates stock status and establishes GHLs for each management area using fishery dependent data  [@olson2018spatial, @stratman2017]. 
+The Alaska Department of Fish and Game (Department) golden king crab (GKC) fishery in Southeast Alaska is a data-limited fishery that is managed based on a 3-S management system (sex, size, and season). The management has been further developed by limiting the number of participants and gear, establishing guideline harvest levels (GHLs) for each management area, and allowing closure of management areas if there are stock health concerns. The majority of the harvest occurs in the commercial sector where the fishery extends across seven management areas (Northern, Icy Strait, North Stephens Passage, East Central, Mid and Lower Chatham Strait, and Southern). The Department annually evaluates stock status and establishes GHLs for each management area using fishery dependent data  [@olson2018spatial; @stratman2017]. 
 
-The commercial GKC fishery rapidly developed after the collapse of the red and blue king crab fisheries in the early 1980s. Harvest subsequently peaked in the late 1980s and early 2010s, experiencing a period of collapse in the 1990s. Harvest has been steadily declining since 2011 and many of the management areas are currently in a collapsed state [@olson2018spatial, @stratman2017, @stratman2020].
+The commercial GKC fishery rapidly developed after the collapse of the red and blue king crab fisheries in the early 1980s. Harvest subsequently peaked in the late 1980s and early 2010s, experiencing a period of collapse in the 1990s. Harvest has been steadily declining since 2011 and many of the management areas are currently in a collapsed state [@olson2018spatial; @stratman2017; @stratman2020].
 
-The purpose of this document is to lay the framework for a consistent and transparent inseason and postseason approach to determine GHLs and close fisheries when warranted. The harvest strategy described herein will be treated as a guideline for managing GKC and not a prescriptive step by step approach. Many factors and sources of information can affect determining GHLs or closing of fisheries that cannot be captured in a prescriptive framework. 
+The purpose of this document is to lay the framework for a consistent and transparent inseason and postseason approach to determine GHLs and close fisheries when warranted.The harvest strategy described herein remains consistent with the Board of Fisheries' Policy on King and Tanner Crab Resource Managment (90-04-FB, March, 1990) [5 AAC 34.080],  the Southeast Alaska Golden King Crab Management Plan [5 AAC 34.114], and will be treated as a guideline for managing GKC and not a prescriptive step by step approach. Many factors and sources of information can affect determining GHLs or closing of fisheries that cannot be captured in a prescriptive framework. 
+
+
 
 ```{r}
 library(dplyr)
 #library(kableExtra)
 #options(kableExtra.html.bsTable = T)
-
 dt <- data.frame(
   "Management Area" = c("Northern",
                         "Icy Strait",
@@ -44,25 +46,29 @@ dt <- data.frame(
                                         "0-50,000",
                                         "0-25,000"))
 
-knitr::kable(dt, align = "lr", caption = "Golden king crab guideline harvest ranges for Registration Area A [5 AAC 34.115]",
+knitr::kable(dt, 
+             align = "lr", 
+             caption = "Golden king crab guideline harvest ranges for Registration Area A [5 AAC 34.115].",
+             digits = 1, 
              col.names = c("Management Area",
                            "Guideline Harvest Range (lbs)")) #%>% 
   #kable_styling(c("striped", "condensed"), 
-                #latex_options = c("striped", "hold_position", "scale_down"), 
+                #latex_options = c("striped", "hold_position", #"scale_down"), 
                 #full_width = F,
-                #font_size = 12) %>% 
+                #font_size = 12) #%>% 
   #row_spec(0, bold = T, color = "white", background = "gray")
+
 ```
 
 
 ## Biology {-}
-Golden king crab are relatively long-lived slow growing species that have an asynchronous 20-month reproductive cycle [@long2016, @somerton1986], morphometric maturity at approximately 8 years of age [@hebert2008, @koeneman1985, @paul2001], lecithotrophic larvae that remain at depth [@long2016, @shirley1997, @sloan1985]. Golden king crab exhibit spatial variability in size at maturity across the North Pacific and among the seven management areas within Southeast Alaska where size at maturity increases with increases in latitude[@jewett1985, @nizyaev2005, @olson2018spatial, @somerton1986]. Certain aspects of this species' life history are well documented whereas other critical components such as, growth rates, age at maturity, longevity, etc. are unknown. 
+Golden king crab are relatively long-lived slow growing species that have an asynchronous 20-month reproductive cycle [@long2016; @somerton1986], morphometric maturity at approximately 8 years of age [@hebert2008; @koeneman1985; @paul2001], lecithotrophic larvae that remain at depth [@long2016; @shirley1997; @sloan1985]. Golden king crab exhibit spatial variability in size at maturity across the North Pacific and among the seven management areas within Southeast Alaska where size at maturity increases with increases in latitude[@jewett1985; @nizyaev2005; @olson2018spatial; @somerton1986]. Certain aspects of this species' life history are well documented whereas other critical components such as, growth rates, age at maturity, longevity, etc. are unknown. 
 
 ## Fishery Objectives {-}
-The primary objective of this harvest strategy is to rebuild and maintain the Southeast Alaska GKC resource to sustainable levels. Additional objectives include minimizing and mitigating ecological risks from fishing related activities, monitoring social and economic benefits of the fishery to the community; maintaining various size and age compositions of stocks in order to maintain long-term reproductive viability; minimizing handling and unnecessary mortality of non-legal GKC and non-target species; and reducing dependency on annual recruitment. These objectives remain consistent with the Board of Fisheries' Policy on King and Tanner Crab Resource Management (90-04-FB, March 23, 1990).
+The primary objective of this harvest strategy is to rebuild and maintain the Southeast Alaska GKC resource to sustainable levels. Additional objectives include minimizing and mitigating ecological risks from fishing related activities, monitoring social and economic benefits of the fishery to the community; maintaining various size and age compositions of stocks in order to maintain long-term reproductive viability; minimizing handling and unnecessary mortality of non-legal GKC and non-target species; and reducing dependency on annual recruitment. 
 
 ## Proposed plan {-}
-The plan provides metrics to manage populations based on stock health and fishery performance. Inseason fishery performance data will be reviewed and analyzed biweekly to inform harvest strategy decision rules inseason and determine GHLs postseason. 
+Here we propose transparent and repeatable metrics (and their rationale) to determine stock health and fishery performance for more consistent inseason and postseason management. Inseason fishery performance data will be reviewed and analyzed biweekly to inform harvest strategy decision rules inseason and GHLs will be determined postseason. 
 
 
 
@@ -72,50 +78,49 @@ The primary performance indicator used in this harvest strategy is commercial ca
 
 \begin{equation}
 CPUE_{le} = \frac{catch}{effort}
-\tag{1.1}
+\tag{1}
 \end{equation}
 
-where *CPUE* is the catch of legal size male GKC per unit of effort for each logbook entry (*le*). Equation (1.1) is then applied to all logbook entries and averaged for a given management area and season where:
+where *CPUE* is the catch of legal size male GKC per unit of effort for each logbook entry (*le*). Equation (1) is then applied to all logbook entries and averaged for a given management area and season where:
 
 \begin{equation}
 \overline{CPUE_{a,s}} = \frac{\sum{CPUE_{le}}}{n}
-\tag{1.2} 
+\tag{2} 
 \end{equation}
 
-where *a* is a given management area, *s* is a given season, and *n* is the total number of logbook entries.Future iterations will incorporate soak time in order to standardize CPUE.
+where *a* is a given management area, *s* is a given season, and *n* is the total number of logbook entries. Future iterations will incorporate soak time in order to standardize CPUE.
 
 Due to the GKC and Tanner crab fishery occurring concurrently, it is difficult to differentiate between GKC that are harvested as bycatch or directly targeted. GKC that are harvested as bycatch can bias logbook CPUE and consequently trigger managment actions during and after the season. In order to evaluate this concern a proportion of $\geq$ 60% will be applied to GKC catch from commercial logbooks:
 
 \begin{equation}
 catch_{le}^{\geq{0.6}} = \frac{crab_{gkc}}{({total \ crab}_{gkc + tc})}
-\tag{1.3}
+\tag{3}
 \end{equation}
 
-where *catch* is for a given logbook entry (*le*), *gkc* is golden king crab and *tc* is Tanner crab.Then subsequently Equations (1.1) and (1.2) will be applied to calcuate CPUE.
+where *catch* is for a given logbook entry (*le*), *gkc* is golden king crab and *tc* is Tanner crab.Then subsequently Equations (1) and (2) will be applied to calcuate CPUE.
 
 A secondary performance indicator that will be used in this harvest strategy is commercial catch rate obtained from fish ticket data. With fish ticket data, CPUE is calculated using each harvest landing for the entire season divided by the difference between the first and last catch date (which is defined as active fishing season). This secondary CPUE indicator is defined as "pounds per pot day" and will aid in understanding catch rates over time, in a given season until enough soak time information is collected to standardize logbook CPUE: 
 
 \begin{equation}
 active \ fishing \ season = (date_{first \ catch} - date_{last \ catch})
-\tag{2.1}
+\tag{4}
 \end{equation}
 
 
 \begin{equation}
 \overline{CPUE_{a,s}} = \frac {harvest_f} {active \ fishing \ season}
-\tag{2.2}
+\tag{5}
 \end{equation}
 
 where *a* is a given management area, *s* is a given season, and *f* is fish ticket harvest (lbs). 
 
 Supplementary information that may be evaluated in this harvest strategy includes biological, local ecological knowledge (LEK), and other anecdotal information that may not be captured quantitiativelyin this harvest strategy framework.
   
-  + Biological information will be evaluated by analyzing recruit class and size distributions of GKC sampled during commercial landings. Size of GKC is defined as the carapace length (CL) mm measurement. Recruit class is used as an indicator of shell age, is defined as recruit (new shell) and postrecruit (old shell);
-  + LEK is experiential information from fishermen and the fishing industry  about the natural environment as it pertains to GKC. LEK will be evaluated and reviewed through permit holder comments in logbooks, communication with permit holders and industry representatives, and discussion at annual industry meetings [@ainsworth2011, @beaudreau2014].  
-
+  + Biological information will be evaluated by analyzing recruit class and size distributions of GKC sampled during commercial landings. Size of GKC is defined as the carapace length (CL) mm measurement. Recruit class is used as an indicator of shell age, is defined as recruit (new shell) and postrecruit (old shell).
+  + LEK is experiential information from fishermen and the fishing industry  about the natural environment as it pertains to GKC. LEK will be evaluated and reviewed through permit holder comments in logbooks, communication with permit holders and industry representatives, and discussion at annual industry meetings [@ainsworth2011; @beaudreau2014].
 
 ## Reference Points {-}
-The primary indicator Target Reference Point (RP~targ~) is set at the average logbook CPUE for the years 2000-2017 because these years capture logbook requirements for the fishery in 2000 and represents contrasting data (highs and lows) in fishery performance with the exception of North Stephens Passage (excludes 2000) and Lower Chatham (excludes 2013) The Trigger Reference Point (RP~trig~) is set at 75% of the RP~targ~ and the Limit Reference Point (RP~lim~) is set at 50% of the RP~targ~.
+The primary indicator Target Reference Point (RP~targ~) is the ideal fishery state and is set at the average logbook CPUE for the years 2000-2017 because these years capture logbook requirements for the fishery in 2000 and represents contrasting data (highs and lows) in fishery performance. The exception to this includes North Stephens Passage (excludes 2000) and Lower Chatham (excludes 2013) due to having substintial outliers in those given years that influenced the Target Reference Point. The Trigger Reference Point (RP~trig~) is set between the Target and Limit Reference Point that prompts management actions and is set at 75% of the RP~targ~. The Limit Reference Point (RP~lim~) is set at the level at which stocks are considered in a danger zone and are no longer resilient to fishing pressure and is set at 50% of the RP~targ~.
 
 ## Monitoring Strategy {-}
 
@@ -156,14 +161,16 @@ As the primary performance indicator is the most readily available estimate of f
 ### Other Considerations for Management and Future Recommendations {-}
 Logbook CPUE currently lacks a soak time data field and cannot be standardized for comparison across years. Soak time was introduced as a reporting field in logbooks for the 2020 fishing season and will be used to inform this harvest strategy in future iterations. In the interim active fishing season may be looked at as a secondary performance indicator to assess fishery performance in lieu of soak time. 
 
-This harvest strategy may be amended in future iterations as more information and tools become available. This harvest strategy is a first step to increase transparency regarding management metrics utilized inseason and postseason. We recommend that this harvest strategy is further developed through the use of a management strategy evaluation (MSE). A MSE is a tool that uses simulation to test how well a harvest strategy performs and if the objectives of the harvest startegy are being achieved [@goethel2019, @punt2016]. 
+This harvest strategy may be amended in future iterations as more information and tools become available. This harvest strategy is a first step to increase transparency regarding management metrics utilized inseason and postseason. We recommend that this harvest strategy is further developed through the use of a management strategy evaluation (MSE). A MSE is a tool that uses simulation to test how well a harvest strategy performs and if the objectives of the harvest startegy are being achieved [@goethel2019; @punt2016]. 
 
 
 ## References
 
 <div id="refs"></div>
 
-# Area Reports
+# Management Area Reports
+Each management area report will provide an overview of seasonal trends in fishery performance through the most recent season. This includes comparing harvest (lbs) to corresponding GHLs, logbook CPUE compared to reference points (i.e. target, trigger, and limit), reviewing Tanner crab harvest influence, and spatial distribution of incidental catch during the annual Tanner crab stock assesment survey in Holkham Bay. 
+
 
 ## Northern
 
@@ -254,7 +261,7 @@ knitr::kable(dt, caption = "Golden King Crab logbook catch per unit effort (CPUE
 knitr::include_graphics("../figures/2020/Icy Strait logbook_cpue.png")
 ```
 
-```{r, fig.cap = "Icy Strait golden king crab logbook CPUE and pot lift proportions based on reduction of Tanner harvest influence.", out.width= "500px"}
+```{r, fig.cap = "Icy Strait golden king crab logbook CPUE and pot lift proportions based on reduction of Tanner crab harvest influence.", out.width= "500px"}
 knitr::include_graphics("../figures/2020/Icy Strait_gkc_cpue_proportion.png")
 ```
 
@@ -303,7 +310,7 @@ knitr::kable(dt, caption = "Golden King Crab logbook catch per unit effort (CPUE
 knitr::include_graphics("../figures/2020/North Stephens Passage logbook_cpue.png")
 ```
 
-```{r, fig.cap = "North Stephens Passage golden king crab logbook CPUE and pot lift proportions based on reduction of Tanner harvest influence.", out.width= "500px"}
+```{r, fig.cap = "North Stephens Passage golden king crab logbook CPUE and pot lift proportions based on reduction of Tanner crab harvest influence.", out.width= "500px"}
 knitr::include_graphics("../figures/2020/North_Stephens_Passage_gkc_cpue_proportion.png")
 ```
 
