@@ -332,10 +332,12 @@ gkc_cpue_prop %>%
        x ="Year",
        title = "Icy Strait",
        subtitle = "Removing Tanner bycatch based on proportion of harvest from logbooks") +
-  scale_x_continuous(breaks = seq(0, cur_yr+1, 3)) +
+  scale_y_continuous(breaks = seq(0.0, 15.0, 0.5)) +
+  scale_x_continuous(breaks = seq(1983, 2020, 2)) +
   #scale_fill_viridis_d() +
   #scale_color_viridis_d() +
-  theme(legend.title = element_blank()) +
+  theme(legend.title = element_blank(),
+        strip.background = element_blank()) +
   facet_wrap(~prop_cpue) -> cpue_prop_plot
 
 
@@ -346,10 +348,11 @@ gkc_cpue_prop %>%
   geom_col() +
   labs(y = "Total Pot Lifts (GKC logbook)",
        x = "Year") +
-  scale_x_continuous(breaks = seq(0, cur_yr+1, 3)) +
+  scale_x_continuous(breaks = seq(1983, 2020, 2)) +
   scale_y_continuous(label = scales::comma, breaks = seq(0, 15000, 500)) +
   #scale_fill_viridis_d() +
-  theme(legend.title = element_blank()) +
+  theme(legend.title = element_blank(),
+        strip.background = element_blank()) +
   facet_wrap(~prop_cpue) -> pots_prop_plot
 
 cpue_prop_plot / pots_prop_plot
