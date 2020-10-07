@@ -386,7 +386,7 @@ gkc_bio %>%
        y = "Number of Crab",
        title = "Holkham Bay",
        subtitle = "Number of GKC caught during the Tanner survey",
-       fill = "Recruit Status") +
+       fill = "Sex and Recruit Status") +
   scale_x_continuous(breaks = seq(0, cur_yr+1, 3)) +
   #scale_fill_colorblind() +
   theme(legend.position = c(0.15, 0.8))
