@@ -1,10 +1,10 @@
 ---
-title: "Recommended Harvest Strategy Southeast Alaska Golden King Crab (*Lithodes aequispinus*)"
-author: "Alaska Department of Fish and Game"
+title: "Recommended Harvest Strategy for Southeast Alaska Golden King Crab (*Lithodes aequispinus*)"
+author: "Andrew Olson and Katie Palof"
 date: "`r format(Sys.Date(), '%m/%d/%Y')`"
 output: #pdf_document
-        html_document
-  #bookdown::word_document2
+        #html_document
+  bookdown::word_document2
 bibliography: refs.bib
 csl: american-fisheries-society.csl
 header-includes: \usepackage{float}
@@ -18,7 +18,7 @@ opts_chunk$set(fig.width = 6, fig.height = 12, fig.pos = "H", echo = FALSE, warn
 
 
 # Background {-}
-The Alaska Department of Fish and Game (Department) golden king crab (GKC) fishery in Southeast Alaska is a data-limited fishery that is managed based on a 3-S management system (sex, size, and season). The management has been further developed by limiting the number of participants and gear, establishing guideline harvest levels (GHLs) that are set within guideline harvest ranges (GHRs) for each management area (Table 1), and allowing closure of management areas if there are stock health concerns. The majority of the harvest occurs in the commercial sector where the fishery extends across seven management areas (Northern, Icy Strait, North Stephens Passage, East Central, Mid and Lower Chatham Strait, and Southern). The Department annually evaluates stock status and establishes GHLs for each management area using fishery dependent data  [@olson2018spatial; @stratman2017]. 
+The Alaska Department of Fish and Game (Department) golden king crab (*Lithodes aequispinus*, GKC) fishery in Southeast Alaska is a data-limited fishery that is managed based on a 3-S management system (sex, size, and season). The management has been further developed by limiting the number of participants and gear, establishing guideline harvest levels (GHLs) that are set within guideline harvest ranges (GHRs) for each management area (Table 1), and allowing closure of management areas if there are stock health concerns. The majority of the harvest occurs in the commercial sector where the fishery extends across seven management areas (Northern, Icy Strait, North Stephens Passage, East Central, Mid and Lower Chatham Strait, and Southern). The Department annually evaluates stock status and establishes GHLs for each management area using fishery dependent data  [@olson2018spatial; @stratman2017]. 
 
 The commercial GKC fishery rapidly developed after the collapse of the red and blue king crab fisheries in the early 1980s. Harvest subsequently peaked in the late 1980s and early 2010s, experiencing a period of collapse in the 1990s. Harvest has been steadily declining since 2011 and many of the management areas are currently closed due to historically low fishery performance [@olson2018spatial; @stratman2017; @stratman2020].
 
@@ -93,14 +93,14 @@ where *CPUE* is the catch of legal size male GKC per unit of *effort (pot lifts)
 
 where *a* is a given management area, *s* is a given season, and *n* is the total number of logbook entries. Future iterations will incorporate soak time in order to standardize CPUE.
 
-Due to the GKC and Tanner crab fishery occurring concurrently, it is difficult to differentiate between GKC that are harvested as bycatch or directly targeted. GKC that are harvested as bycatch can bias logbook CPUE and consequently trigger management actions during and after the season. In order to evaluate this concern a proportion of $\geq$ 60% will be applied to GKC catch from commercial logbooks:
+Due to the GKC and Tanner crab fishery occurring concurrently, it is difficult to differentiate between GKC that are harvested as bycatch or directly targeted. GKC that are harvested as bycatch can bias logbook CPUE and consequently trigger management actions during and after the season. To evaluate this concern a proportion of $\geq$ 60% will be applied to GKC catch from commercial logbooks:
 
 \begin{equation}
 catch_{le}^{\geq{0.6}} = \frac{crab_{gkc}}{({total \ crab}_{gkc + tc})}
 \tag{3}
 \end{equation}
 
-where *catch* is for a given logbook entry (*le*), *gkc* is golden king crab and *tc* is Tanner crab.Then subsequently Equations (1) and (2) will be applied to calculate CPUE.
+where *catch* is for a given logbook entry (*le*), *gkc* is golden king crab and *tc* is Tanner crab. Then subsequently Equations (1) and (2) will be applied to calculate CPUE.
 
 A secondary performance indicator that will be used in this harvest strategy is commercial catch rate obtained from fish ticket data. With fish ticket data, CPUE is calculated using each harvest landing for the entire season divided by the difference between the first and last catch date (which is defined as active fishing season). This secondary CPUE indicator is defined as "pounds per pot day" and will aid in understanding catch rates over time:
 
