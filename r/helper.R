@@ -55,7 +55,26 @@ hvst_area <- function(mg_area, harv_ghl, cur_yr) {
   ggsave(paste0('./figures/', cur_yr, '/', mg_area, '_harvest.png'), fig1,  
          dpi = 600, width = 8, height = 5.5)
 
-  }
+}
+
+#harvest by area non-conf----
+#excludes harvest by management with less than 3 permit holders
+hvst_area_nonconf <-function(mg_area, harv_ghl_nonconf, cur_yr) {
+  harv_ghl_nonconf %>% 
+    filter(mgt_area == mg_area) %>%
+    ggplot(aes(year, total_lbs)) + 
+    geom_col() +
+    geom_point(aes(y = ghl)) + #need to draw GHL line across bar plot
+    ylab("Harvest (lbs)") + xlab("Year") +
+    scale_x_continuous(breaks = seq(0, cur_yr+1, 5)) +
+    scale_y_continuous(label = scales::comma, breaks =scales::pretty_breaks(n = 10)) + 
+    ggtitle(paste0(mg_area)) +
+    theme(legend.title = element_blank(), legend.position = c(0.75, 0.75)) -> fig1
+  fig1
+  ggsave(paste0('./figures/', cur_yr, '/', mg_area, '_harvest_nonconf.png'), fig1,  
+         dpi = 600, width = 8, height = 5.5)
+  
+}
 
 
 # target ref lbs per fishing day -----------
@@ -171,6 +190,50 @@ logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue, Lper1, Lper2, cur_yr){
     ggtitle(paste0(mg_area, " logbook data")) -> fig1
   fig1
   ggsave(paste0('./figures/', cur_yr, '/', mg_area, ' logbook_cpue.png'), fig1,  
+         dpi = 600, width = 10.5, height = 5.5)
+}
+
+
+### logbook data non-confidential-------------
+#less than 3 permit holders in a given managemetn area
+logbk_cpue_nonconf <- function(str_yr, end_yr, mg_area, log_cpue, Lper1, Lper2, cur_yr){
+  
+  log_cpue %>% 
+    group_by(mgt_area) %>% 
+    filter(year >= str_yr & year <= end_yr) %>%
+    summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
+  
+  avg_ten %>% 
+    filter(mgt_area == mg_area) %>% 
+    mutate(seventy_five = mean*Lper1, fifty = mean*Lper2) -> avg_ten2
+  
+  log_cpue %>% 
+    mutate(cpue = ifelse(permits >= 3, cpue, NA)) %>% #removes confidential CPUE if less than 3 permits holders and breaks line segments due to NA values
+    filter(mgt_area == mg_area) %>%
+    ggplot(aes(year, cpue)) + 
+    geom_line(lwd = 1) + 
+    #geom_ma(ma_fun = SMA, n = 3) + #adds 3yr simple moving average 
+    geom_hline(yintercept = avg_ten2$mean, lwd = 0.5, color = "green") +
+    geom_text(aes((str_yr-10), avg_ten2$mean, 
+                  label = paste0("Target Reference Point (avg ", str_yr, "-", end_yr, ")"), vjust = -1, hjust = 0.05)) +
+    geom_hline(yintercept = avg_ten2$seventy_five, lwd = 0.5, linetype = "dashed",color = "orange") +
+    geom_text(aes((str_yr-10), avg_ten2$seventy_five, 
+                  label = paste0("Trigger (", Lper1*100, "% of target)"), vjust = -1, hjust = 0.05)) +
+    geom_hline(yintercept = avg_ten2$fifty, lwd = 0.5, color = "red") +
+    geom_text(aes((str_yr-10), avg_ten2$fifty, 
+                  label = paste0("Limit Reference Point (", Lper2*100, "% of target)"), vjust = -1, hjust = 0.05)) +
+    geom_vline(xintercept = str_yr, linetype = "dashed") +
+    geom_vline(xintercept = end_yr, linetype = "dashed") +
+    annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") +
+    geom_point(size = 3, color = "dodgerblue") +
+    scale_y_continuous(breaks = seq(0.0, 15.0, 0.5)) +
+    scale_x_continuous(breaks = seq(1983, 2020, 2)) +
+    expand_limits(y = 0) +
+    ylab("Logbook CPUE (no. of crab/pot)") + 
+    xlab("Year") + 
+    ggtitle(paste0(mg_area, " logbook data")) -> fig1
+  fig1
+  ggsave(paste0('./figures/', cur_yr, '/', mg_area, ' logbook_cpue_nonconf.png'), fig1,  
          dpi = 600, width = 10.5, height = 5.5)
 }
 

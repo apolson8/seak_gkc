@@ -74,17 +74,17 @@ gkc_fish %>%
                                                               ifelse(i_fishery == "Southern GKC", "Southern", "Misc")))))))) %>%
   group_by(year, mgt_area) %>%
   summarise(total_lbs = sum(pounds), 
-            permits = length(unique(adfg_no))) -> harv # add permits using number of uniqeu ADF&G no
+            permits = length(unique(cfec_no))) -> harv # add permits using number of uniqeu ADF&G no
 
 harv %>%
   full_join(gkc_ghl) %>%
-  select(year, mgt_area, ghl, total_lbs) %>%
+  select(year, mgt_area, ghl, total_lbs, permits) %>%
   mutate(ghl = as.numeric(ghl)) -> harv_ghl
 
 
 
+
 #harvest by mgt area figures -----
-#need to add GHLs to figures
 hvst_area("Northern", harv_ghl, cur_yr)
 hvst_area("East Central", harv_ghl, cur_yr)
 hvst_area("Icy Strait", harv_ghl, cur_yr)
@@ -98,6 +98,24 @@ harv %>%
   select(year, mgt_area, diff, total_lbs, permits)  %>% 
   mutate(cpue = total_lbs / diff, 
          cpue2 = total_lbs / diff / permits) -> lbs_per_day
+
+#non-conf harvest
+harv %>%
+  filter(permits >= 3) %>%
+  full_join(gkc_ghl) %>% 
+  select(year, mgt_area, ghl, total_lbs, permits) %>%
+  mutate(ghl = as.numeric(ghl)) -> harv_ghl_nonconf
+
+
+#non-conf harvest by mgt area figures ----
+hvst_area_nonconf("Northern", harv_ghl_nonconf, cur_yr)
+hvst_area_nonconf("East Central", harv_ghl_nonconf, cur_yr)
+hvst_area_nonconf("Icy Strait", harv_ghl_nonconf, cur_yr)
+hvst_area_nonconf("Lower Chatham", harv_ghl_nonconf, cur_yr)
+hvst_area_nonconf("Mid-Chatham", harv_ghl_nonconf, cur_yr)
+hvst_area_nonconf("Southern", harv_ghl_nonconf, cur_yr)
+hvst_area_nonconf("North Stephens Passage", harv_ghl_nonconf, cur_yr)
+
 
 # lbs per active fishing day figure ------------------
 # make sure functions are loaded from helper.R file
@@ -120,14 +138,15 @@ gkc_log %>% filter(target_species_code == 923, !is.na(target_species_retained),
                                                        ifelse(i_fishery == "Northern GKC", "Northern",
                                                               ifelse(i_fishery == "Southern GKC", "Southern", "Misc"))))))),
          cpue = target_species_retained / number_pots_lifted) %>% 
-  select(year, mgt_area, cpue, number_pots_lifted) %>%
+  select(year, mgt_area, cpue, number_pots_lifted, cfec_no) %>%
   filter(!is.na(cpue), mgt_area != "Misc") %>% #have to add this here since 0 pots lifts for 0 crab is included here
   group_by(year, mgt_area) %>%
   summarise(sd = sd(cpue),
             cpue = mean(cpue),
             n = n(),
             se = sd / sqrt (n),
-            total_pots = sum(number_pots_lifted)) %>%
+            total_pots = sum(number_pots_lifted),
+            permits = length(unique(cfec_no))) %>%
   mutate(ll = cpue - 2 * se,
          ul = cpue + 2 * se,
          outlier = ifelse(mgt_area == "Lower Chatham" & #excludes outlier for Lower Chatham
@@ -149,6 +168,17 @@ logbk_cpue(2000, 2017, "Mid-Chatham", cpue_log, 0.75, 0.50, cur_yr)
 logbk_cpue(2001, 2017, "North Stephens Passage", cpue_log, 0.75, 0.50, cur_yr)
 logbk_cpue(2000, 2017, "Northern", cpue_log, 0.75, 0.50, cur_yr)
 logbk_cpue(2000, 2017, "Southern", cpue_log, 0.75, 0.50, cur_yr)
+
+#Figure Logbook CPUE non-conf----
+logbk_cpue_nonconf(2000, 2017, "East Central", cpue_log, 0.75, 0.50, cur_yr)
+logbk_cpue_nonconf(2000, 2017, "Icy Strait", cpue_log, 0.75, 0.50, cur_yr)
+logbk_cpue_nonconf(2000, 2017, "Lower Chatham", cpue_log, 0.75, 0.50, cur_yr)
+logbk_cpue_nonconf(2000, 2017, "Mid-Chatham", cpue_log, 0.75, 0.50, cur_yr)
+logbk_cpue_nonconf(2001, 2017, "North Stephens Passage", cpue_log, 0.75, 0.50, cur_yr)
+logbk_cpue_nonconf(2000, 2017, "Northern", cpue_log, 0.75, 0.50, cur_yr)
+logbk_cpue_nonconf(2000, 2017, "Southern", cpue_log, 0.75, 0.50, cur_yr)
+
+
 
 
 # panel figure  ------------
@@ -189,7 +219,8 @@ left_join(gkc_log, tanner_log, by = c("year", "adfg_no", "effort_date", "distric
 gkc_tanner_log %>%
   mutate(num_tanner = replace_na(num_tanner, 0), 
          prop_gkc = num_gkc/(num_tanner + num_gkc),
-         prop_gkc = replace_na(prop_gkc, 1)) -> log_summary
+         prop_gkc = replace_na(prop_gkc, 1)) %>%
+  filter(prop_gkc != 0) -> log_summary
 
 #need to look at CPUE scenarios based on proportion of harvest being GKC
 
@@ -281,14 +312,15 @@ gkc_dir_60 <-log_summary %>%
          !is.na(number_pots_lifted), 
          !is.na(i_fishery)) %>%
   mutate(cpue = num_gkc / number_pots_lifted) %>% 
-  dplyr::select(year, mgt_area, cpue, number_pots_lifted) %>%
+  dplyr::select(year, mgt_area, cpue, number_pots_lifted, cfec_no) %>%
   filter(!is.na(cpue), mgt_area != "Misc") %>% #have to add this here since 0 pots lifts for 0 crab is included here
   group_by(year, mgt_area) %>%
   summarise(sd = sd(cpue),
             cpue = mean(cpue),
             n = n(),
             se = sd / sqrt (n),
-            total_pots = sum(number_pots_lifted)) %>%
+            total_pots = sum(number_pots_lifted),
+            permits = length(unique(cfec_no))) %>%
   mutate(ll = cpue - 2 * se,
          ul = cpue + 2 * se,
          prop_cpue = ">=60%") 
@@ -300,14 +332,15 @@ gkc_dir_standard <-log_summary %>%
          !is.na(number_pots_lifted), 
          !is.na(i_fishery)) %>%
   mutate(cpue = num_gkc / number_pots_lifted) %>% 
-  dplyr::select(year, mgt_area, cpue, number_pots_lifted) %>%
+  dplyr::select(year, mgt_area, cpue, number_pots_lifted, cfec_no) %>%
   filter(!is.na(cpue), mgt_area != "Misc") %>% #have to add this here since 0 pots lifts for 0 crab is included here
   group_by(year, mgt_area) %>%
   summarise(sd = sd(cpue),
             cpue = mean(cpue),
             n = n(),
             se = sd / sqrt (n),
-            total_pots = sum(number_pots_lifted)) %>%
+            total_pots = sum(number_pots_lifted),
+            permits = length(unique(cfec_no))) %>%
   mutate(ll = cpue - 2 * se,
          ul = cpue + 2 * se,
          prop_cpue = "No Change") 
@@ -359,6 +392,51 @@ cpue_prop_plot / pots_prop_plot
 
 ggsave(paste0(fig_path, '/Icy Strait_gkc_cpue_proportion.png'), 
        width = 10, height = 9, units = "in", dpi = 200)
+
+#Non-confidential
+gkc_cpue_prop %>%
+  mutate(cpue = ifelse(permits >= 3, cpue, NA)) %>%
+  filter(mgt_area == "North Stephens Passage") %>%
+  ggplot(aes(year, cpue, fill = prop_cpue)) + 
+  geom_line() + 
+  geom_point(aes(color = prop_cpue), size = 2) +
+  #geom_ribbon(aes(ymin = ll, ymax = ul), alpha = 0.25) +
+  labs(y="Mean CPUE of GKC (crab/pot)", 
+       x ="Year",
+       title = "North Stephens Passage",
+       subtitle = "Removing Tanner bycatch based on proportion of harvest from logbooks") +
+  scale_y_continuous(breaks = seq(0.0, 15.0, 0.5)) +
+  scale_x_continuous(breaks = seq(1983, 2020, 2)) +
+  #scale_fill_viridis_d() +
+  #scale_color_viridis_d() +
+  theme(legend.title = element_blank(),
+        strip.background = element_blank()) +
+  facet_wrap(~prop_cpue) -> cpue_prop_plot
+
+
+#Analyzing pot lifts based on proportion of GKC vs TC harvest
+gkc_cpue_prop %>%
+  filter(mgt_area == "North Stephens Passage",
+         permits >= 3) %>%
+  ggplot(aes(year, total_pots, fill = prop_cpue)) +
+  geom_col() +
+  labs(y = "Total Pot Lifts (GKC logbook)",
+       x = "Year") +
+  scale_x_continuous(breaks = seq(1983, 2020, 2)) +
+  scale_y_continuous(label = scales::comma, breaks = seq(0, 15000, 500)) +
+  #scale_fill_viridis_d() +
+  theme(legend.title = element_blank(),
+        strip.background = element_blank()) +
+  facet_wrap(~prop_cpue) -> pots_prop_plot
+
+cpue_prop_plot / pots_prop_plot
+
+ggsave(paste0(fig_path, '/North_Stephens_Passage_gkc_cpue_proportion_nonconf.png'), 
+       width = 10, height = 9, units = "in", dpi = 200)
+
+
+
+
 
 
 #GKC data from Tanner stock assessment survey ----
