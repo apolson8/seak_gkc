@@ -3,8 +3,8 @@ title: "Recommended Harvest Strategy for Southeast Alaska Golden King Crab (*Lit
 author: "Andrew Olson and Katie Palof"
 date: "`r format(Sys.Date(), '%m/%d/%Y')`"
 output: #pdf_document
-        #html_document
-  bookdown::word_document2
+        html_document
+  #bookdown::word_document2
 bibliography: refs.bib
 csl: american-fisheries-society.csl
 header-includes: \usepackage{float}
@@ -18,7 +18,7 @@ opts_chunk$set(fig.width = 6, fig.height = 12, fig.pos = "H", echo = FALSE, warn
 
 
 # Background {-}
-The Alaska Department of Fish and Game (Department) golden king crab (*Lithodes aequispinus*, GKC) fishery in Southeast Alaska is a data-limited fishery that is managed based on a 3-S management system (sex, size, and season). The management has been further developed by limiting the number of participants and gear, establishing guideline harvest levels (GHLs) that are set within guideline harvest ranges (GHRs) for each management area (Table 1), and allowing closure of management areas if there are stock health concerns. The majority of the harvest occurs in the commercial sector where the fishery extends across seven management areas (Northern, Icy Strait, North Stephens Passage, East Central, Mid and Lower Chatham Strait, and Southern). The Department annually evaluates stock status and establishes GHLs for each management area using fishery dependent data  [@olson2018spatial; @stratman2017]. 
+The Alaska Department of Fish and Game (Department) golden king crab (*Lithodes aequispinus*, GKC) fishery in Southeast Alaska is a data-limited fishery that is managed based on a 3-S management system (sex, size, and season). The management has been further developed by limiting the number of participants and gear, establishing guideline harvest levels (GHLs) that are set within guideline harvest ranges (GHRs) for each management area (Table 1), and allowing closure of management areas if there are stock health concerns. Most of the harvest occurs in the commercial sector where the fishery extends across seven management areas (Northern, Icy Strait, North Stephens Passage, East Central, Mid and Lower Chatham Strait, and Southern). The Department annually evaluates stock status and establishes GHLs for each management area using fishery dependent data  [@olson2018spatial; @stratman2017]. 
 
 The commercial GKC fishery rapidly developed after the collapse of the red and blue king crab fisheries in the early 1980s. Harvest subsequently peaked in the late 1980s and early 2010s, experiencing a period of collapse in the 1990s. Harvest has been steadily declining since 2011 and many of the management areas are currently closed due to historically low fishery performance [@olson2018spatial; @stratman2017; @stratman2020].
 
@@ -63,7 +63,7 @@ Golden king crab are relatively long-lived slow growing species that have an asy
 
 
 ## Purpose {-}
-The purpose of this document is to lay the framework for a consistent and transparent inseason and postseason approach to determine GHLs and close fisheries when warranted.The harvest strategy described herein remains consistent with the Board of Fisheries' Policy on King and Tanner Crab Resource Management (90-04-FB, March, 1990) [5 AAC 34.080], the Southeast Alaska Golden King Crab Management Plan [5 AAC 34.114], and will be treated as a guideline for managing GKC and not a prescriptive step by step approach. Many factors and sources of information can affect determining GHLs or closing of fisheries that cannot be captured in a prescriptive framework. 
+The purpose of this document is to lay the framework for a consistent and transparent inseason and postseason approach to determine GHLs and close fisheries when warranted. The harvest strategy described herein remains consistent with the Board of Fisheries' Policy on King and Tanner Crab Resource Management (90-04-FB, March, 1990) [5 AAC 34.080], the Southeast Alaska Golden King Crab Management Plan [5 AAC 34.114], and will be treated as a guideline for managing GKC and not a prescriptive step by step approach. Many factors and sources of information can affect determining GHLs or closing of fisheries that cannot be captured in a prescriptive framework. 
 
 
 # Management Goals and Objectives{-}
@@ -72,7 +72,7 @@ The primary goal and objective is to recommend a harvest strategy for Southeast 
 Harvest strategies have been implemented for the GKC fisheries in the Aleutian Islands and Pribilof Islands to improve fisheries management and sustainability. These harvest strategies are comprised of biological, fishery dependent and independent reference points (i.e. mature male biomass, CPUE, annual recruitment, etc.) that are used in recommending the total allowable catch (TAC) or GHL for a given management area and season [@daly2019; @daly2020; @siddeek2020]. 
 
 ## Proposed plan {-}
-Here we propose a harvest strategy plan that informs inseason and postseason management through the use of fishery dependent performance indicators and management decision rules. 
+Here we propose a harvest strategy plan that informs inseason and postseason management using fishery dependent performance indicators and management decision rules. 
 
 
 ### Performance Indicators {-}
@@ -125,7 +125,7 @@ where *CPUE* is the harvest (lbs) per day for each fish ticket landing (*f*). Eq
 
 where *a* is a given management area, *s* is a given season, and *n* is the total number of fish ticket landings. 
 
-Supplementary information that may be evaluated in this harvest strategy includes biological, local ecological knowledge (LEK), and other anecdotal information that may not be captured quantitiatively in this harvest strategy framework.
+Supplementary information that may be evaluated in this harvest strategy includes biological, local ecological knowledge (LEK), and other anecdotal information that may not be captured quantitatively in this harvest strategy framework.
   
   + Biological information will be evaluated by analyzing carapace length (CL) mm frequencies by area and season for recruit classes of GKC sampled during commercial landings. Size of GKC is defined as the CL measurement. Recruit class is used as an indicator of shell age and is defined as recruit (new shell and a CL of 151–166mm) and postrecruit (new or old shell and a CL $\geq$ 167 mm).
   + LEK is experiential information from fishermen and the fishing industry  about the natural environment as it pertains to GKC. LEK will be evaluated and reviewed through permit holder comments in logbooks, communication with permit holders and industry representatives, and discussion at annual industry meetings [@ainsworth2011; @beaudreau2014]. Examples of LEK include lots of crab (recruits, females, and undersized), females with full clutches, softshell, sand fleas, bad weather, large tides, and parasitized crab.
@@ -134,6 +134,7 @@ Supplementary information that may be evaluated in this harvest strategy include
 The primary indicator Target Reference Point (RP~targ~) for each management area and is set at the average logbook CPUE for the years 2000-2017 because these years capture logbook requirements for the fishery in 2000 and represents contrasting data (highs and lows) in fishery performance. The exception to this includes North Stephens Passage (excludes 2000) and Lower Chatham (excludes 2013) due to having substantial outliers in those given years that influenced the Target Reference Point. The Trigger Reference Point (RP~trig~) is set between the Target and Limit Reference Point that prompts management actions and is set at 75% of the RP~targ~. The Limit Reference Point (RP~lim~) is set at the level at which stocks are considered in a danger zone and are no longer resilient to fishing pressure and is set at 50% of the RP~targ~.
 
 ## Monitoring Strategy {-}
+Herein lies a monitoring strategy with associated decision rules for inseason and post season management of GKC. 
 
 ### Decision Rules {-}
 As the primary performance indicator is the most readily available estimate of fishery performance the following decision rules will guide inseason and postseason management decisions.
@@ -141,9 +142,9 @@ As the primary performance indicator is the most readily available estimate of f
 
 * **Inseason**
     + Fishery performance will be assessed biweekly and/or with a minimum requirement of 500 pot lifts before taking management action whichever is the least restrictive under the following guidelines:
-        - If logbook CPUE is $\geq$ RP~targ~ manage to GHL;
-        - If logbook CPUE is $\geq$ RP~trig~ but $<$ RP~targ~ manage to GHL and monitor closely;
-        - If logbook CPUE is $\geq$ RP~lim~ and $<$ RP~trig~ fishery close early;
+        - If logbook CPUE is $\geq$ RP~targ~ manage to GHL.
+        - If logbook CPUE is $\geq$ RP~trig~ but $<$ RP~targ~ manage to GHL and monitor closely.
+        - If logbook CPUE is $\geq$ RP~lim~ and $<$ RP~trig~ fishery close early.
         - If logbook CPUE is $<$ RP~lim~ close fishery early **and** subsequent closure of management area for a minimum of 1 year for commercial and personal use fisheries the following season, depending upon a postseason review.
     
     + GHLs will not be changed inseason and are only subject to change per postseason decision rules.
@@ -151,19 +152,19 @@ As the primary performance indicator is the most readily available estimate of f
     
 * **Postseason **
     + **Increase in a GHL**
-        - If the most recent logbook CPUE is $>$ than the most recent previous season and is $>$ RP~targ~ the GHL may increase up to a maximum of 20% the following season;
-        - If the most recent logbook CPUE is $>$ than the most recent previous season and $\leq$ RP~targ~ and $>$ RP~trig~ the GHL may increase up to a maximum of 10% the following season;
-        - If the most recent logbook CPUE is $>$ than the most recent previous season and is $\leq$ RP~trig~ and $>$ RP~limit~ the GHL may increase up to a maximum of 5% the following season;
+        - If the most recent logbook CPUE is $>$ than the most recent previous season and is $>$ RP~targ~ the GHL may increase up to a maximum of 20% the following season.
+        - If the most recent logbook CPUE is $>$ than the most recent previous season and $\leq$ RP~targ~ and $>$ RP~trig~ the GHL may increase up to a maximum of 10% the following season.
+        - If the most recent logbook CPUE is $>$ than the most recent previous season and is $\leq$ RP~trig~ and $>$ RP~limit~ the GHL may increase up to a maximum of 5% the following season.
         - New GHLs may not exceed respective management area GHRs.
       
     + **Decrease in a GHL**
         - **If the fishery closed short of a GHL inseason due to poor fishery performance and/or the most recent CPUE is $<$ than the previous season the GHL will be decreased based on the following conditions:**
-        - If CPUE is $<$ than the most recent previous season and is $>$ RP~trig~ and $\leq$ RP~targ~ the GHL may be reduced up to a maximum of 40% the following season;
-        - If the fishery closed short in-season due to poor fishery performance and CPUE is $<$ than the most recent season and $>$ RP~lim~ then the GHL decrease the following season may be within 20% of the total harvest at the time of closure during the most recent previous season, but not less than 7,500 lbs;   
+        - If CPUE is $<$ than the most recent previous season and is $>$ RP~trig~ and $\leq$ RP~targ~ the GHL may be reduced up to a maximum of 40% the following season.
+        - If the fishery closed short in-season due to poor fishery performance and CPUE is $<$ than the most recent season and $>$ RP~lim~ then the GHL decrease the following season may be within 20% of the total harvest at the time of closure during the most recent previous season, but not less than 7,500 lbs.   
       
     + **Closure and Re-opening**
-        - If logbook CPUE is $<$ the RP~lim~ further management action may be required by implementing an area closure of a minimum of 1 year to reduce the risk of localized depletion;
-        - Upon re-opening an area after a closure the GHL will be equal to the harvest at the time of closure rounded to the nearest 1,000 lbs and must not be less than 7,500 lbs whichever is greatest. 
+        - If logbook CPUE is $<$ the RP~lim~ further management action may be required by implementing an area closure of a minimum of 1 year to reduce the risk of localized depletion.
+        - Upon re-opening an area after a closure, the GHL will be equal to the harvest at the time of closure rounded to the nearest 1,000 lbs and must not be less than 7,500 lbs whichever is greatest. 
 
         
 * **Review of GHLs or Decision Rules**
@@ -172,7 +173,7 @@ As the primary performance indicator is the most readily available estimate of f
 ### Other Considerations for Management and Future Recommendations {-}
 Logbook CPUE currently lacks a soak time data field and cannot be standardized for comparison across years. Soak time was introduced as a reporting field in logbooks for the 2020 fishing season and will be used to inform this harvest strategy in future iterations.
 
-This harvest strategy may be amended in future iterations as more information and tools become available. This harvest strategy is a first step to increase transparency regarding management metrics utilized for inseason and postseason decisions. We recommend that this harvest strategy is further developed through the use of a management strategy evaluation (MSE). A MSE is a tool that uses simulation to test how well a harvest strategy performs and if the objectives of the harvest strategy are being achieved [@goethel2019; @punt2016]. 
+This harvest strategy may be amended in future iterations as more information and tools become available. This harvest strategy is a first step to increase transparency regarding management metrics utilized for inseason and postseason decisions. We recommend that this harvest strategy is further developed using a management strategy evaluation (MSE). A MSE is a tool that uses simulation to test how well a harvest strategy performs and if the objectives of the harvest strategy are being achieved [@goethel2019; @punt2016]. 
 
 
 ## References
@@ -180,13 +181,13 @@ This harvest strategy may be amended in future iterations as more information an
 <div id="refs"></div>
 
 # Management Area Reports
-Each management area report will provide an overview of seasonal trends in fishery performance through the most recent season. This includes comparing harvest (lbs) to corresponding GHLs, logbook CPUE compared to reference points (i.e. target, trigger, and limit), reviewing Tanner crab harvest influence, and spatial distribution of incidental catch during the annual Tanner crab stock assessment survey in Holkham Bay. 
+Each management area report will provide an overview of seasonal trends in fishery performance through the most recent season. This includes comparing harvest (lbs) to corresponding GHLs, logbook CPUE compared to reference points (i.e. target, trigger, and limit), reviewing Tanner crab harvest influence, and spatial distribution of incidental catch during the annual Tanner crab stock assessment survey in Holkham Bay. Confidential harvest and effort data have been excluded from figures if less than 3 permit holders participated in a given management area for a given year.
 
 
 ## Northern
 
 ### Season Overview
-The Northern management area was closed for the 2020 season.
+The Northern management area was closed for the 2019 and 2020 seasons.
 
 ```{r, fig.cap = "Commercial GKC fishery harvest from the Northern management area. Dots represents the GHL in a given year (2001–Present).", out.width= "500px"}
 knitr::include_graphics("../figures/2020/Northern_harvest.png")
@@ -211,7 +212,7 @@ dt <- data.frame(
                   "75% of the Target Reference Point",
                   "50% of the Target Reference Point"))
 
-knitr::kable(dt, caption = "Golden King Crab logbook catch per unit effort (CPUE) reference points.",
+knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (CPUE) reference points.",
              col.names = c("Indicators",
              "Reference Point", "Description")) #%>% 
  # kable_styling(c("striped", "condensed"), 
@@ -224,7 +225,7 @@ knitr::kable(dt, caption = "Golden King Crab logbook catch per unit effort (CPUE
 ```
 
 
-```{r, fig.cap = "Northern golden king crab reference points (Target, Trigger, and Limit) utilizing logbook CPUE.", out.width= "500px"}
+```{r, fig.cap = "Northern golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE.", out.width= "500px"}
 knitr::include_graphics("../figures/2020/Northern logbook_cpue.png")
 ```
 
@@ -255,7 +256,7 @@ dt <- data.frame(
                   "75% of the Target Reference Point",
                   "50% of the Target Reference Point"))
 
-knitr::kable(dt, caption = "Golden King Crab logbook catch per unit effort (CPUE) reference points.",
+knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (CPUE) reference points.",
              col.names = c("Indicators",
                            "Reference Point", 
                            "Description")) #%>% 
@@ -268,7 +269,7 @@ knitr::kable(dt, caption = "Golden King Crab logbook catch per unit effort (CPUE
   #row_spec(3, bold = T, color = "white", background = "red") 
 ```
 
-```{r, fig.cap = "Icy Strait golden king crab reference points (Target, Trigger, and Limit) utilizing logbook CPUE.", out.width= "500px"}
+```{r, fig.cap = "Icy Strait golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE.", out.width= "500px"}
 knitr::include_graphics("../figures/2020/Icy Strait logbook_cpue.png")
 ```
 
@@ -303,7 +304,7 @@ dt <- data.frame(
                   "75% of the Target Reference Point",
                   "50% of the Target Reference Point"))
 
-knitr::kable(dt, caption = "Golden King Crab logbook catch per unit effort (CPUE) reference points.",
+knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (CPUE) reference points.",
              col.names = c("Indicators",
                            "Reference Point",
                            "Description")) #%>% 
@@ -317,7 +318,7 @@ knitr::kable(dt, caption = "Golden King Crab logbook catch per unit effort (CPUE
 
 ```
 
-```{r, fig.cap = "North Stephens Passage golden king crab reference points (Target, Trigger, and Limit) utilizing logbook CPUE.", out.width= "500px"}
+```{r, fig.cap = "North Stephens Passage golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE.", out.width= "500px"}
 knitr::include_graphics("../figures/2020/North Stephens Passage logbook_cpue.png")
 ```
 
@@ -367,7 +368,7 @@ dt <- data.frame(
                   "75% of the Target Reference Point",
                   "50% of the Target Reference Point"))
 
-knitr::kable(dt, caption = "Golden King Crab logbook catch per unit effort (CPUE) reference points.",
+knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (CPUE) reference points.",
              col.names = c("Indicators",
                            "Reference Point",
                            "Description")) #%>% 
@@ -380,7 +381,7 @@ knitr::kable(dt, caption = "Golden King Crab logbook catch per unit effort (CPUE
   #row_spec(3, bold = T, color = "white", background = "red") 
 ```
 
-```{r, fig.cap = "East Central golden king crab reference points (Target, Trigger, and Limit) utilizing logbook CPUE.", out.width= "500px"}
+```{r, fig.cap = "East Central golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE.", out.width= "500px"}
 knitr::include_graphics("../figures/2020/East Central logbook_cpue.png")
 ```
 
@@ -412,7 +413,7 @@ dt <- data.frame(
                   "75% of the Target Reference Point",
                   "50% of the Target Reference Point"))
 
-knitr::kable(dt, caption = "Golden King Crab logbook catch per unit effort (CPUE) reference points.",
+knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (CPUE) reference points.",
              col.names = c("Indicators",
                            "Reference Point",
                            "Description")) #%>% 
@@ -425,7 +426,7 @@ knitr::kable(dt, caption = "Golden King Crab logbook catch per unit effort (CPUE
   #row_spec(3, bold = T, color = "white", background = "red") 
 ```
 
-```{r, fig.cap = "Mid-Chatham Strait golden king crab reference points (Target, Trigger, and Limit) utilizing logbook CPUE.", out.width= "500px"}
+```{r, fig.cap = "Mid-Chatham Strait golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE.", out.width= "500px"}
 knitr::include_graphics("../figures/2020/Mid-Chatham logbook_cpue.png")
 ```
 
@@ -456,7 +457,7 @@ dt <- data.frame(
                   "75% of the Target Reference Point",
                   "50% of the Target Reference Point"))
 
-knitr::kable(dt, caption = "Golden King Crab logbook catch per unit effort (CPUE) reference points.",
+knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (CPUE) reference points.",
              col.names = c("Indicators",
                            "Reference Point",
                            "Description")) #%>% 
@@ -469,7 +470,7 @@ knitr::kable(dt, caption = "Golden King Crab logbook catch per unit effort (CPUE
   #row_spec(3, bold = T, color = "white", background = "red") 
 ```
 
-```{r, fig.cap = "Lower Chatham Strait golden king crab reference points (Target, Trigger, and Limit) utilizing logbook CPUE (excludes 2013 outlier).", out.width= "500px"}
+```{r, fig.cap = "Lower Chatham Strait golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE (excludes 2013 outlier).", out.width= "500px"}
 knitr::include_graphics("../figures/2020/Lower Chatham logbook_cpue.png")
 ```
 
@@ -499,7 +500,7 @@ dt <- data.frame(
                   "75% of the Target Reference Point",
                   "50% of the Target Reference Point"))
 
-knitr::kable(dt, caption = "Golden King Crab logbook catch per unit effort (CPUE) reference points.",
+knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (CPUE) reference points.",
              col.names = c("Indicators",
                            "Reference Point",
                            "Description")) #%>% 
@@ -512,6 +513,6 @@ knitr::kable(dt, caption = "Golden King Crab logbook catch per unit effort (CPUE
   #row_spec(3, bold = T, color = "white", background = "red") 
 ```
 
-```{r, fig.cap = "Southern golden king crab reference points (Target, Trigger, and Limit) utilizing logbook CPUE.", out.width= "500px"}
+```{r, fig.cap = "Southern golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE.", out.width= "500px"}
 knitr::include_graphics("../figures/2020/Southern logbook_cpue.png")
 ```

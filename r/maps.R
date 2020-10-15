@@ -60,12 +60,12 @@ ggmap(get_stamenmap(bbox = hlk_bay,
   xlab("Longitude (Decimal Degrees)") + 
   labs(title ="Holkham Bay",
        subtitle = "Number of GKC caught during the Tanner survey") +
-  facet_wrap(~year, nrow = 2) +
+  facet_wrap(~year, ncol = 2) +
   theme(legend.position = "bottom",
         strip.background = element_blank())
   
 ggsave(paste0(fig_path, '/holkham_bay_gkc_survey_bycatch.png'), 
-       width = 9, height = 8, units = "in", dpi = 200)  
+       width = 9, height = 12, units = "in", dpi = 200)  
   
   
   

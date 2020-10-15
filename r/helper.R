@@ -31,8 +31,10 @@ library(patchwork)
 ##THEMES FOR GRAPHS ---------
 loadfonts(device="win")
 windowsFonts(Times=windowsFont("TT Times New Roman"))
-theme_set(theme_bw(base_size=12,base_family='serif')
-          +theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()))
+theme_set(theme_bw(base_size=14,base_family='serif')
+          +theme(panel.grid.major = element_blank(), 
+                 panel.grid.minor = element_blank(),
+                 axis.text = element_text(size = 14)))
 
 #COLOR BLIND PALETTE --------------
 cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
@@ -45,7 +47,8 @@ hvst_area <- function(mg_area, harv_ghl, cur_yr) {
   filter(mgt_area == mg_area) %>%
   ggplot(aes(year, total_lbs)) + 
     geom_col() +
-    geom_point(aes(y = ghl)) + #need to draw GHL line across bar plot
+    geom_point(aes(y = ghl),
+               size = 2) + #need to draw GHL line across bar plot
     ylab("Harvest (lbs)") + xlab("Year") +
     scale_x_continuous(breaks = seq(0, cur_yr+1, 5)) +
     scale_y_continuous(label = scales::comma, breaks =scales::pretty_breaks(n = 10)) + 
@@ -53,7 +56,7 @@ hvst_area <- function(mg_area, harv_ghl, cur_yr) {
     theme(legend.title = element_blank(), legend.position = c(0.75, 0.75)) -> fig1
   fig1
   ggsave(paste0('./figures/', cur_yr, '/', mg_area, '_harvest.png'), fig1,  
-         dpi = 600, width = 8, height = 5.5)
+         dpi = 600, width = 10, height = 5)
 
 }
 
@@ -64,7 +67,8 @@ hvst_area_nonconf <-function(mg_area, harv_ghl_nonconf, cur_yr) {
     filter(mgt_area == mg_area) %>%
     ggplot(aes(year, total_lbs)) + 
     geom_col() +
-    geom_point(aes(y = ghl)) + #need to draw GHL line across bar plot
+    geom_point(aes(y = ghl),
+               size = 2) + #need to draw GHL line across bar plot
     ylab("Harvest (lbs)") + xlab("Year") +
     scale_x_continuous(breaks = seq(0, cur_yr+1, 5)) +
     scale_y_continuous(label = scales::comma, breaks =scales::pretty_breaks(n = 10)) + 
@@ -72,7 +76,7 @@ hvst_area_nonconf <-function(mg_area, harv_ghl_nonconf, cur_yr) {
     theme(legend.title = element_blank(), legend.position = c(0.75, 0.75)) -> fig1
   fig1
   ggsave(paste0('./figures/', cur_yr, '/', mg_area, '_harvest_nonconf.png'), fig1,  
-         dpi = 600, width = 8, height = 5.5)
+         dpi = 600, width = 10, height = 5.5)
   
 }
 

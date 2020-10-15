@@ -459,18 +459,20 @@ gkc_bio %>%
   group_by(i_year, location, recruit_status) %>%
   summarise(total_crab = sum(number_of_specimens)) %>%
   ggplot(aes(i_year, total_crab, fill = recruit_status)) +
-  geom_col(position = "dodge") +
+  geom_col() +
   labs(x = "Year",
        y = "Number of Crab",
        title = "Holkham Bay",
        subtitle = "Number of GKC caught during the Tanner survey",
        fill = "Sex and Recruit Status") +
   scale_x_continuous(breaks = seq(0, cur_yr+1, 3)) +
+  scale_y_continuous(breaks = seq(0,500, 25)) +
   #scale_fill_colorblind() +
-  theme(legend.position = c(0.15, 0.8))
+  scale_fill_viridis_d() +
+  theme(legend.position = c(0.15, 0.7))
 
 ggsave(paste0(fig_path, '/holkham_bay_gkc_recruit_status.png'), 
-       width = 7, height = 6, units = "in", dpi = 200)
+       width = 10, height = 5, units = "in", dpi = 200)
 
 
 #soak time-----
