@@ -55,8 +55,7 @@ factor(harvest$season_ref, levels = c("68-69", "69-70", "70-71", "71-72", "72-73
                                          "09-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18", "18-19", "19-20")) -> harvest$season_ref
 
 harvest %>%
-  filter(season_ref != "19-20", 
-         mgt_area != "Misc" & mgt_area != "") %>%
+  filter(mgt_area != "Misc" & mgt_area != "") %>%
 ggplot(aes(season_ref, total_lbs)) + geom_col(aes(fill = mgt_area), color = "white") +
   ylab("Harvest (lbs)") + xlab("Season") +
   #scale_x_continuous(breaks = seq(0, cur_yr+1, 5)) +

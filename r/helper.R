@@ -27,6 +27,8 @@ library(here)
 library(tidyquant)
 library(DiagrammeR)
 library(patchwork)
+library(gganimate)
+library(gifski)
 
 ##THEMES FOR GRAPHS ---------
 loadfonts(device="win")
@@ -45,15 +47,18 @@ hvst_area <- function(mg_area, harv_ghl, cur_yr) {
   
   harv_ghl %>%
   filter(mgt_area == mg_area) %>%
-  ggplot(aes(year, total_lbs)) + 
+  ggplot(aes(season_num, total_lbs)) + 
     geom_col() +
     geom_point(aes(y = ghl),
                size = 2) + #need to draw GHL line across bar plot
-    ylab("Harvest (lbs)") + xlab("Year") +
-    scale_x_continuous(breaks = seq(0, cur_yr+1, 5)) +
+    ylab("Harvest (lbs)") + xlab("Season") +
+    scale_x_continuous(breaks = seq(0, cur_yr+1, 2)) +
     scale_y_continuous(label = scales::comma, breaks =scales::pretty_breaks(n = 10)) + 
     ggtitle(paste0(mg_area)) +
-    theme(legend.title = element_blank(), legend.position = c(0.75, 0.75)) -> fig1
+    theme(legend.title = element_blank(), 
+          legend.position = c(0.75, 0.75),
+          axis.text.x = element_text(angle = 90,
+                                     vjust = 0.5)) -> fig1
   fig1
   ggsave(paste0('./figures/', cur_yr, '/', mg_area, '_harvest.png'), fig1,  
          dpi = 600, width = 10, height = 5)
@@ -65,15 +70,18 @@ hvst_area <- function(mg_area, harv_ghl, cur_yr) {
 hvst_area_nonconf <-function(mg_area, harv_ghl_nonconf, cur_yr) {
   harv_ghl_nonconf %>% 
     filter(mgt_area == mg_area) %>%
-    ggplot(aes(year, total_lbs)) + 
+    ggplot(aes(season_num, total_lbs)) + 
     geom_col() +
     geom_point(aes(y = ghl),
                size = 2) + #need to draw GHL line across bar plot
-    ylab("Harvest (lbs)") + xlab("Year") +
-    scale_x_continuous(breaks = seq(0, cur_yr+1, 5)) +
+    ylab("Harvest (lbs)") + xlab("Season") +
+    scale_x_continuous(breaks = seq(0, cur_yr+1, 2)) +
     scale_y_continuous(label = scales::comma, breaks =scales::pretty_breaks(n = 10)) + 
     ggtitle(paste0(mg_area)) +
-    theme(legend.title = element_blank(), legend.position = c(0.75, 0.75)) -> fig1
+    theme(legend.title = element_blank(), 
+          legend.position = c(0.75, 0.75),
+          axis.text.x = element_text(angle = 90,
+                                     vjust = 0.5)) -> fig1
   fig1
   ggsave(paste0('./figures/', cur_yr, '/', mg_area, '_harvest_nonconf.png'), fig1,  
          dpi = 600, width = 10, height = 5.5)
@@ -87,39 +95,110 @@ hvst_area_nonconf <-function(mg_area, harv_ghl_nonconf, cur_yr) {
 #end_yr = 2017
 #mg_area = "Lower Chatham Strait GKC"
 
-lbs_per_day_graph <- function(str_yr, end_yr, mg_area, lbs_per_day, cur_yr){
+lbs_per_day_graph <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day, cur_yr){
 
 lbs_per_day %>% 
   group_by(mgt_area) %>% 
-  filter(year >= str_yr & year <= end_yr) %>%
+  filter(season_num >= str_yr & season_num <= end_yr) %>%
   summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
 
 avg_ten %>% 
   filter(mgt_area == mg_area) %>% 
-  mutate(fifty = mean*0.50, twenty = mean*0.20) -> avg_ten2
+  mutate(fifty = mean*0.75, twenty = mean*0.50) -> avg_ten2
+
+lbs_per_day %>%
+  group_by(mgt_area) %>%
+  filter(season_num >= str_yr2 & season_num <= end_yr2) %>%
+  summarise(mean2 = mean(cpue, na.rm = TRUE)) -> avg_lgterm
+
+avg_lgterm %>%
+  filter(mgt_area == mg_area) %>%
+  mutate(fifty = mean2*0.75, twenty = mean2*0.50) -> avg_lgterm2
 
 lbs_per_day %>% 
   filter(mgt_area == mg_area) %>% 
-  ggplot(aes(year, cpue)) + 
+  ggplot(aes(season_num, cpue)) + 
   geom_line(lwd = 1) + 
-  geom_ma(ma_fun = SMA, n = 3) + #adds 3 yr simple moving average
-  geom_hline(yintercept = avg_ten2$mean, lwd = 0.5, color = "green") +
-  geom_text(aes(1977, avg_ten2$mean, 
-                label = paste0("Target Reference Point (avg ", str_yr, "-", end_yr, ")"), vjust = -1, hjust = 0.05)) +
-  geom_hline(yintercept = avg_ten2$fifty, lwd = 0.5, linetype = "dashed",color = "orange") +
-  geom_text(aes(1977, avg_ten2$fifty, label = "Trigger (50% of target)", vjust = -1, hjust = 0.05)) +
-  geom_hline(yintercept = avg_ten2$twenty, lwd = 0.5, color = "red") +
-  geom_text(aes(1976.5, avg_ten2$twenty, label = "Limit Reference Point  (20% of target)", vjust = -1, hjust = 0.05)) +
-  geom_vline(xintercept = str_yr, linetype = "dashed") +
-  geom_vline(xintercept = end_yr, linetype = "dashed") +
-  annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") +
+  #geom_ma(ma_fun = SMA, n = 3) + #adds 3 yr simple moving average
+  geom_hline(yintercept = avg_ten2$mean, lwd = 0.5, color = "blue", linetype = "dashed") +
+  #geom_text(aes(1970, avg_ten2$mean, 
+                #label = paste0("lbs/pot day (avg ", str_yr, "-", end_yr, ") industry request"), vjust = -1, hjust = 0.05)) +
+  geom_hline(yintercept = avg_lgterm2$mean2, lwd = 0.5, color = "green") +
+  #geom_text(aes(1970, avg_lgterm2$mean2,
+                #label = paste0("lbs/pot day (avg ", str_yr2, "-", end_yr2, ")"), vjust = -1, hjust = 0.05)) +
+  
+  #geom_hline(yintercept = avg_ten2$fifty, lwd = 0.5, linetype = "dashed",color = "orange") +
+  #geom_text(aes(1977, avg_ten2$fifty, label = "Trigger (75% of target)", vjust = -1, hjust = 0.05)) +
+  #geom_hline(yintercept = avg_ten2$twenty, lwd = 0.5, color = "red") +
+  #geom_text(aes(1976.5, avg_ten2$twenty, label = "Limit Reference Point  (50% of target)", vjust = -1, hjust = 0.05)) +
+  #geom_vline(xintercept = str_yr, linetype = "dashed") +
+  #geom_vline(xintercept = end_yr, linetype = "dashed") +
+  #annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") +
   geom_point(size = 3, color = "dodgerblue") + 
+  scale_y_continuous(labels = scales::comma) +
+  scale_x_continuous(breaks = seq(1965, 2022, 2)) +
   ylab("CPUE (lbs/pot day)") + 
-  xlab("Year") + 
-  ggtitle(paste0(mg_area, " -active fishing season")) -> fig1
+  xlab("Season") + 
+  ggtitle(paste0(mg_area, " -active fishing season")) +
+  theme(axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5))-> fig1
 fig1
-ggsave(paste0('./figures/', cur_yr, '/', mg_area, '_lbs_activeF.png'), fig1,  
+ggsave(paste0('./figures/', cur_yr, '/', mg_area, '_lbs_activeF_industry_request.png'), fig1,  
        dpi = 600, width = 8, height = 5.5)
+}
+
+# nonconf target ref lbs per fishing day -----------
+lbs_per_day_nonconf <- function(str_yr, end_yr, str_yr2, end_yr2, mg_area, lbs_per_day, cur_yr){
+  
+  lbs_per_day %>% 
+    group_by(mgt_area) %>% 
+    filter(season_num >= str_yr & season_num <= end_yr) %>%
+    summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
+  
+  avg_ten %>% 
+    filter(mgt_area == mg_area) %>% 
+    mutate(fifty = mean*0.75, twenty = mean*0.50) -> avg_ten2
+  
+  lbs_per_day %>%
+    group_by(mgt_area) %>%
+    filter(season_num >= str_yr2 & season_num <= end_yr2) %>%
+    summarise(mean2 = mean(cpue, na.rm = TRUE)) -> avg_lgterm
+  
+  avg_lgterm %>%
+    filter(mgt_area == mg_area) %>%
+    mutate(fifty = mean2*0.75, twenty = mean2*0.50) -> avg_lgterm2
+  
+  lbs_per_day %>% 
+    filter(mgt_area == mg_area) %>% 
+    mutate(cpue = ifelse(permits >= 3, cpue, NA)) %>%
+    ggplot(aes(season_num, cpue)) + 
+    geom_line(lwd = 1) + 
+    #geom_ma(ma_fun = SMA, n = 3) + #adds 3 yr simple moving average
+    #geom_hline(yintercept = avg_ten2$mean, lwd = 0.5, color = "blue", linetype = "dashed") +
+    #geom_text(aes(1970, avg_ten2$mean, 
+    #label = paste0("lbs/pot day (avg ", str_yr, "-", end_yr, ") industry request"), vjust = -1, hjust = 0.05)) +
+    #geom_hline(yintercept = avg_lgterm2$mean2, lwd = 0.5, color = "green") +
+    #geom_text(aes(1970, avg_lgterm2$mean2,
+    #label = paste0("lbs/pot day (avg ", str_yr2, "-", end_yr2, ")"), vjust = -1, hjust = 0.05)) +
+    
+    #geom_hline(yintercept = avg_ten2$fifty, lwd = 0.5, linetype = "dashed",color = "orange") +
+    #geom_text(aes(1977, avg_ten2$fifty, label = "Trigger (75% of target)", vjust = -1, hjust = 0.05)) +
+    #geom_hline(yintercept = avg_ten2$twenty, lwd = 0.5, color = "red") +
+    #geom_text(aes(1976.5, avg_ten2$twenty, label = "Limit Reference Point  (50% of target)", vjust = -1, hjust = 0.05)) +
+    #geom_vline(xintercept = str_yr, linetype = "dashed") +
+    #geom_vline(xintercept = end_yr, linetype = "dashed") +
+    #annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") +
+    geom_point(size = 3, color = "dodgerblue") + 
+    scale_y_continuous(labels = scales::comma) +
+    scale_x_continuous(breaks = seq(1965, 2022, 2)) +
+    ylab("CPUE (lbs/pot day)") + 
+    xlab("Season") + 
+    ggtitle(paste0(mg_area, " -active fishing season")) +
+    theme(axis.text.x = element_text(angle = 90,
+                                     vjust = 0.5))-> fig1
+  fig1
+  ggsave(paste0('./figures/', cur_yr, '/', mg_area, '_lbs_activeF_nonconf.png'), fig1,  
+         dpi = 600, width = 8, height = 5.5)
 }
 
 lbs_per_day_permit_graph <- function(str_yr, end_yr, mg_area, lbs_per_day, cur_yr){
@@ -168,10 +247,12 @@ logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue, Lper1, Lper2, cur_yr){
     filter(mgt_area == mg_area) %>% 
     mutate(seventy_five = mean*Lper1, fifty = mean*Lper2) -> avg_ten2
   
+  
   log_cpue %>% 
     filter(mgt_area == mg_area) %>% 
     ggplot(aes(year, cpue)) + 
     geom_line(lwd = 1) + 
+    geom_ribbon(aes(ymin = ll, ymax = ul), alpha = 0.3, fill = "dodgerblue") +
     #geom_ma(ma_fun = SMA, n = 3) + #adds 3yr simple moving average 
     geom_hline(yintercept = avg_ten2$mean, lwd = 0.5, color = "green") +
     geom_text(aes((str_yr-10), avg_ten2$mean, 
@@ -184,22 +265,71 @@ logbk_cpue <- function(str_yr, end_yr, mg_area, log_cpue, Lper1, Lper2, cur_yr){
                   label = paste0("Limit Reference Point (", Lper2*100, "% of target)"), vjust = -1, hjust = 0.05)) +
     geom_vline(xintercept = str_yr, linetype = "dashed") +
     geom_vline(xintercept = end_yr, linetype = "dashed") +
-    annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") +
+    annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.2, fill = "grey70") +
     geom_point(size = 3, color = "dodgerblue") + 
     scale_y_continuous(breaks = seq(0.0, 15.0, 0.5)) +
     scale_x_continuous(breaks = seq(1983, 2020, 2)) +
     expand_limits(y = 0) +
     ylab("Logbook CPUE (no. of crab/pot)") + 
-    xlab("Year") + 
+    xlab("Season") + 
     ggtitle(paste0(mg_area, " logbook data")) -> fig1
   fig1
   ggsave(paste0('./figures/', cur_yr, '/', mg_area, ' logbook_cpue.png'), fig1,  
          dpi = 600, width = 10.5, height = 5.5)
 }
 
+### logbook data -------------
+#industry request for 75%, 60%, and 40%
+logbk_cpue_indstry <- function(str_yr, end_yr, mg_area, log_cpue, Lper1, Lper2, Lper3, cur_yr){
+  
+  log_cpue %>% 
+    group_by(mgt_area) %>% 
+    filter(year >= str_yr & year <= end_yr) %>%
+    summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
+  
+  avg_ten %>% 
+    filter(mgt_area == mg_area) %>% 
+    mutate(seventy_five = mean*Lper1, sixty = seventy_five*Lper2, forty = seventy_five*Lper3) -> avg_ten2
+  
+  
+  log_cpue %>% 
+    filter(mgt_area == mg_area) %>% 
+    ggplot(aes(year, cpue)) + 
+    geom_line(lwd = 1) + 
+    geom_ribbon(aes(ymin = ll, ymax = ul), alpha = 0.3, fill = "dodgerblue") +
+    #geom_ma(ma_fun = SMA, n = 3) + #adds 3yr simple moving average 
+    geom_hline(yintercept = avg_ten2$mean, lwd = 0.5, color = "blue") +
+    geom_text(aes((str_yr-10), avg_ten2$mean, 
+                  label = paste0("Logbook CPUE (avg ", str_yr, "-", end_yr, ")"), vjust = -1, hjust = 0.05)) +
+    geom_hline(yintercept = avg_ten2$seventy_five, lwd = 0.5, color = "green") +
+    geom_text(aes((str_yr-10), avg_ten2$seventy_five, 
+                  label = paste0("Target (", Lper1*100, "% of avg)"), vjust = -1, hjust = 0.05)) +
+    geom_hline(yintercept = avg_ten2$sixty, lwd = 0.5, linetype = "dashed", color = "orange") +
+    geom_text(aes((str_yr-10), avg_ten2$sixty, 
+                  label = paste0("Trigger (", Lper2*100, "% of target)"), vjust = -1, hjust = 0.05)) +
+    geom_hline(yintercept = avg_ten2$forty, lwd = 0.5, color = "red") +
+    geom_text(aes((str_yr-10), avg_ten2$forty, 
+                  label = paste0("Limit Reference Point (", Lper3*100, "% of target)"), vjust = -1, hjust = 0.05)) +
+    geom_vline(xintercept = str_yr, linetype = "dashed") +
+    geom_vline(xintercept = end_yr, linetype = "dashed") +
+    annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.2, fill = "grey70") +
+    geom_point(size = 3, color = "dodgerblue") + 
+    scale_y_continuous(breaks = seq(0.0, 15.0, 0.5)) +
+    scale_x_continuous(breaks = seq(1983, 2020, 2)) +
+    expand_limits(y = 0) +
+    ylab("Logbook CPUE (no. of crab/pot)") + 
+    xlab("Season") + 
+    ggtitle(paste0(mg_area, " logbook data")) -> fig1
+  fig1
+  ggsave(paste0('./figures/', cur_yr, '/', mg_area, ' logbook_cpue_60_40.png'), fig1,  
+         dpi = 600, width = 10.5, height = 5.5)
+}
+
+
+
 
 ### logbook data non-confidential-------------
-#less than 3 permit holders in a given managemetn area
+#less than 3 permit holders in a given management area
 logbk_cpue_nonconf <- function(str_yr, end_yr, mg_area, log_cpue, Lper1, Lper2, cur_yr){
   
   log_cpue %>% 
@@ -216,28 +346,78 @@ logbk_cpue_nonconf <- function(str_yr, end_yr, mg_area, log_cpue, Lper1, Lper2, 
     filter(mgt_area == mg_area) %>%
     ggplot(aes(year, cpue)) + 
     geom_line(lwd = 1) + 
+    geom_ribbon(aes(ymin = ll, ymax = ul), alpha = 0.3, fill = "dodgerblue") +
     #geom_ma(ma_fun = SMA, n = 3) + #adds 3yr simple moving average 
-    geom_hline(yintercept = avg_ten2$mean, lwd = 0.5, color = "green") +
-    geom_text(aes((str_yr-10), avg_ten2$mean, 
-                  label = paste0("Target Reference Point (avg ", str_yr, "-", end_yr, ")"), vjust = -1, hjust = 0.05)) +
-    geom_hline(yintercept = avg_ten2$seventy_five, lwd = 0.5, linetype = "dashed",color = "orange") +
-    geom_text(aes((str_yr-10), avg_ten2$seventy_five, 
-                  label = paste0("Trigger (", Lper1*100, "% of target)"), vjust = -1, hjust = 0.05)) +
-    geom_hline(yintercept = avg_ten2$fifty, lwd = 0.5, color = "red") +
-    geom_text(aes((str_yr-10), avg_ten2$fifty, 
-                  label = paste0("Limit Reference Point (", Lper2*100, "% of target)"), vjust = -1, hjust = 0.05)) +
-    geom_vline(xintercept = str_yr, linetype = "dashed") +
-    geom_vline(xintercept = end_yr, linetype = "dashed") +
-    annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "dodgerblue") +
+    #geom_hline(yintercept = avg_ten2$mean, lwd = 0.5, color = "green") +
+    #geom_text(aes((str_yr-10), avg_ten2$mean, 
+                  #label = paste0("Target Reference Point (avg ", str_yr, "-", end_yr, ")"), vjust = -1, hjust = 0.05)) +
+    #geom_hline(yintercept = avg_ten2$seventy_five, lwd = 0.5, linetype = "dashed",color = "orange") +
+    #geom_text(aes((str_yr-10), avg_ten2$seventy_five, 
+                  #label = paste0("Trigger (", Lper1*100, "% of target)"), vjust = -1, hjust = 0.05)) +
+    #geom_hline(yintercept = avg_ten2$fifty, lwd = 0.5, color = "red") +
+    #geom_text(aes((str_yr-10), avg_ten2$fifty, 
+                  #label = paste0("Limit Reference Point (", Lper2*100, "% of target)"), vjust = -1, hjust = 0.05)) +
+    #geom_vline(xintercept = str_yr, linetype = "dashed") +
+    #geom_vline(xintercept = end_yr, linetype = "dashed") +
+    #annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.2, fill = "grey70") +
     geom_point(size = 3, color = "dodgerblue") +
     scale_y_continuous(breaks = seq(0.0, 15.0, 0.5)) +
     scale_x_continuous(breaks = seq(1983, 2020, 2)) +
     expand_limits(y = 0) +
     ylab("Logbook CPUE (no. of crab/pot)") + 
-    xlab("Year") + 
+    xlab("Season") + 
     ggtitle(paste0(mg_area, " logbook data")) -> fig1
   fig1
   ggsave(paste0('./figures/', cur_yr, '/', mg_area, ' logbook_cpue_nonconf.png'), fig1,  
+         dpi = 600, width = 10.5, height = 5.5)
+}
+
+
+### logbook data non-confidential-------------
+#less than 3 permit holders in a given management area
+#industry request for 75%, 60%, and 40%
+logbk_cpue_nonconf_indstry <- function(str_yr, end_yr, mg_area, log_cpue, Lper1, Lper2, Lper3, cur_yr){
+  
+  log_cpue %>% 
+    group_by(mgt_area) %>% 
+    filter(year >= str_yr & year <= end_yr) %>%
+    summarise(mean = mean(cpue, na.rm = TRUE)) -> avg_ten 
+  
+  avg_ten %>% 
+    filter(mgt_area == mg_area) %>% 
+    mutate(seventy_five = mean*Lper1, sixty = seventy_five*Lper2, forty = seventy_five*Lper3) -> avg_ten2
+  
+  log_cpue %>% 
+    mutate(cpue = ifelse(permits >= 3, cpue, NA)) %>% #removes confidential CPUE if less than 3 permits holders and breaks line segments due to NA values
+    filter(mgt_area == mg_area) %>%
+    ggplot(aes(year, cpue)) + 
+    geom_line(lwd = 1) + 
+    geom_ribbon(aes(ymin = ll, ymax = ul), alpha = 0.3, fill = "dodgerblue") +
+    #geom_ma(ma_fun = SMA, n = 3) + #adds 3yr simple moving average 
+    geom_hline(yintercept = avg_ten2$mean, lwd = 0.5, color = "blue") +
+    geom_text(aes((str_yr-10), avg_ten2$mean, 
+                  label = paste0("Logbook CPUE (avg ", str_yr, "-", end_yr, ")"), vjust = -1, hjust = 0.05)) +
+    geom_hline(yintercept = avg_ten2$seventy_five, lwd = 0.5, color = "green") +
+    geom_text(aes((str_yr-10), avg_ten2$seventy_five, 
+                  label = paste0("Target (", Lper1*100, "% of avg)"), vjust = -1, hjust = 0.05)) +
+    geom_hline(yintercept = avg_ten2$sixty, lwd = 0.5, linetype = "dashed", color = "orange") +
+    geom_text(aes((str_yr-10), avg_ten2$sixty, 
+                  label = paste0("Trigger (", Lper2*100, "% of target)"), vjust = -1, hjust = 0.05)) +
+    geom_hline(yintercept = avg_ten2$forty, lwd = 0.5, color = "red") +
+    geom_text(aes((str_yr-10), avg_ten2$forty, 
+                  label = paste0("Limit Reference Point (", Lper3*100, "% of target)"), vjust = -1, hjust = 0.05)) +
+    geom_vline(xintercept = str_yr, linetype = "dashed") +
+    geom_vline(xintercept = end_yr, linetype = "dashed") +
+    annotate("rect", xmin = str_yr, xmax = end_yr, ymin = -Inf, ymax = Inf, alpha = 0.1, fill = "grey70") +
+    geom_point(size = 3, color = "dodgerblue") +
+    scale_y_continuous(breaks = seq(0.0, 15.0, 0.5)) + #need to add ylim for Southern (0,7)
+    scale_x_continuous(breaks = seq(1983, 2020, 2)) +
+    expand_limits(y = 0) +
+    ylab("Logbook CPUE (no. of crab/pot)") + 
+    xlab("Season") + 
+    ggtitle(paste0(mg_area, " logbook data")) -> fig1
+  fig1
+  ggsave(paste0('./figures/', cur_yr, '/', mg_area, ' logbook_cpue_nonconf_60_40.png'), fig1,  
          dpi = 600, width = 10.5, height = 5.5)
 }
 

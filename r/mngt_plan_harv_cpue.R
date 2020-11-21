@@ -53,16 +53,19 @@ gkc_fish %>%
                                                 ifelse(i_fishery == "North Stephens Passage GKC", "North Stephens Passage",
                                                        ifelse(i_fishery == "Northern GKC", "Northern",
                                                               ifelse(i_fishery == "Southern GKC", "Southern", "Misc")))))))) %>% 
-  group_by(year, mgt_area) %>% 
+  
+  mutate(season_num = as.numeric(str_sub(season, 4, 7)), #this changes the season ref to a numerica variable
+         season_num = season_num + 1) %>%
+  group_by(season_ref, season_num, mgt_area) %>% 
   mutate(catch_date = as.character(catch_date), mdy = mdy(catch_date)) %>% 
-  select(year, mgt_area, mdy) %>%
+  select(season_ref, season_num, mgt_area, mdy) %>%
   summarise(min = min(mdy), max = max(mdy), diff = max-min) %>% 
   mutate(diff = as.numeric(diff, units = "days")) %>% 
   mutate(diff = replace(diff, which(diff == 0), 14)) -> season_leng 
 # change diff that are 0 to 14 days - average "trip" based on tides. pers.comm A.Olson, K.Palof
 #Convert difference in season days to a numeric value for further calculations
 
-# Harvest by mgt area and year ----------
+# Harvest by mgt area and season ----------
 gkc_fish %>% 
   filter(!is.na(catch_date), !is.na(sell_date), !is.na(pounds), i_fishery %in% target) %>% 
   mutate(mgt_area = ifelse(i_fishery == "East Central GKC", "East Central",
@@ -72,16 +75,31 @@ gkc_fish %>%
                                                 ifelse(i_fishery == "North Stephens Passage GKC", "North Stephens Passage",
                                                        ifelse(i_fishery == "Northern GKC", "Northern",
                                                               ifelse(i_fishery == "Southern GKC", "Southern", "Misc")))))))) %>%
-  group_by(year, mgt_area) %>%
+  
+  mutate(season_num = as.numeric(str_sub(season, 4, 7)), #this changes the season ref to a numerica variable
+         season_num = season_num + 1) %>% 
+  group_by(season_ref, season_num, mgt_area) %>%
+  na_if("") %>%
   summarise(total_lbs = sum(pounds), 
             permits = length(unique(cfec_no))) -> harv # add permits using number of uniqeu ADF&G no
 
+factor(harv$season_ref, levels = c("68-69", "69-70", "70-71", "71-72", "72-73", "73-74", "74-75", "75-76",
+                                      "76-77", "77-78", "78-79", "79-80", "80-81", "81-82", "82-83", "83-84", "84-85", "85-86", "86-87",
+                                      "87-88", "88-89", "89-90", "90-91", "91-92", "92-93", "93-94", "94-95", "95-96", "96-97", "97-98",
+                                      "98-99", "99-00", "00-01", "01-02", "02-03", "03-04", "04-05", "05-06", "06-07", "07-08", "08-09",
+                                      "09-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18", "18-19", "19-20")) -> harv$season_ref
+
+
 harv %>%
   full_join(gkc_ghl) %>%
-  select(year, mgt_area, ghl, total_lbs, permits) %>%
-  mutate(ghl = as.numeric(ghl)) -> harv_ghl
+  select(season_ref, season_num, mgt_area, ghl, total_lbs, permits) -> harv_ghl
 
 
+factor(harv_ghl$season_ref, levels = c("68-69", "69-70", "70-71", "71-72", "72-73", "73-74", "74-75", "75-76",
+                                       "76-77", "77-78", "78-79", "79-80", "80-81", "81-82", "82-83", "83-84", "84-85", "85-86", "86-87",
+                                       "87-88", "88-89", "89-90", "90-91", "91-92", "92-93", "93-94", "94-95", "95-96", "96-97", "97-98",
+                                       "98-99", "99-00", "00-01", "01-02", "02-03", "03-04", "04-05", "05-06", "06-07", "07-08", "08-09",
+                                       "09-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18", "18-19", "19-20")) -> harv_ghl$season_ref
 
 
 #harvest by mgt area figures -----
@@ -93,18 +111,21 @@ hvst_area("Mid-Chatham", harv_ghl, cur_yr)
 hvst_area("Southern", harv_ghl, cur_yr)
 hvst_area("North Stephens Passage", harv_ghl, cur_yr)
 
-harv %>% 
-  full_join(season_leng) %>% 
-  select(year, mgt_area, diff, total_lbs, permits)  %>% 
-  mutate(cpue = total_lbs / diff, 
-         cpue2 = total_lbs / diff / permits) -> lbs_per_day
+
 
 #non-conf harvest
 harv %>%
   filter(permits >= 3) %>%
   full_join(gkc_ghl) %>% 
-  select(year, mgt_area, ghl, total_lbs, permits) %>%
-  mutate(ghl = as.numeric(ghl)) -> harv_ghl_nonconf
+  select(season_ref, season_num, mgt_area, ghl, total_lbs, permits) -> harv_ghl_nonconf
+
+factor(harv_ghl_nonconf$season_ref, levels = c("68-69", "69-70", "70-71", "71-72", "72-73", "73-74", "74-75", "75-76",
+                                       "76-77", "77-78", "78-79", "79-80", "80-81", "81-82", "82-83", "83-84", "84-85", "85-86", "86-87",
+                                       "87-88", "88-89", "89-90", "90-91", "91-92", "92-93", "93-94", "94-95", "95-96", "96-97", "97-98",
+                                       "98-99", "99-00", "00-01", "01-02", "02-03", "03-04", "04-05", "05-06", "06-07", "07-08", "08-09",
+                                       "09-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18", "18-19", "19-20")) -> harv_ghl_nonconf$season_ref
+
+
 
 
 #non-conf harvest by mgt area figures ----
@@ -119,13 +140,70 @@ hvst_area_nonconf("North Stephens Passage", harv_ghl_nonconf, cur_yr)
 
 # lbs per active fishing day figure ------------------
 # make sure functions are loaded from helper.R file
-lbs_per_day_graph(1983, 2010, "East Central", lbs_per_day, cur_yr)
-lbs_per_day_graph(1983, 2011, "Icy Strait", lbs_per_day, cur_yr)
-lbs_per_day_graph(1983, 2017, "Lower Chatham", lbs_per_day, cur_yr) 
-lbs_per_day_graph(1983, 2007, "Mid-Chatham", lbs_per_day, cur_yr)
-lbs_per_day_graph(1983, 2017, "North Stephens Passage", lbs_per_day, cur_yr)
-lbs_per_day_graph(1983, 2017, "Northern", lbs_per_day, cur_yr)
-lbs_per_day_graph(1983, 2017, "Southern", lbs_per_day, cur_yr)
+harv %>% 
+  full_join(season_leng) %>% 
+  select(season_ref, season_num, mgt_area, diff, total_lbs, permits)  %>% 
+  mutate(cpue = total_lbs / diff, 
+         cpue2 = total_lbs / diff / permits) -> lbs_per_day
+
+factor(lbs_per_day$season_ref, levels = c("68-69", "69-70", "70-71", "71-72", "72-73", "73-74", "74-75", "75-76",
+                                               "76-77", "77-78", "78-79", "79-80", "80-81", "81-82", "82-83", "83-84", "84-85", "85-86", "86-87",
+                                               "87-88", "88-89", "89-90", "90-91", "91-92", "92-93", "93-94", "94-95", "95-96", "96-97", "97-98",
+                                               "98-99", "99-00", "00-01", "01-02", "02-03", "03-04", "04-05", "05-06", "06-07", "07-08", "08-09",
+                                               "09-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18", "18-19", "19-20")) -> lbs_per_day$season_ref
+
+
+
+
+
+lbs_per_day_graph(1995, 2017, 1970, 2017, "East Central", lbs_per_day, cur_yr)
+lbs_per_day_graph(1995, 2017, 1970, 2017, "Icy Strait", lbs_per_day, cur_yr)
+lbs_per_day_graph(1995, 2017, 1970, 2017, "Lower Chatham", lbs_per_day, cur_yr) 
+lbs_per_day_graph(1995, 2017, 1970, 2017, "Mid-Chatham", lbs_per_day, cur_yr)
+lbs_per_day_graph(1995, 2017, 1970, 2017, "North Stephens Passage", lbs_per_day, cur_yr)
+lbs_per_day_graph(1995, 2017, 1970, 2017, "Northern", lbs_per_day, cur_yr)
+lbs_per_day_graph(1995, 2017, 1970, 2017, "Southern", lbs_per_day, cur_yr)
+
+#lbs per day active fishing season nonconfidential < 3 permit holders fishing
+lbs_per_day_nonconf(1995, 2017, 1970, 2017, "East Central", lbs_per_day, cur_yr)
+lbs_per_day_nonconf(1995, 2017, 1970, 2017, "Icy Strait", lbs_per_day, cur_yr)
+lbs_per_day_nonconf(1995, 2017, 1970, 2017, "Lower Chatham", lbs_per_day, cur_yr) 
+lbs_per_day_nonconf(1995, 2017, 1970, 2017, "Mid-Chatham", lbs_per_day, cur_yr)
+lbs_per_day_nonconf(1995, 2017, 1970, 2017, "North Stephens Passage", lbs_per_day, cur_yr)
+lbs_per_day_nonconf(1995, 2017, 1970, 2017, "Northern", lbs_per_day, cur_yr)
+lbs_per_day_nonconf(1995, 2017, 1970, 2017, "Southern", lbs_per_day, cur_yr)
+
+
+#Look at season length and # of permit holders for lbs per day
+lbs_per_day %>%
+  filter(permits >= 3,
+         mgt_area == "East Central") %>%
+  mutate(diff = ifelse(permits >= 3, diff, NA)) %>%
+  ggplot(aes(season_num, diff)) +
+  geom_col(fill = "dodgerblue") +
+  labs(x = "Season",
+       y = "Active Fishing Season (days)") +
+  scale_y_continuous(breaks = seq(0, 500, 25)) +
+  scale_x_continuous(breaks = seq(1970, 2021, 2)) +
+  theme(axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5))
+
+lbs_per_day %>%
+  filter(permits >= 3,
+         mgt_area == "East Central") %>%
+  mutate(diff = ifelse(permits >= 3, diff, NA)) %>%
+  ggplot(aes(season_num, permits)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "Season",
+       y = "No. of permit holders") +
+  scale_y_continuous(breaks = seq(0, 100, 2), limits = c(0, 45)) +
+  scale_x_continuous(breaks = seq(1970, 2021, 2)) +
+  theme(axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5))
+
+
+
 
 # Logbook CPUE -----------
 gkc_log %>% filter(target_species_code == 923, !is.na(target_species_retained),
@@ -157,8 +235,8 @@ cpue_log %>%
   group_by(mgt_area) %>%
   filter(year <= 2017) %>%
   summarise(mean = mean(cpue),
-            seventy_five = mean *0.75,
-            fifty = mean * 0.5)
+            sixty = mean *0.60,
+            forty = mean * 0.40)
 
 # Figure Logbook CPUE ------------------------------
 logbk_cpue(2000, 2017, "East Central", cpue_log, 0.75, 0.50, cur_yr)
@@ -169,6 +247,17 @@ logbk_cpue(2001, 2017, "North Stephens Passage", cpue_log, 0.75, 0.50, cur_yr)
 logbk_cpue(2000, 2017, "Northern", cpue_log, 0.75, 0.50, cur_yr)
 logbk_cpue(2000, 2017, "Southern", cpue_log, 0.75, 0.50, cur_yr)
 
+
+# Figure Logbook CPUE Industry request 75, 60, 40 percent------------------------------
+logbk_cpue_indstry(2000, 2017, "East Central", cpue_log, 0.75, 0.60, 0.40, cur_yr)
+logbk_cpue_indstry(2000, 2017, "Icy Strait", cpue_log, 0.75, 0.60, 0.40, cur_yr)
+logbk_cpue_indstry(2000, 2017, "Lower Chatham", cpue_log, 0.75, 0.60, 0.40, cur_yr)
+logbk_cpue_indstry(2000, 2017, "Mid-Chatham", cpue_log, 0.75, 0.60, 0.40, cur_yr)
+logbk_cpue_indstry(2001, 2017, "North Stephens Passage", cpue_log, 0.75, 0.60, 0.40, cur_yr)
+logbk_cpue_indstry(2000, 2017, "Northern", cpue_log, 0.75, 0.60, 0.40, cur_yr)
+logbk_cpue_indstry(2000, 2017, "Southern", cpue_log, 0.75, 0.60, 0.40, cur_yr)
+
+
 #Figure Logbook CPUE non-conf----
 logbk_cpue_nonconf(2000, 2017, "East Central", cpue_log, 0.75, 0.50, cur_yr)
 logbk_cpue_nonconf(2000, 2017, "Icy Strait", cpue_log, 0.75, 0.50, cur_yr)
@@ -178,7 +267,14 @@ logbk_cpue_nonconf(2001, 2017, "North Stephens Passage", cpue_log, 0.75, 0.50, c
 logbk_cpue_nonconf(2000, 2017, "Northern", cpue_log, 0.75, 0.50, cur_yr)
 logbk_cpue_nonconf(2000, 2017, "Southern", cpue_log, 0.75, 0.50, cur_yr)
 
-
+# Figure Logbook CPUE Industry request 75, 60, 40 percent------------------------------
+logbk_cpue_nonconf_indstry(2000, 2017, "East Central", cpue_log, 0.75, 0.60, 0.40, cur_yr)
+logbk_cpue_nonconf_indstry(2000, 2017, "Icy Strait", cpue_log, 0.75, 0.60, 0.40, cur_yr)
+logbk_cpue_nonconf_indstry(2000, 2017, "Lower Chatham", cpue_log, 0.75, 0.60, 0.40, cur_yr)
+logbk_cpue_nonconf_indstry(2000, 2017, "Mid-Chatham", cpue_log, 0.75, 0.60, 0.40, cur_yr)
+logbk_cpue_nonconf_indstry(2001, 2017, "North Stephens Passage", cpue_log, 0.75, 0.60, 0.40, cur_yr)
+logbk_cpue_nonconf_indstry(2000, 2017, "Northern", cpue_log, 0.75, 0.60, 0.40, cur_yr)
+logbk_cpue_nonconf_indstry(2000, 2017, "Southern", cpue_log, 0.75, 0.60, 0.40, cur_yr)
 
 
 # panel figure  ------------
@@ -356,41 +452,45 @@ gkc_cpue_prop$prop_cpue <- factor(gkc_cpue_prop$prop_cpue,
                                   levels = c("No Change", ">=60%"))
 
 gkc_cpue_prop %>%
-  filter(mgt_area == "Icy Strait") %>%
+  filter(mgt_area == "North Stephens Passage") %>%
   ggplot(aes(year, cpue, fill = prop_cpue)) + 
   geom_line() + 
   geom_point(aes(color = prop_cpue), size = 2) +
   geom_ribbon(aes(ymin = ll, ymax = ul), alpha = 0.25) +
   labs(y="Mean CPUE of GKC (crab/pot)", 
        x ="Year",
-       title = "Icy Strait",
+       title = "North Stephens Passage",
        subtitle = "Removing Tanner bycatch based on proportion of harvest from logbooks") +
-  scale_y_continuous(breaks = seq(0.0, 15.0, 0.5)) +
-  scale_x_continuous(breaks = seq(1983, 2020, 2)) +
+  scale_y_continuous(breaks = seq(0.0, 15.0, 1)) +
+  scale_x_continuous(breaks = seq(1983, 2020, 3)) +
   #scale_fill_viridis_d() +
   #scale_color_viridis_d() +
   theme(legend.title = element_blank(),
-        strip.background = element_blank()) +
+        strip.background = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5)) +
   facet_wrap(~prop_cpue) -> cpue_prop_plot
 
 
 #Analyzing pot lifts based on proportion of GKC vs TC harvest
 gkc_cpue_prop %>%
-  filter(mgt_area == "Icy Strait") %>%
+  filter(mgt_area == "North Stephens Passage") %>%
   ggplot(aes(year, total_pots, fill = prop_cpue)) +
   geom_col() +
   labs(y = "Total Pot Lifts (GKC logbook)",
        x = "Year") +
-  scale_x_continuous(breaks = seq(1983, 2020, 2)) +
+  scale_x_continuous(breaks = seq(1983, 2020, 3)) +
   scale_y_continuous(label = scales::comma, breaks = seq(0, 15000, 500)) +
   #scale_fill_viridis_d() +
   theme(legend.title = element_blank(),
-        strip.background = element_blank()) +
+        strip.background = element_blank(),
+        axis.text.x = element_text(angle = 90,
+                                   vjust = 0.5)) +
   facet_wrap(~prop_cpue) -> pots_prop_plot
 
 cpue_prop_plot / pots_prop_plot
 
-ggsave(paste0(fig_path, '/Icy Strait_gkc_cpue_proportion.png'), 
+ggsave(paste0(fig_path, '/North_Stephens_Passage_gkc_cpue_proportion.png'), 
        width = 10, height = 9, units = "in", dpi = 200)
 
 #Non-confidential
@@ -456,9 +556,9 @@ gkc_bio %>%
                           ifelse(recruit_status == "Pre_Recruit", "Pre-Recruit",
                           ifelse(sex == "Female", "Female",
                           ifelse(recruit_status == "Juvenile", "Juvenile", "Unknown"))))))))))) %>%
-  group_by(i_year, location, recruit_status) %>%
+  group_by(year, location, recruit_status) %>%
   summarise(total_crab = sum(number_of_specimens)) %>%
-  ggplot(aes(i_year, total_crab, fill = recruit_status)) +
+  ggplot(aes(year, total_crab, fill = recruit_status)) +
   geom_col() +
   labs(x = "Year",
        y = "Number of Crab",
@@ -489,10 +589,14 @@ gkc_log %>% filter(target_species_code == 923, !is.na(target_species_retained),
 
 
 soak_time %>%
-  filter(year >= 2020) %>%
-ggplot(aes(mgt_area, soak_time_hours, color = mgt_area)) +
+  filter(year >= 2020,
+         mgt_area != "Northern") %>%
+ggplot(aes(mgt_area, soak_time_hours)) +
   geom_boxplot(outlier.shape = NA) +
   stat_boxplot(geom = 'errorbar') +
-  geom_jitter() +
-  scale_y_continuous(breaks = seq(0, 500, 25))
+  #geom_jitter() +
+  scale_y_continuous(breaks = seq(0, 500, 25)) +
+  ylab("Soak Time (hrs)") +
+  xlab("Management Area") +
+  ggtitle("2020 GKC Soak Time")
 

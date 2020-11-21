@@ -2,8 +2,8 @@
 title: "Recommended Harvest Strategy for Southeast Alaska Golden King Crab (*Lithodes aequispinus*)"
 author: "Andrew Olson and Katie Palof"
 date: "`r format(Sys.Date(), '%m/%d/%Y')`"
-output: #pdf_document
-        html_document
+output: pdf_document
+        #html_document
   #bookdown::word_document2
 bibliography: refs.bib
 csl: american-fisheries-society.csl
@@ -189,7 +189,7 @@ Each management area report will provide an overview of seasonal trends in fishe
 ### Season Overview
 The Northern management area was closed for the 2019 and 2020 seasons.
 
-```{r, fig.cap = "Commercial GKC fishery harvest from the Northern management area. Dots represents the GHL in a given year (2001–Present).", out.width= "500px"}
+```{r, fig.cap = "Commercial GKC fishery harvest from the Northern management area. Dots represents the GHL in a given season (2001–Present).", out.width= "500px"}
 knitr::include_graphics("../figures/2020/Northern_harvest.png")
 ```
 
@@ -229,12 +229,27 @@ knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (C
 knitr::include_graphics("../figures/2020/Northern logbook_cpue.png")
 ```
 
+```{r, fig.cap = "Adjusted Northern golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE per industry request.", out.width= "500px"}
+knitr::include_graphics("../figures/2020/Northern logbook_cpue_60_40.png")
+```
+
+
+```{r, fig.cap = "Northern golden king crab active fishing season CPUE with an average from 1995-2017 per industry request (dotted line) and a long-term average from 1970-Present (solid line).", out.width= "500px"}
+knitr::include_graphics("../figures/2020/Northern_lbs_activeF_industry_request.png")
+
+```
+
+```{r, fig.cap = "Northern golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present.", out.width= "500px"}
+knitr::include_graphics("../figures/2020/Northern_length_freq.png")
+
+```
+
 ## Icy Strait
 
 ### Season Overview
 
 
-```{r, fig.cap = "Commercial GKC fishery harvest from the Icy Strait management area. Dots represents the GHL in a given year (2001–Present).", out.width= "500px"}
+```{r, fig.cap = "Commercial GKC fishery harvest from the Icy Strait management area. Dots represents the GHL in a given season (2001–Present).", out.width= "500px"}
 knitr::include_graphics("../figures/2020/Icy Strait_harvest.png")
 ```
 
@@ -273,15 +288,29 @@ knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (C
 knitr::include_graphics("../figures/2020/Icy Strait logbook_cpue.png")
 ```
 
+```{r, fig.cap = "Adjusted Icy Strait golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE per industry request.", out.width= "500px"}
+knitr::include_graphics("../figures/2020/Icy Strait logbook_cpue_60_40.png")
+```
+
 ```{r, fig.cap = "Icy Strait golden king crab logbook CPUE and pot lift proportions based on reduction of Tanner crab harvest influence.", out.width= "500px"}
 knitr::include_graphics("../figures/2020/Icy Strait_gkc_cpue_proportion.png")
+```
+
+```{r, fig.cap = "Icy Strait golden king crab active fishing season CPUE with an average from 1995-2017 per industry request (dotted line) and a long-term average from 1970-Present (solid line).", out.width= "500px"}
+knitr::include_graphics("../figures/2020/Icy Strait_lbs_activeF_industry_request.png")
+
+```
+
+```{r, fig.cap = "Icy Strait golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present.", out.width= "500px"}
+knitr::include_graphics("../figures/2020/Icy Strait_length_freq.png")
+
 ```
 
 ## North Stephens Passage
 ###Season Overview
 
 
-```{r, fig.cap = "Commercial GKC fishery harvest from the North Stephens Passage management area. Dots represents the GHL in a given year (2001–Present).", out.width= "500px"}
+```{r, fig.cap = "Commercial GKC fishery harvest from the North Stephens Passage management area. Dots represents the GHL in a given season (2001–Present).", out.width= "500px"}
 knitr::include_graphics("../figures/2020/North Stephens Passage_harvest.png")
 ```
 
@@ -322,10 +351,23 @@ knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (C
 knitr::include_graphics("../figures/2020/North Stephens Passage logbook_cpue.png")
 ```
 
+```{r, fig.cap = "Adjusted North Stephens Passage golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE per industry request.", out.width= "500px"}
+knitr::include_graphics("../figures/2020/North Stephens Passage logbook_cpue_60_40.png")
+```
+
 ```{r, fig.cap = "North Stephens Passage golden king crab logbook CPUE and pot lift proportions based on reduction of Tanner crab harvest influence.", out.width= "500px"}
 knitr::include_graphics("../figures/2020/North_Stephens_Passage_gkc_cpue_proportion.png")
 ```
 
+```{r, fig.cap = "North Stephens Passage golden king crab active fishing season CPUE with an average from 1995-2017 per industry request (dotted line) and a long-term average from 1970-Present (solid line).", out.width= "500px"}
+knitr::include_graphics("../figures/2020/North Stephens Passage_lbs_activeF_industry_request.png")
+
+```
+
+```{r, fig.cap = "North Stephens Passage golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present", out.width= "500px"}
+knitr::include_graphics("../figures/2020/North Stephens Passage_length_freq.png")
+
+```
 
 ### Information from Annual Tanner Crab Stock Assessment Survey
 The Department conducts an annual stock assessment survey in Holkham Bay where GKC have been caught incidentally. Data presented here includes spatial distribution and quantity of catch and by sex and recruit status.  
@@ -345,7 +387,7 @@ knitr::include_graphics("../figures/2020/holkham_bay_gkc_recruit_status.png")
 ### Season Overview
 The East Central management area was closed for the 2020 season.
 
-```{r, fig.cap = "Commercial GKC fishery harvest from the East Central management area. Dots represents the GHL in a given year (2001–Present).", out.width= "500px"}
+```{r, fig.cap = "Commercial GKC fishery harvest from the East Central management area. Dots represents the GHL in a given season (2001–Present).", out.width= "500px"}
 knitr::include_graphics("../figures/2020/East Central_harvest.png")
 ```
 
@@ -385,12 +427,26 @@ knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (C
 knitr::include_graphics("../figures/2020/East Central logbook_cpue.png")
 ```
 
+```{r, fig.cap = "Adjusted East Central golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE per industry request.", out.width= "500px"}
+knitr::include_graphics("../figures/2020/East Central logbook_cpue_60_40.png")
+```
+
+```{r, fig.cap = "East Central golden king crab active fishing season CPUE with an average from 1995-2017 per industry request (dotted line) and a long-term average from 1970-Present (solid line).", out.width= "500px"}
+knitr::include_graphics("../figures/2020/East Central_lbs_activeF_industry_request.png")
+
+```
+
+```{r, fig.cap = "East Central golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present.", out.width= "500px"}
+knitr::include_graphics("../figures/2020/East Central_length_freq.png")
+
+```
+
 ## Mid-Chatham Strait
 
 ### Season Overview
 The Mid-Chatham Strait management area was closed for the 2020 season.
 
-```{r, fig.cap = "Commercial GKC fishery harvest from the Mid-Chatham Strait management area. Dots represents the GHL in a given year (2001–Present).", out.width= "500px"}
+```{r, fig.cap = "Commercial GKC fishery harvest from the Mid-Chatham Strait management area. Dots represents the GHL in a given season (2001–Present).", out.width= "500px"}
 knitr::include_graphics("../figures/2020/Mid-Chatham_harvest.png")
 ```
 
@@ -430,14 +486,35 @@ knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (C
 knitr::include_graphics("../figures/2020/Mid-Chatham logbook_cpue.png")
 ```
 
+```{r, fig.cap = "Adjusted Mid-Chatham Strait golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE per industry request.", out.width= "500px"}
+knitr::include_graphics("../figures/2020/Mid-Chatham logbook_cpue_60_40.png")
+```
+
+```{r, fig.cap = "Mid-Chatham Strait golden king crab length frequencies of sampled commercial catch by recruit class from 2000-2019", out.width= "500px"}
+knitr::include_graphics("../figures/2020/Mid-Chatham_length_freq.png")
+
+```
+
+```{r, fig.cap = "Mid-Chatham Strait golden king crab active fishing season CPUE with an average from 1995-2017 per industry request (dotted line) and a long-term average from 1970-Present (solid line).", out.width= "500px"}
+knitr::include_graphics("../figures/2020/Mid-Chatham_lbs_activeF_industry_request.png")
+
+```
+
+```{r, fig.cap = "Mid-Chatham Strait golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present.", out.width= "500px"}
+knitr::include_graphics("../figures/2020/Mid-Chatham_length_freq.png")
+
+```
+
 ## Lower Chatham Strait
 
 ### Season Overview
 The Lower Chatham Strait management area was closed for the 2020 season.
 
-```{r, fig.cap = "Commercial GKC fishery harvest from the Lower Chatham Strait management area. Dots represents the GHL in a given year (2001–Present).", out.width= "500px"}
+```{r, fig.cap = "Commercial GKC fishery harvest from the Lower Chatham Strait management area. Dots represents the GHL in a given season (2001–Present).", out.width= "500px"}
 knitr::include_graphics("../figures/2020/Lower Chatham_harvest.png")
 ```
+
+
 
 ### Reference Points
 
@@ -474,11 +551,25 @@ knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (C
 knitr::include_graphics("../figures/2020/Lower Chatham logbook_cpue.png")
 ```
 
+```{r, fig.cap = "Adjusted Lower Chatham Strait golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE per industry request.", out.width= "500px"}
+knitr::include_graphics("../figures/2020/Lower Chatham logbook_cpue_60_40.png")
+```
+
+```{r, fig.cap = "Lower Chatham Strait golden king crab active fishing season CPUE with an average from 1995-2017 per industry request (dotted line) and a long-term average from 1970-Present (solid line).", out.width= "500px"}
+knitr::include_graphics("../figures/2020/Lower Chatham_lbs_activeF_industry_request.png")
+
+```
+
+```{r, fig.cap = "Lower Chatham Strait golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present.", out.width= "500px"}
+knitr::include_graphics("../figures/2020/Lower Chatham_length_freq.png")
+
+```
+
 ## Southern
 
 ###Season Overview
 
-```{r, fig.cap = "Commercial GKC fishery harvest from the Southern management area. Dots represents the GHL in a given year (2001–Present).", out.width= "500px"}
+```{r, fig.cap = "Commercial GKC fishery harvest from the Southern management area. Dots represents the GHL in a given season (2001–Present).", out.width= "500px"}
 knitr::include_graphics("../figures/2020/Southern_harvest.png")
 ```
 
@@ -515,4 +606,18 @@ knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (C
 
 ```{r, fig.cap = "Southern golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE.", out.width= "500px"}
 knitr::include_graphics("../figures/2020/Southern logbook_cpue.png")
+```
+
+```{r, fig.cap = "Adjusted Southern golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE per industry request.", out.width= "500px"}
+knitr::include_graphics("../figures/2020/Southern logbook_cpue_60_40.png")
+```
+
+```{r, fig.cap = "Southern golden king crab active fishing season CPUE with an average from 1995-2017 per industry request (dotted line) and a long-term average from 1970-Present (solid line).", out.width= "500px"}
+knitr::include_graphics("../figures/2020/Southern_lbs_activeF_industry_request.png")
+
+```
+
+```{r, fig.cap = "Southern golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present.", out.width= "500px"}
+knitr::include_graphics("../figures/2020/Southern_length_freq.png")
+
 ```
