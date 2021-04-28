@@ -10,7 +10,7 @@
 source("./r/helper.R")
 
 # global ---------
-cur_yr = 2020 # most recent year of data
+cur_yr = 2021 # most recent year of data
 fig_path <- paste0('figures/', cur_yr) # folder to hold all figs for a given year
 dir.create(fig_path) # creates YEAR subdirectory inside figures folder
 output_path <- paste0('output/', cur_yr) # output and results
@@ -87,7 +87,7 @@ factor(harv$season_ref, levels = c("68-69", "69-70", "70-71", "71-72", "72-73", 
                                       "76-77", "77-78", "78-79", "79-80", "80-81", "81-82", "82-83", "83-84", "84-85", "85-86", "86-87",
                                       "87-88", "88-89", "89-90", "90-91", "91-92", "92-93", "93-94", "94-95", "95-96", "96-97", "97-98",
                                       "98-99", "99-00", "00-01", "01-02", "02-03", "03-04", "04-05", "05-06", "06-07", "07-08", "08-09",
-                                      "09-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18", "18-19", "19-20")) -> harv$season_ref
+                                      "09-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18", "18-19", "19-20", "20-21")) -> harv$season_ref
 
 
 harv %>%
@@ -99,7 +99,7 @@ factor(harv_ghl$season_ref, levels = c("68-69", "69-70", "70-71", "71-72", "72-7
                                        "76-77", "77-78", "78-79", "79-80", "80-81", "81-82", "82-83", "83-84", "84-85", "85-86", "86-87",
                                        "87-88", "88-89", "89-90", "90-91", "91-92", "92-93", "93-94", "94-95", "95-96", "96-97", "97-98",
                                        "98-99", "99-00", "00-01", "01-02", "02-03", "03-04", "04-05", "05-06", "06-07", "07-08", "08-09",
-                                       "09-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18", "18-19", "19-20")) -> harv_ghl$season_ref
+                                       "09-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18", "18-19", "19-20", "20-21")) -> harv_ghl$season_ref
 
 
 #harvest by mgt area figures -----
@@ -203,7 +203,33 @@ lbs_per_day %>%
                                    vjust = 0.5))
 
 
+#Permit Holder Daily CPUE
+gkc_log %>% filter(target_species_code == 923, !is.na(target_species_retained),
+                   !is.na(number_pots_lifted), !is.na(i_fishery)) %>%
+  mutate(mgt_area = ifelse(i_fishery == "East Central GKC", "East Central",
+                           ifelse(i_fishery == "Icy Strait GKC", "Icy Strait", 
+                                  ifelse(i_fishery == "Lower Chatham Strait GKC", "Lower Chatham",
+                                         ifelse(i_fishery == "Mid-Chatham Strait GKC", "Mid-Chatham",
+                                                ifelse(i_fishery == "North Stephens Passage GKC", "North Stephens Passage",
+                                                       ifelse(i_fishery == "Northern GKC", "Northern",
+                                                              ifelse(i_fishery == "Southern GKC", "Southern", "Misc"))))))),
+         cpue = target_species_retained / number_pots_lifted) %>% 
+  select(year, mgt_area, vessel_name, effort_date, cpue, number_pots_lifted) %>%
+  filter(!is.na(cpue), mgt_area != "Misc") %>% #have to add this here since 0 pots lifts for 0 crab is included here
+  group_by(year, mgt_area, vessel_name, effort_date) %>%
+  summarise(sd = sd(cpue),
+            cpue = mean(cpue),
+            n = n(),
+            se = sd / sqrt (n)) %>%
+  mutate(ll = cpue - 2 * se,
+         ul = cpue + 2 * se, -> cpue_permit
 
+cpue_permit %>%
+  filter(year == 2021) %>%
+  ggplot(aes(effort_date, cpue)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~mgt_area, scales = "free_x")
 
 # Logbook CPUE -----------
 gkc_log %>% filter(target_species_code == 923, !is.na(target_species_retained),
@@ -230,6 +256,7 @@ gkc_log %>% filter(target_species_code == 923, !is.na(target_species_retained),
          outlier = ifelse(mgt_area == "Lower Chatham" & #excludes outlier for Lower Chatham
                             year == 2013, "yes", "no")) %>%
   filter(outlier != "yes") -> cpue_log
+
 
 cpue_log %>%
   group_by(mgt_area) %>%
@@ -267,7 +294,7 @@ logbk_cpue_nonconf(2001, 2017, "North Stephens Passage", cpue_log, 0.75, 0.50, c
 logbk_cpue_nonconf(2000, 2017, "Northern", cpue_log, 0.75, 0.50, cur_yr)
 logbk_cpue_nonconf(2000, 2017, "Southern", cpue_log, 0.75, 0.50, cur_yr)
 
-# Figure Logbook CPUE Industry request 75, 60, 40 percent------------------------------
+# Figure Logbook CPUE non-conf Industry request 75, 60, 40 percent------------------------------
 logbk_cpue_nonconf_indstry(2000, 2017, "East Central", cpue_log, 0.75, 0.60, 0.40, cur_yr)
 logbk_cpue_nonconf_indstry(2000, 2017, "Icy Strait", cpue_log, 0.75, 0.60, 0.40, cur_yr)
 logbk_cpue_nonconf_indstry(2000, 2017, "Lower Chatham", cpue_log, 0.75, 0.60, 0.40, cur_yr)

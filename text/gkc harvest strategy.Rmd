@@ -2,8 +2,8 @@
 title: "Recommended Harvest Strategy for Southeast Alaska Golden King Crab (*Lithodes aequispinus*)"
 author: "Andrew Olson and Katie Palof"
 date: "`r format(Sys.Date(), '%m/%d/%Y')`"
-output: pdf_document
-        #html_document
+output: #pdf_document
+        html_document
   #bookdown::word_document2
 bibliography: refs.bib
 csl: american-fisheries-society.csl
@@ -71,8 +71,8 @@ The primary goal and objective is to recommend a harvest strategy for Southeast 
 
 Harvest strategies have been implemented for the GKC fisheries in the Aleutian Islands and Pribilof Islands to improve fisheries management and sustainability. These harvest strategies are comprised of biological, fishery dependent and independent reference points (i.e. mature male biomass, CPUE, annual recruitment, etc.) that are used in recommending the total allowable catch (TAC) or GHL for a given management area and season [@daly2019; @daly2020; @siddeek2020]. 
 
-## Proposed plan {-}
-Here we propose a harvest strategy plan that informs inseason and postseason management using fishery dependent performance indicators and management decision rules. 
+## Harvest Strategy {-}
+Herein is a harvest strategy for GKC in Southeast Alaska that informs inseason and postseason management using fishery dependent performance indicators and management decision rules. 
 
 
 ### Performance Indicators {-}
@@ -102,30 +102,7 @@ catch_{le}^{\geq{0.6}} = \frac{crab_{gkc}}{({total \ crab}_{gkc + tc})}
 
 where *catch* is for a given logbook entry (*le*), *gkc* is golden king crab and *tc* is Tanner crab. Then subsequently Equations (1) and (2) will be applied to calculate CPUE.
 
-A secondary performance indicator that will be used in this harvest strategy is commercial catch rate obtained from fish ticket data. With fish ticket data, CPUE is calculated using each harvest landing for the entire season divided by the difference between the first and last catch date (which is defined as active fishing season). This secondary CPUE indicator is defined as "pounds per pot day" and will aid in understanding catch rates over time:
-
-\begin{equation}
-active \ fishing \ season(days) = (date_{first \ catch} - date_{last \ catch})
-\tag{4}
-\end{equation}
-
-
-\begin{equation}
-CPUE_{f} = \frac {harvest(lbs)} {active \ fishing \ season(days)}
-\tag{5}
-\end{equation}
-
-where *CPUE* is the harvest (lbs) per day for each fish ticket landing (*f*). Equation (5) is then applied to all fish ticket landings and averaged for a given area and season where:
-
-
-\begin{equation}
-\overline{CPUE_{a,s}} = \frac{\sum{CPUE_{f}}}{n}
-\tag{6}
-\end{equation}
-
-where *a* is a given management area, *s* is a given season, and *n* is the total number of fish ticket landings. 
-
-Supplementary information that may be evaluated in this harvest strategy includes biological, local ecological knowledge (LEK), and other anecdotal information that may not be captured quantitatively in this harvest strategy framework.
+Secondary performance indicators include biological, local ecological knowledge (LEK), and other anecdotal information that may not be captured quantitatively in this harvest strategy framework.
   
   + Biological information will be evaluated by analyzing carapace length (CL) mm frequencies by area and season for recruit classes of GKC sampled during commercial landings. Size of GKC is defined as the CL measurement. Recruit class is used as an indicator of shell age and is defined as recruit (new shell and a CL of 151–166mm) and postrecruit (new or old shell and a CL $\geq$ 167 mm).
   + LEK is experiential information from fishermen and the fishing industry  about the natural environment as it pertains to GKC. LEK will be evaluated and reviewed through permit holder comments in logbooks, communication with permit holders and industry representatives, and discussion at annual industry meetings [@ainsworth2011; @beaudreau2014]. Examples of LEK include lots of crab (recruits, females, and undersized), females with full clutches, softshell, sand fleas, bad weather, large tides, and parasitized crab.
@@ -160,11 +137,11 @@ As the primary performance indicator is the most readily available estimate of f
     + **Decrease in a GHL**
         - **If the fishery closed short of a GHL inseason due to poor fishery performance and/or the most recent CPUE is $<$ than the previous season the GHL will be decreased based on the following conditions:**
         - If CPUE is $<$ than the most recent previous season and is $>$ RP~trig~ and $\leq$ RP~targ~ the GHL may be reduced up to a maximum of 40% the following season.
-        - If the fishery closed short in-season due to poor fishery performance and CPUE is $<$ than the most recent season and $>$ RP~lim~ then the GHL decrease the following season may be within 20% of the total harvest at the time of closure during the most recent previous season, but not less than 7,500 lbs.   
+        - If CPUE is $<$ than the most recent previous season and is $>$ RP~lim~ and $\leq$ RP~trig~ the GHL may be reduced up to a maximum of 60% the following season.
       
     + **Closure and Re-opening**
         - If logbook CPUE is $<$ the RP~lim~ further management action may be required by implementing an area closure of a minimum of 1 year to reduce the risk of localized depletion.
-        - Upon re-opening an area after a closure, the GHL will be equal to the harvest at the time of closure rounded to the nearest 1,000 lbs and must not be less than 7,500 lbs whichever is greatest. 
+        - Upon re-opening an area after a closure, the GHL will be within 5-10% of the upper end of area respective GHRs.
 
         
 * **Review of GHLs or Decision Rules**
@@ -174,6 +151,9 @@ As the primary performance indicator is the most readily available estimate of f
 Logbook CPUE currently lacks a soak time data field and cannot be standardized for comparison across years. Soak time was introduced as a reporting field in logbooks for the 2020 fishing season and will be used to inform this harvest strategy in future iterations.
 
 This harvest strategy may be amended in future iterations as more information and tools become available. This harvest strategy is a first step to increase transparency regarding management metrics utilized for inseason and postseason decisions. We recommend that this harvest strategy is further developed using a management strategy evaluation (MSE). A MSE is a tool that uses simulation to test how well a harvest strategy performs and if the objectives of the harvest strategy are being achieved [@goethel2019; @punt2016]. 
+
+# Responses to Inudstry and Public Comments Specific to the Harvest Strategy
+
 
 
 ## References
@@ -233,12 +213,6 @@ knitr::include_graphics("../figures/2020/Northern logbook_cpue.png")
 knitr::include_graphics("../figures/2020/Northern logbook_cpue_60_40.png")
 ```
 
-
-```{r, fig.cap = "Northern golden king crab active fishing season CPUE with an average from 1995-2017 per industry request (dotted line) and a long-term average from 1970-Present (solid line).", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Northern_lbs_activeF_industry_request.png")
-
-```
-
 ```{r, fig.cap = "Northern golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present.", out.width= "500px"}
 knitr::include_graphics("../figures/2020/Northern_length_freq.png")
 
@@ -294,11 +268,6 @@ knitr::include_graphics("../figures/2020/Icy Strait logbook_cpue_60_40.png")
 
 ```{r, fig.cap = "Icy Strait golden king crab logbook CPUE and pot lift proportions based on reduction of Tanner crab harvest influence.", out.width= "500px"}
 knitr::include_graphics("../figures/2020/Icy Strait_gkc_cpue_proportion.png")
-```
-
-```{r, fig.cap = "Icy Strait golden king crab active fishing season CPUE with an average from 1995-2017 per industry request (dotted line) and a long-term average from 1970-Present (solid line).", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Icy Strait_lbs_activeF_industry_request.png")
-
 ```
 
 ```{r, fig.cap = "Icy Strait golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present.", out.width= "500px"}
@@ -359,10 +328,6 @@ knitr::include_graphics("../figures/2020/North Stephens Passage logbook_cpue_60_
 knitr::include_graphics("../figures/2020/North_Stephens_Passage_gkc_cpue_proportion.png")
 ```
 
-```{r, fig.cap = "North Stephens Passage golden king crab active fishing season CPUE with an average from 1995-2017 per industry request (dotted line) and a long-term average from 1970-Present (solid line).", out.width= "500px"}
-knitr::include_graphics("../figures/2020/North Stephens Passage_lbs_activeF_industry_request.png")
-
-```
 
 ```{r, fig.cap = "North Stephens Passage golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present", out.width= "500px"}
 knitr::include_graphics("../figures/2020/North Stephens Passage_length_freq.png")
@@ -431,10 +396,6 @@ knitr::include_graphics("../figures/2020/East Central logbook_cpue.png")
 knitr::include_graphics("../figures/2020/East Central logbook_cpue_60_40.png")
 ```
 
-```{r, fig.cap = "East Central golden king crab active fishing season CPUE with an average from 1995-2017 per industry request (dotted line) and a long-term average from 1970-Present (solid line).", out.width= "500px"}
-knitr::include_graphics("../figures/2020/East Central_lbs_activeF_industry_request.png")
-
-```
 
 ```{r, fig.cap = "East Central golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present.", out.width= "500px"}
 knitr::include_graphics("../figures/2020/East Central_length_freq.png")
@@ -495,11 +456,6 @@ knitr::include_graphics("../figures/2020/Mid-Chatham_length_freq.png")
 
 ```
 
-```{r, fig.cap = "Mid-Chatham Strait golden king crab active fishing season CPUE with an average from 1995-2017 per industry request (dotted line) and a long-term average from 1970-Present (solid line).", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Mid-Chatham_lbs_activeF_industry_request.png")
-
-```
-
 ```{r, fig.cap = "Mid-Chatham Strait golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present.", out.width= "500px"}
 knitr::include_graphics("../figures/2020/Mid-Chatham_length_freq.png")
 
@@ -555,11 +511,6 @@ knitr::include_graphics("../figures/2020/Lower Chatham logbook_cpue.png")
 knitr::include_graphics("../figures/2020/Lower Chatham logbook_cpue_60_40.png")
 ```
 
-```{r, fig.cap = "Lower Chatham Strait golden king crab active fishing season CPUE with an average from 1995-2017 per industry request (dotted line) and a long-term average from 1970-Present (solid line).", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Lower Chatham_lbs_activeF_industry_request.png")
-
-```
-
 ```{r, fig.cap = "Lower Chatham Strait golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present.", out.width= "500px"}
 knitr::include_graphics("../figures/2020/Lower Chatham_length_freq.png")
 
@@ -612,10 +563,6 @@ knitr::include_graphics("../figures/2020/Southern logbook_cpue.png")
 knitr::include_graphics("../figures/2020/Southern logbook_cpue_60_40.png")
 ```
 
-```{r, fig.cap = "Southern golden king crab active fishing season CPUE with an average from 1995-2017 per industry request (dotted line) and a long-term average from 1970-Present (solid line).", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Southern_lbs_activeF_industry_request.png")
-
-```
 
 ```{r, fig.cap = "Southern golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present.", out.width= "500px"}
 knitr::include_graphics("../figures/2020/Southern_length_freq.png")

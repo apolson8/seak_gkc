@@ -22,7 +22,7 @@ bio_survey %>%
   group_by(year, location, species, pot_no) %>%
   summarise(total_crab = sum(number_of_specimens))-> bio_summary
 
-rename(bio_summary, year = i_year) -> bio_summary
+#rename(bio_summary, year = i_year) -> bio_summary
 
 
 left_join(pot_survey, bio_summary, by = c("year", "location", "pot_no")) %>%
@@ -54,19 +54,20 @@ ggmap(get_stamenmap(bbox = hlk_bay,
                  size = total_crab,
                  color = total_crab),
              alpha = 0.6) +
-  scale_color_viridis_d("no.of crab") +
   scale_size_continuous(range = c(0.5, 11), "no. of crab") +
+  scale_color_continuous(type = "viridis", "no. of crab") +
+  #scale_color_viridis_d("no. of crab") +
   ylab("Latitude (Decimal Degrees)") + 
   xlab("Longitude (Decimal Degrees)") + 
   labs(title ="Holkham Bay",
        subtitle = "Number of GKC caught during the Tanner survey") +
   facet_wrap(~year, ncol = 3) +
   theme(legend.position = "bottom",
-        strip.background = element_blank())
+        strip.background = element_blank()) +
   
 ggsave(paste0(fig_path, '/holkham_bay_gkc_survey_bycatch.png'), 
        width = 9, height = 12, units = "in", dpi = 200)  
-  
+
   
   
   

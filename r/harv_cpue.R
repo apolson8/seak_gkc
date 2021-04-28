@@ -9,8 +9,8 @@
 source("./r/helper.R")
 
 # global ---------
-cur_yr = 2020
-year <- 2020 # most recent year of data
+cur_yr = 2021
+year <- 2021 # most recent year of data
 fig_path <- paste0('figures/', year) # folder to hold all figs for a given year
 dir.create(fig_path) # creates YEAR subdirectory inside figures folder
 output_path <- paste0('output/', year) # output and results
@@ -20,6 +20,7 @@ dir.create(output_path)
 ## data -------------------------
 # Import fishticket and logbook data from ALEX
 # Import fishticket and logbook data from ALEX
+#season_ref has to be manually fixed in Excel due to date issues in database 3/22/2021 AO
 read.csv("data/fishery/gkc_fishticket.csv") %>% 
   clean_names () -> gkc_fish
 read.csv("data/fishery/gkc_logbook.csv") %>%
@@ -86,7 +87,7 @@ factor(harv_nonconf$season_ref, levels = c("68-69", "69-70", "70-71", "71-72", "
 
 
 harv_nonconf %>%
-  filter(season_ref != "19-20", 
+  filter(season_ref != "20-21", 
          mgt_area != "Misc" & mgt_area != "") %>%
   ggplot(aes(season_ref, total_lbs)) + geom_col(aes(fill = mgt_area)) +
   ylab("Harvest (lbs)") + xlab("Season") +
@@ -107,6 +108,13 @@ ggplot(harvest, aes(year, total_lbs)) + geom_bar(stat = "identity") +
   ylab("Harvest (lbs)") + xlab("Year") +
   scale_x_continuous(breaks = seq(0, cur_yr+1, 10)) +
   scale_y_continuous(label = scales::comma) + facet_wrap(~i_fishery, scales = "free_y")
+
+harv_nonconf %>% 
+  select(season_ref,
+         mgt_area,
+         total_lbs) %>%
+  filter(season_ref != "20-21",
+         mgt_area != "Misc" & mgt_area != "") -> harv_nonconf_summary
 
 
 #mgt_area GHLs compared to harvest

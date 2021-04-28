@@ -33,7 +33,8 @@ gkc_port %>% mutate(recruit_status = ifelse(recruit_status == "Recruit", "Recrui
                                                 ifelse(i_fishery == "North Stephens Passage GKC", "North Stephens Passage",
                                                 ifelse(i_fishery == "Northern GKC", "Northern",
                                                 ifelse(i_fishery == "Southern GKC", "Southern", "Misc")))))))) %>%
-  filter(recruit_status != "Misc", mgt_area != "Misc") %>%
+  filter(#recruit_status != "Misc"
+         mgt_area != "Misc") %>%
   mutate(season_num = as.numeric(str_sub(season, 4, 7)), #this changes the season ref to a numerica variable
          season_num = season_num + 1) -> port_summary
 
@@ -50,27 +51,31 @@ port_summary %>%
 #Function for producting length frequency historgrams for set years and mgt area
 lngth_freq <- function(str_yr, end_yr, mg_area, port_summary, cur_yr){
   
+  target <- c(2003, 2011, 2014:2020)
+  
   port_summary %>%
     filter(mgt_area == mg_area,
+           year %in% target, 
            year >= str_yr & year <= end_yr) %>%
-  ggplot(aes(length_millimeters, 
-             fill = recruit_status, 
-             color = recruit_status)) +
-    geom_histogram(alpha = 0.3, bins = 30) +
+  ggplot(aes(length_millimeters)) + 
+             #fill = recruit_status, 
+             #color = recruit_status)) +
+    geom_histogram(#alpha = 0.3, 
+                   bins = 30) +
     scale_x_continuous(breaks = seq(0, 250, by = 10),
                        name = "Carapace Length (mm)") +
     ylab("Count") +
     ggtitle(paste0(mg_area)) +
     facet_wrap(~season_num) +
-    scale_fill_colorblind() +
-    scale_color_colorblind() +
+    #scale_fill_colorblind() +
+    #scale_color_colorblind() +
     theme(legend.title = element_blank(),
           legend.position = "bottom",
           strip.background = element_blank(),
           axis.text.x = element_text(angle = 90,
                                      vjust = 0.5)) ->fig1
   fig1
-  ggsave(paste0('./figures/', cur_yr, '/', mg_area, '_length_freq.png'), fig1,  
+  ggsave(paste0('./figures/', cur_yr, '/', mg_area, '_length_freq_non_conf.png'), fig1,  
           dpi = 600, width = 10, height = 8)
 }
 
