@@ -16,7 +16,7 @@ library(knitr)
 opts_chunk$set(fig.width = 6, fig.height = 12, fig.pos = "H", echo = FALSE, warning = FALSE, message = FALSE,  dpi=300)
 ```
 
-
+TEST
 # Background {-}
 The Alaska Department of Fish and Game (Department) golden king crab (*Lithodes aequispinus*, GKC) fishery in Southeast Alaska is a data-limited fishery that is managed based on a 3-S management system (sex, size, and season). The management has been further developed by limiting the number of participants and gear, establishing guideline harvest levels (GHLs) that are set within guideline harvest ranges (GHRs) for each management area (Table 1), and allowing closure of management areas if there are stock health concerns. Most of the harvest occurs in the commercial sector where the fishery extends across seven management areas (Northern, Icy Strait, North Stephens Passage, East Central, Mid and Lower Chatham Strait, and Southern). The Department annually evaluates stock status and establishes GHLs for each management area using fishery dependent data  [@olson2018spatial; @stratman2017]. 
 
