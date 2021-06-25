@@ -5,6 +5,7 @@
 # (similar to but reduced version of harv_cpue.R)
 
 # SEAK GKC Harvest and CPUE trends -----------
+#Note: Season definitions need to be fixed in database otherwise all data is presented by year
 
 # load ---------
 source("./r/helper.R")
@@ -46,7 +47,8 @@ head(gkc_fish)
 # based on first and last haul dates
 gkc_fish %>% 
   filter(!is.na(catch_date), !is.na(sell_date), i_fishery %in% target) %>%
-  mutate(mgt_area = ifelse(i_fishery == "East Central GKC", "East Central",
+  mutate(year = i_year,
+    mgt_area = ifelse(i_fishery == "East Central GKC", "East Central",
                            ifelse(i_fishery == "Icy Strait GKC", "Icy Strait", 
                                   ifelse(i_fishery == "Lower Chatham Strait GKC", "Lower Chatham",
                                          ifelse(i_fishery == "Mid-Chatham Strait GKC", "Mid-Chatham",
@@ -54,11 +56,13 @@ gkc_fish %>%
                                                        ifelse(i_fishery == "Northern GKC", "Northern",
                                                               ifelse(i_fishery == "Southern GKC", "Southern", "Misc")))))))) %>% 
   
-  mutate(season_num = as.numeric(str_sub(season, 4, 7)), #this changes the season ref to a numerica variable
-         season_num = season_num + 1) %>%
-  group_by(season_ref, season_num, mgt_area) %>% 
+  #mutate(season_num = as.numeric(str_sub(season, 4, 7)), #this changes the season ref to a numerica variable
+         #season_num = season_num + 1) %>%
+  #group_by(season_ref, season_num, mgt_area) %>% 
+  group_by(year, mgt_area) %>%
   mutate(catch_date = as.character(catch_date), mdy = mdy(catch_date)) %>% 
-  select(season_ref, season_num, mgt_area, mdy) %>%
+  #select(season_ref, season_num, mgt_area, mdy) %>%
+  select(year, mgt_area, mdy) %>%
   summarise(min = min(mdy), max = max(mdy), diff = max-min) %>% 
   mutate(diff = as.numeric(diff, units = "days")) %>% 
   mutate(diff = replace(diff, which(diff == 0), 14)) -> season_leng 
@@ -66,40 +70,44 @@ gkc_fish %>%
 #Convert difference in season days to a numeric value for further calculations
 
 # Harvest by mgt area and season ----------
+#Missing year 2000 data in database inquiry submitted to programming 6/14/21
 gkc_fish %>% 
   filter(!is.na(catch_date), !is.na(sell_date), !is.na(pounds), i_fishery %in% target) %>% 
-  mutate(mgt_area = ifelse(i_fishery == "East Central GKC", "East Central",
+  mutate(year = i_year,
+    mgt_area = ifelse(i_fishery == "East Central GKC", "East Central",
                            ifelse(i_fishery == "Icy Strait GKC", "Icy Strait", 
                                   ifelse(i_fishery == "Lower Chatham Strait GKC", "Lower Chatham",
                                          ifelse(i_fishery == "Mid-Chatham Strait GKC", "Mid-Chatham",
                                                 ifelse(i_fishery == "North Stephens Passage GKC", "North Stephens Passage",
                                                        ifelse(i_fishery == "Northern GKC", "Northern",
                                                               ifelse(i_fishery == "Southern GKC", "Southern", "Misc")))))))) %>%
-  
-  mutate(season_num = as.numeric(str_sub(season, 4, 7)), #this changes the season ref to a numerica variable
-         season_num = season_num + 1) %>% 
-  group_by(season_ref, season_num, mgt_area) %>%
+  #mutate(season_num = as.numeric(str_sub(season, 4, 7)), #this changes the season ref to a numerica variable
+         #season_num = season_num + 1) %>% 
+  #group_by(season_ref, season_num, mgt_area) %>% #apply this when changing harvest figures to season
+  group_by(year, mgt_area) %>%
   na_if("") %>%
   summarise(total_lbs = sum(pounds), 
-            permits = length(unique(cfec_no))) -> harv # add permits using number of uniqeu ADF&G no
+            permits = length(unique(cfec_no))) -> harv # add permits using number of unique ADF&G no
 
-factor(harv$season_ref, levels = c("68-69", "69-70", "70-71", "71-72", "72-73", "73-74", "74-75", "75-76",
-                                      "76-77", "77-78", "78-79", "79-80", "80-81", "81-82", "82-83", "83-84", "84-85", "85-86", "86-87",
-                                      "87-88", "88-89", "89-90", "90-91", "91-92", "92-93", "93-94", "94-95", "95-96", "96-97", "97-98",
-                                      "98-99", "99-00", "00-01", "01-02", "02-03", "03-04", "04-05", "05-06", "06-07", "07-08", "08-09",
-                                      "09-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18", "18-19", "19-20", "20-21")) -> harv$season_ref
+#manually adjusts order of seasons
+#factor(harv$season_ref, levels = c("68-69", "69-70", "70-71", "71-72", "72-73", "73-74", "74-75", "75-76",
+                                      #"76-77", "77-78", "78-79", "79-80", "80-81", "81-82", "82-83", "83-84", "84-85", "85-86", "86-87",
+                                      #"87-88", "88-89", "89-90", "90-91", "91-92", "92-93", "93-94", "94-95", "95-96", "96-97", "97-98",
+                                      #"98-99", "99-00", "00-01", "01-02", "02-03", "03-04", "04-05", "05-06", "06-07", "07-08", "08-09",
+                                      #"09-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18", "18-19", "19-20", "20-21")) -> harv$season_ref
 
 
 harv %>%
   full_join(gkc_ghl) %>%
-  select(season_ref, season_num, mgt_area, ghl, total_lbs, permits) -> harv_ghl
+  select(year, mgt_area, ghl, total_lbs, permits) -> harv_ghl
+  #select(season_ref, season_num, mgt_area, ghl, total_lbs, permits) -> harv_ghl
 
-
-factor(harv_ghl$season_ref, levels = c("68-69", "69-70", "70-71", "71-72", "72-73", "73-74", "74-75", "75-76",
-                                       "76-77", "77-78", "78-79", "79-80", "80-81", "81-82", "82-83", "83-84", "84-85", "85-86", "86-87",
-                                       "87-88", "88-89", "89-90", "90-91", "91-92", "92-93", "93-94", "94-95", "95-96", "96-97", "97-98",
-                                       "98-99", "99-00", "00-01", "01-02", "02-03", "03-04", "04-05", "05-06", "06-07", "07-08", "08-09",
-                                       "09-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18", "18-19", "19-20", "20-21")) -> harv_ghl$season_ref
+#manually adjusts order of seasons
+#factor(harv_ghl$season_ref, levels = c("68-69", "69-70", "70-71", "71-72", "72-73", "73-74", "74-75", "75-76",
+                                       #"76-77", "77-78", "78-79", "79-80", "80-81", "81-82", "82-83", "83-84", "84-85", "85-86", "86-87",
+                                       #"87-88", "88-89", "89-90", "90-91", "91-92", "92-93", "93-94", "94-95", "95-96", "96-97", "97-98",
+                                       #"98-99", "99-00", "00-01", "01-02", "02-03", "03-04", "04-05", "05-06", "06-07", "07-08", "08-09",
+                                       #"09-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18", "18-19", "19-20", "20-21")) -> harv_ghl$season_ref
 
 
 #harvest by mgt area figures -----
@@ -142,15 +150,16 @@ hvst_area_nonconf("North Stephens Passage", harv_ghl_nonconf, cur_yr)
 # make sure functions are loaded from helper.R file
 harv %>% 
   full_join(season_leng) %>% 
-  select(season_ref, season_num, mgt_area, diff, total_lbs, permits)  %>% 
+  select(year, mgt_area, diff, total_lbs, permits) %>%
+  #select(season_ref, season_num, mgt_area, diff, total_lbs, permits)  %>% 
   mutate(cpue = total_lbs / diff, 
          cpue2 = total_lbs / diff / permits) -> lbs_per_day
 
-factor(lbs_per_day$season_ref, levels = c("68-69", "69-70", "70-71", "71-72", "72-73", "73-74", "74-75", "75-76",
-                                               "76-77", "77-78", "78-79", "79-80", "80-81", "81-82", "82-83", "83-84", "84-85", "85-86", "86-87",
-                                               "87-88", "88-89", "89-90", "90-91", "91-92", "92-93", "93-94", "94-95", "95-96", "96-97", "97-98",
-                                               "98-99", "99-00", "00-01", "01-02", "02-03", "03-04", "04-05", "05-06", "06-07", "07-08", "08-09",
-                                               "09-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18", "18-19", "19-20")) -> lbs_per_day$season_ref
+#factor(lbs_per_day$season_ref, levels = c("68-69", "69-70", "70-71", "71-72", "72-73", "73-74", "74-75", "75-76",
+                                               #"76-77", "77-78", "78-79", "79-80", "80-81", "81-82", "82-83", "83-84", "84-85", "85-86", "86-87",
+                                               #"87-88", "88-89", "89-90", "90-91", "91-92", "92-93", "93-94", "94-95", "95-96", "96-97", "97-98",
+                                               #"98-99", "99-00", "00-01", "01-02", "02-03", "03-04", "04-05", "05-06", "06-07", "07-08", "08-09",
+                                               #"09-10", "10-11", "11-12", "12-13", "13-14", "14-15", "15-16", "16-17", "17-18", "18-19", "19-20")) -> lbs_per_day$season_ref
 
 
 
@@ -234,7 +243,8 @@ cpue_permit %>%
 # Logbook CPUE -----------
 gkc_log %>% filter(target_species_code == 923, !is.na(target_species_retained),
                    !is.na(number_pots_lifted), !is.na(i_fishery)) %>%
-  mutate(mgt_area = ifelse(i_fishery == "East Central GKC", "East Central",
+  mutate(year = i_year,
+    mgt_area = ifelse(i_fishery == "East Central GKC", "East Central",
                            ifelse(i_fishery == "Icy Strait GKC", "Icy Strait", 
                                   ifelse(i_fishery == "Lower Chatham Strait GKC", "Lower Chatham",
                                          ifelse(i_fishery == "Mid-Chatham Strait GKC", "Mid-Chatham",
@@ -254,18 +264,21 @@ gkc_log %>% filter(target_species_code == 923, !is.na(target_species_retained),
   mutate(ll = cpue - 2 * se,
          ul = cpue + 2 * se,
          outlier = ifelse(mgt_area == "Lower Chatham" & #excludes outlier for Lower Chatham
-                            year == 2013, "yes", "no")) %>%
-  filter(outlier != "yes") -> cpue_log
+                            year == 2013, "yes", "no"),
+         outlier2 = ifelse(mgt_area == "North Stephens Passage" & #excludes outlier for NSP
+                             year == 2000, "yes", "no")) %>%
+  
+  filter(outlier != "yes", outlier2 != "yes") -> cpue_log
 
 
 cpue_log %>%
   group_by(mgt_area) %>%
   filter(year <= 2017) %>%
   summarise(mean = mean(cpue),
-            sixty = mean *0.60,
-            forty = mean * 0.40)
+            seventyfive = mean *0.75,
+            fifty = mean * 0.50)
 
-# Figure Logbook CPUE ------------------------------
+# Figure Logbook CPUE Avg Target, 75 Trig, 40 Lim------------------------------
 logbk_cpue(2000, 2017, "East Central", cpue_log, 0.75, 0.50, cur_yr)
 logbk_cpue(2000, 2017, "Icy Strait", cpue_log, 0.75, 0.50, cur_yr)
 logbk_cpue(2000, 2017, "Lower Chatham", cpue_log, 0.75, 0.50, cur_yr)
@@ -274,8 +287,17 @@ logbk_cpue(2001, 2017, "North Stephens Passage", cpue_log, 0.75, 0.50, cur_yr)
 logbk_cpue(2000, 2017, "Northern", cpue_log, 0.75, 0.50, cur_yr)
 logbk_cpue(2000, 2017, "Southern", cpue_log, 0.75, 0.50, cur_yr)
 
+# Figure Logbook CPUE Scenario B Avg Target, 60 Trig, 40 Lim ------------------------------
+logbk_cpue_60_40(2000, 2017, "East Central", cpue_log, 0.60, 0.40, cur_yr)
+logbk_cpue_60_40(2000, 2017, "Icy Strait", cpue_log, 0.60, 0.40, cur_yr)
+logbk_cpue_60_40(2000, 2017, "Lower Chatham", cpue_log, 0.60, 0.40, cur_yr)
+logbk_cpue_60_40(2000, 2017, "Mid-Chatham", cpue_log, 0.60, 0.40, cur_yr)
+logbk_cpue_60_40(2001, 2017, "North Stephens Passage", cpue_log, 0.60, 0.40, cur_yr)
+logbk_cpue_60_40(2000, 2017, "Northern", cpue_log, 0.60, 0.40, cur_yr)
+logbk_cpue_60_40(2000, 2017, "Southern", cpue_log, 0.60, 0.40, cur_yr)
 
-# Figure Logbook CPUE Industry request 75, 60, 40 percent------------------------------
+
+# Figure Logbook CPUE Industry request 75 Target, 60 Trig, 40 Lim------------------------------
 logbk_cpue_indstry(2000, 2017, "East Central", cpue_log, 0.75, 0.60, 0.40, cur_yr)
 logbk_cpue_indstry(2000, 2017, "Icy Strait", cpue_log, 0.75, 0.60, 0.40, cur_yr)
 logbk_cpue_indstry(2000, 2017, "Lower Chatham", cpue_log, 0.75, 0.60, 0.40, cur_yr)
@@ -324,11 +346,13 @@ panel_figure(1983, 2017, 2000, 2017, "Southern", lbs_per_day, cpue_log, 0.75, 0.
 
 #Tanner and GKC logbook to remove Tanner bias-----
 tanner_log %>%
+  mutate(year = i_year) %>%
   group_by(year, adfg_no, effort_date, district, sub_district) %>%
   summarise(num_tanner = sum(target_species_retained)) -> tanner_log
 
 gkc_log %>%
   mutate(num_gkc = target_species_retained,
+         year = i_year,
          mgt_area = ifelse(i_fishery == "East Central GKC", "East Central",
                            ifelse(i_fishery == "Icy Strait GKC", "Icy Strait", 
                                   ifelse(i_fishery == "Lower Chatham Strait GKC", "Lower Chatham",
@@ -479,17 +503,17 @@ gkc_cpue_prop$prop_cpue <- factor(gkc_cpue_prop$prop_cpue,
                                   levels = c("No Change", ">=60%"))
 
 gkc_cpue_prop %>%
-  filter(mgt_area == "North Stephens Passage") %>%
+  filter(mgt_area == "Icy Strait") %>%
   ggplot(aes(year, cpue, fill = prop_cpue)) + 
   geom_line() + 
   geom_point(aes(color = prop_cpue), size = 2) +
   geom_ribbon(aes(ymin = ll, ymax = ul), alpha = 0.25) +
   labs(y="Mean CPUE of GKC (crab/pot)", 
        x ="Year",
-       title = "North Stephens Passage",
+       title = "Icy Strait",
        subtitle = "Removing Tanner bycatch based on proportion of harvest from logbooks") +
   scale_y_continuous(breaks = seq(0.0, 15.0, 1)) +
-  scale_x_continuous(breaks = seq(1983, 2020, 3)) +
+  scale_x_continuous(breaks = seq(1983, 2022, 3)) +
   #scale_fill_viridis_d() +
   #scale_color_viridis_d() +
   theme(legend.title = element_blank(),
@@ -501,12 +525,12 @@ gkc_cpue_prop %>%
 
 #Analyzing pot lifts based on proportion of GKC vs TC harvest
 gkc_cpue_prop %>%
-  filter(mgt_area == "North Stephens Passage") %>%
+  filter(mgt_area == "Icy Strait") %>%
   ggplot(aes(year, total_pots, fill = prop_cpue)) +
   geom_col() +
   labs(y = "Total Pot Lifts (GKC logbook)",
        x = "Year") +
-  scale_x_continuous(breaks = seq(1983, 2020, 3)) +
+  scale_x_continuous(breaks = seq(1983, 2022, 3)) +
   scale_y_continuous(label = scales::comma, breaks = seq(0, 15000, 500)) +
   #scale_fill_viridis_d() +
   theme(legend.title = element_blank(),
@@ -517,7 +541,7 @@ gkc_cpue_prop %>%
 
 cpue_prop_plot / pots_prop_plot
 
-ggsave(paste0(fig_path, '/North_Stephens_Passage_gkc_cpue_proportion.png'), 
+ggsave(paste0(fig_path, '/Icy_Strait_gkc_cpue_proportion.png'), 
        width = 10, height = 9, units = "in", dpi = 200)
 
 #Non-confidential
