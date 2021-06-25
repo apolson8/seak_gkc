@@ -4,8 +4,8 @@
 source("./r/helper.R")
 
 # global ---------
-cur_yr = 2020
-YEAR <- 2020 # most recent year of data
+cur_yr = 2021
+YEAR <- 2021 # most recent year of data
 fig_path <- paste0('figures/', YEAR) # folder to hold all figs for a given year
 dir.create(fig_path) # creates YEAR subdirectory inside figures folder
 output_path <- paste0('output/', YEAR) # output and results
@@ -14,18 +14,24 @@ dir.create(output_path)
 #Import port sampling data
 gkc_port1 <- read.csv("data/fishery/gkc_port_sampling 1970-1999.csv")
 
-gkc_port2 <- read.csv("data/fishery/gkc_port_sampling 2000-2020.csv")
+gkc_port2 <- read.csv("data/fishery/gkc_port_sampling 2000-2021.csv")
 
 #Join both sets of port sampling data
 bind_rows(gkc_port1, gkc_port2) %>%
   clean_names () -> gkc_port
+
+#Create filter target for B. callosus
+target <- c(1, 7)
 
 gkc_port %>% mutate(recruit_status = ifelse(recruit_status == "Recruit", "Recruit",
                                                      ifelse(recruit_status == "PR1", "Post-Recruit",
                                                      ifelse(recruit_status == "PR2", "Post-Recruit",
                                                      ifelse(recruit_status == "PR3", "Post-Recruit",
                                                      ifelse(recruit_status == "PR4", "Post-Recruit",
-                                                     ifelse(recruit_status == "PR5", "Post-Recruit", "Misc")))))),
+                                                     ifelse(recruit_status == "PR5", "Post-Recruit",
+                                                     ifelse(recruit_status == "Pre_Recruit", "Pre-Recruit",
+                                                     ifelse(recruit_status == "Juvenile", "Juvenile",
+                                                            "Misc")))))))),
                                      mgt_area = ifelse(i_fishery == "East Central GKC", "East Central",
                                                 ifelse(i_fishery == "Icy Strait GKC", "Icy Strait", 
                                                 ifelse(i_fishery == "Lower Chatham Strait GKC", "Lower Chatham",
@@ -33,10 +39,18 @@ gkc_port %>% mutate(recruit_status = ifelse(recruit_status == "Recruit", "Recrui
                                                 ifelse(i_fishery == "North Stephens Passage GKC", "North Stephens Passage",
                                                 ifelse(i_fishery == "Northern GKC", "Northern",
                                                 ifelse(i_fishery == "Southern GKC", "Southern", "Misc")))))))) %>%
-  filter(#recruit_status != "Misc"
+  filter(recruit_status != "Misc",
+         parasite_code %in% target, #filter out B. callosus scar and externa
          mgt_area != "Misc") %>%
-  mutate(season_num = as.numeric(str_sub(season, 4, 7)), #this changes the season ref to a numerica variable
+  mutate(year = i_year, season_num = as.numeric(str_sub(season, 4, 7)), #this changes the season ref to a numerica variable
          season_num = season_num + 1) -> port_summary
+
+#Reorder factor levels by recruit status
+port_summary$recruit_status <- factor(port_summary$recruit_status,
+                                      levels = c("Juvenile",
+                                                 "Pre-Recruit",
+                                                 "Recruit",
+                                                 "Post-Recruit"))
 
 ### Sample size ---------
 # adds sample size as a column by year and mgt_area
@@ -51,42 +65,42 @@ port_summary %>%
 #Function for producting length frequency historgrams for set years and mgt area
 lngth_freq <- function(str_yr, end_yr, mg_area, port_summary, cur_yr){
   
-  target <- c(2003, 2011, 2014:2020)
+  #target <- c(2000:2021) #manually select years to make graphs non-conf from fishticket data
   
   port_summary %>%
     filter(mgt_area == mg_area,
-           year %in% target, 
+           #year %in% target, 
            year >= str_yr & year <= end_yr) %>%
-  ggplot(aes(length_millimeters)) + 
-             #fill = recruit_status, 
-             #color = recruit_status)) +
-    geom_histogram(#alpha = 0.3, 
+  ggplot(aes(length_millimeters, 
+             fill = recruit_status, 
+             color = recruit_status)) +
+    geom_histogram(alpha = 0.3, 
                    bins = 30) +
-    scale_x_continuous(breaks = seq(0, 250, by = 10),
+    scale_x_continuous(breaks = seq(0, 250, by = 20),
                        name = "Carapace Length (mm)") +
     ylab("Count") +
     ggtitle(paste0(mg_area)) +
     facet_wrap(~season_num) +
-    #scale_fill_colorblind() +
-    #scale_color_colorblind() +
+    scale_fill_viridis_d(direction = -1) +
+    scale_color_viridis_d(direction = -1) +
     theme(legend.title = element_blank(),
           legend.position = "bottom",
           strip.background = element_blank(),
           axis.text.x = element_text(angle = 90,
                                      vjust = 0.5)) ->fig1
   fig1
-  ggsave(paste0('./figures/', cur_yr, '/', mg_area, '_length_freq_non_conf.png'), fig1,  
+  ggsave(paste0('./figures/', cur_yr, '/', mg_area, '_length_freq.png'), fig1,  
           dpi = 600, width = 10, height = 8)
 }
 
 
-lngth_freq(2000, 2020, "East Central", port_summary, cur_yr)
-lngth_freq(2000, 2020, "Icy Strait", port_summary, cur_yr)
-lngth_freq(2000, 2020, "Lower Chatham", port_summary, cur_yr)
-lngth_freq(2000, 2020, "Mid-Chatham", port_summary, cur_yr)
-lngth_freq(2000, 2020, "North Stephens Passage", port_summary, cur_yr)
-lngth_freq(2000, 2020, "Northern", port_summary, cur_yr)
-lngth_freq(2000, 2020, "Southern", port_summary, cur_yr)
+lngth_freq(2000, 2021, "East Central", port_summary, cur_yr)
+lngth_freq(2000, 2021, "Icy Strait", port_summary, cur_yr)
+lngth_freq(2000, 2021, "Lower Chatham", port_summary, cur_yr)
+lngth_freq(2000, 2021, "Mid-Chatham", port_summary, cur_yr)
+lngth_freq(2000, 2021, "North Stephens Passage", port_summary, cur_yr)
+lngth_freq(2000, 2021, "Northern", port_summary, cur_yr)
+lngth_freq(2000, 2021, "Southern", port_summary, cur_yr)
 
 #use gganimate to show change over year via histograms
 port_summary %>%
