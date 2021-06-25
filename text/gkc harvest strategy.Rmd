@@ -16,7 +16,7 @@ library(knitr)
 opts_chunk$set(fig.width = 6, fig.height = 12, fig.pos = "H", echo = FALSE, warning = FALSE, message = FALSE,  dpi=300)
 ```
 
-TEST
+
 # Background {-}
 The Alaska Department of Fish and Game (Department) golden king crab (*Lithodes aequispinus*, GKC) fishery in Southeast Alaska is a data-limited fishery that is managed based on a 3-S management system (sex, size, and season). The management has been further developed by limiting the number of participants and gear, establishing guideline harvest levels (GHLs) that are set within guideline harvest ranges (GHRs) for each management area (Table 1), and allowing closure of management areas if there are stock health concerns. Most of the harvest occurs in the commercial sector where the fishery extends across seven management areas (Northern, Icy Strait, North Stephens Passage, East Central, Mid and Lower Chatham Strait, and Southern). The Department annually evaluates stock status and establishes GHLs for each management area using fishery dependent data  [@olson2018spatial; @stratman2017]. 
 
@@ -152,8 +152,48 @@ Logbook CPUE currently lacks a soak time data field and cannot be standardized f
 
 This harvest strategy may be amended in future iterations as more information and tools become available. This harvest strategy is a first step to increase transparency regarding management metrics utilized for inseason and postseason decisions. We recommend that this harvest strategy is further developed using a management strategy evaluation (MSE). A MSE is a tool that uses simulation to test how well a harvest strategy performs and if the objectives of the harvest strategy are being achieved [@goethel2019; @punt2016]. 
 
-# Responses to Inudstry and Public Comments Specific to the Harvest Strategy
+## Responses to Industry and Public Comments
 
+In this section we list comments received from industry and the public and further discussed at the annual King and Tanner Task Force meeting in December 2020.
+
+### Secondary Performance Indicator: Fishticket CPUE
+
+The department explored ways to utilize fishticket data to develop a CPUE metric to inform and understand past harvest history trends to present. This metric is data limited and comprised of pounds, catch dates, and management area. Fishticket CPUE utlized the difference between first and last catch date in a given management area in order to calculate pounds per pot day and assumes permit holders are actively fishing the entire season. However, this assumption is violated due to inability to account for permit holders participating in competing fisheries and cease fishing or moving to new management areas prior to closure. 
+
+Logbook CPUE (2000-present) provides a much higher resolution metric to assess fishery performance since catch and effort data is at the logbook entry level (e.g. number of crab and pots, stat-area). Furthermore with the implmentation of capturing soak time (2020-present) this will allow for CPUE standardization over time.Fishticket CPUE was an attempt to explore utilizing historical effort and catch data in a new way, however, it is limited in its scope, function, and less informative compared to logbook CPUE.Therefore, the department does not recommend fishticket CPUE as a metric to be utilized in this harvest strategy. 
+
+```{r, fig.cap = "East Central golden king crab fishticket (lbs/pot day) and logbook CPUE (no. of crab/pot).", out.width= "500px"}
+knitr::include_graphics("../figures/2021/East Central_panel_activeF_and_logbk.png")
+```
+
+### Increase GHRs to match historical harvest
+
+### Review logbook CPUE reference points under different scenarios
+
+The department reviewed two different reference point (Target, Trigger, and Limit) scenarios that are based on average logbook CPUE (2000-2017) and included an industry requested adjustment and an intermediate adjustment between the industry request and department recommended reference points. Industry requested decreasing the reference points to a level where the target reference point is 75% of the average logbook CPUE and subsequent trigger and limit reference points at 60% and 40% of the target reference point. The intermiediate adjustment reduced the trigger and limit reference points at 60% and 40% of the target reference point.
+
+Adjusting the reference points to lower levels provides more opportunity as stocks are increasing at a faster rate, however, caution should be warranted with this approach as it reduces the ability and timeliness of management intervention to curb declining trends and further hinder stock rebuilding and recovery if stocks are in a collapsed state. Therefore the department does not recommended reducing reference points at this time as many management areas continue to be collapsed and/or depeleted state with minimal if any improvement in rebuilding and recovery even after closures in many areas.   
+
+
+```{r, fig.cap = "East Central golden king crab industry requested reference points (Target (75%), Trigger (60%), and Limit (40%)) and fishery performance utilizing logbook CPUE.", out.width= "500px"}
+knitr::include_graphics("../figures/2021/East Central logbook_cpue_industry.png")
+```
+```{r, fig.cap = "East Central golden king crab adjusted reference points (Target, Trigger (60%), and Limit (40%)) and fishery performance utilizing logbook CPUE.", out.width= "500px"}
+knitr::include_graphics("../figures/2021/East Central logbook_cpue_60_40.png")
+```
+
+### Review mechanism scenarios to increase GHL inseason
+
+The department reviewed mechanisms that would trigger an increase for an area GHL based on fishery performance inseason. Mechanisms were explored at varying levels that included 150%, 175%, and 200% of the target reference point. Increasing a GHL inseason would limit the departments ability for informed management decisions by reducing available data used in assessing fishery performance and stock health. The department conducts in-depth review of fishery performance data (e.g. fishticket, logbook, port sampling, and LEK) each season prior to setting GHLs. Adjusting GHLs inseason would ignore long-term historical effort and catch data that would increase management subjectivity and introduce unnecessary risk to a data limited fishery.     
+```{r, fig.cap = "East Central golden king crab inseason adjusted references points at 150%, 175%, and 200% of the target reference point utilizing logbook CPUE.", out.width= "500px"}
+knitr::include_graphics("../figures/2020/East Central logbook_cpue_150_175_200.png")
+```
+
+### Match postseason decision rules when increasing/decreasing to make changes in GHLs from previous season
+
+The department reviewed and revised post decision rules for decreasing GHLs and re-opening an area after closure to improve clarity and consistently within the harvest strategy. The department recommends if logbook CPUE is less than the previous season and is between the limit and trigger reference point the GHL may be reduced up to a maximum of 60% the following season. This decrease rate is within range of past management decisions were East Central's and Mid-Chatham Strait's GHLs were reduced 74% and 50% for their respective GHLS from the 2015 to 2016 season due to stock health concerns.    
+
+For re-opening an area and establishing a GHL the department recommends removing the 7,500 lb minimum GHL and utilize a percentage approach upon where after an area of closure the GHL will be within 5-10% of the upper end of an areas respective GHR. Both recommendations have been updated in the harvest strategy for 2022.
 
 
 ## References
@@ -170,11 +210,10 @@ Each management area report will provide an overview of seasonal trends in fishe
 The Northern management area was closed for the 2019 and 2020 seasons.
 
 ```{r, fig.cap = "Commercial GKC fishery harvest from the Northern management area. Dots represents the GHL in a given season (2001–Present).", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Northern_harvest.png")
+knitr::include_graphics("../figures/2021/Northern_harvest.png")
 ```
 
 ### Reference Points
-
 
 ```{r, caption = ""}
 library(dplyr)
@@ -205,16 +244,14 @@ knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (C
 ```
 
 
-```{r, fig.cap = "Northern golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Northern logbook_cpue.png")
+
+```{r, fig.cap = "Northern golden king crab reference points (Target, Trigger, and Limit and fishery performance utilizing logbook CPUE per industry request.", out.width= "500px"}
+knitr::include_graphics("../figures/2021/Northern logbook_cpue.png")
 ```
 
-```{r, fig.cap = "Adjusted Northern golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE per industry request.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Northern logbook_cpue_60_40.png")
-```
 
 ```{r, fig.cap = "Northern golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Northern_length_freq.png")
+knitr::include_graphics("../figures/2021/Northern_length_freq.png")
 
 ```
 
@@ -224,7 +261,7 @@ knitr::include_graphics("../figures/2020/Northern_length_freq.png")
 
 
 ```{r, fig.cap = "Commercial GKC fishery harvest from the Icy Strait management area. Dots represents the GHL in a given season (2001–Present).", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Icy Strait_harvest.png")
+knitr::include_graphics("../figures/2021/Icy Strait_harvest.png")
 ```
 
 ### Reference Points
@@ -259,32 +296,27 @@ knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (C
 ```
 
 ```{r, fig.cap = "Icy Strait golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Icy Strait logbook_cpue.png")
-```
-
-```{r, fig.cap = "Adjusted Icy Strait golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE per industry request.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Icy Strait logbook_cpue_60_40.png")
+knitr::include_graphics("../figures/2021/Icy Strait logbook_cpue.png")
 ```
 
 ```{r, fig.cap = "Icy Strait golden king crab logbook CPUE and pot lift proportions based on reduction of Tanner crab harvest influence.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Icy Strait_gkc_cpue_proportion.png")
+knitr::include_graphics("../figures/2021/Icy Strait_gkc_cpue_proportion.png")
 ```
 
 ```{r, fig.cap = "Icy Strait golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Icy Strait_length_freq.png")
+knitr::include_graphics("../figures/2021/Icy Strait_length_freq.png")
 
 ```
 
 ## North Stephens Passage
 ###Season Overview
 
-
 ```{r, fig.cap = "Commercial GKC fishery harvest from the North Stephens Passage management area. Dots represents the GHL in a given season (2001–Present).", out.width= "500px"}
-knitr::include_graphics("../figures/2020/North Stephens Passage_harvest.png")
+knitr::include_graphics("../figures/2021/North Stephens Passage_harvest.png")
 ```
 
 
-### Reference Points
+### Reference Points 
 
 ```{r}
 library(dplyr)
@@ -295,9 +327,9 @@ dt <- data.frame(
   Indicators = c("Target Reference Point",
                  "Trigger Reference Point",
                  "Limit Reference Point"),
-  `Reference Point`= c("1.6 crab/pot",
-                       "1.2 crab/pot",
-                       "0.8 crab/pot"),
+  `Reference Point`= c("1.4 crab/pot", #updated 6/15/21 to reflect exclusion of year 2000 outlier
+                       "1.0 crab/pot",
+                       "0.7 crab/pot"),
   Description = c("Average Commercial Logbook CPUE from 2001-2017 (excluding 2000)",
                   "75% of the Target Reference Point",
                   "50% of the Target Reference Point"))
@@ -316,21 +348,16 @@ knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (C
 
 ```
 
-```{r, fig.cap = "North Stephens Passage golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/North Stephens Passage logbook_cpue.png")
-```
-
-```{r, fig.cap = "Adjusted North Stephens Passage golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE per industry request.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/North Stephens Passage logbook_cpue_60_40.png")
+```{r, fig.cap = "North Stephens Passage golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE (excludes 2000 outlier).", out.width= "500px"}
+knitr::include_graphics("../figures/2021/North Stephens Passage logbook_cpue.png")
 ```
 
 ```{r, fig.cap = "North Stephens Passage golden king crab logbook CPUE and pot lift proportions based on reduction of Tanner crab harvest influence.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/North_Stephens_Passage_gkc_cpue_proportion.png")
+knitr::include_graphics("../figures/2021/North_Stephens_Passage_gkc_cpue_proportion.png")
 ```
 
-
 ```{r, fig.cap = "North Stephens Passage golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present", out.width= "500px"}
-knitr::include_graphics("../figures/2020/North Stephens Passage_length_freq.png")
+knitr::include_graphics("../figures/2021/North Stephens Passage_length_freq.png")
 
 ```
 
@@ -338,7 +365,7 @@ knitr::include_graphics("../figures/2020/North Stephens Passage_length_freq.png"
 The Department conducts an annual stock assessment survey in Holkham Bay where GKC have been caught incidentally. Data presented here includes spatial distribution and quantity of catch and by sex and recruit status.  
 
 ```{r, fig.cap = "Number of golden king crab caught during the annual Tanner crab stock assessment survey in Holkham Bay (2014-2019).", out.width= "500px"}
-knitr::include_graphics("../figures/2020/holkham_bay_gkc_survey_bycatch.png")
+knitr::include_graphics("../figures/2021/holkham_bay_gkc_survey_bycatch.png")
 ```
 
 
@@ -353,7 +380,7 @@ knitr::include_graphics("../figures/2020/holkham_bay_gkc_recruit_status.png")
 The East Central management area was closed for the 2020 season.
 
 ```{r, fig.cap = "Commercial GKC fishery harvest from the East Central management area. Dots represents the GHL in a given season (2001–Present).", out.width= "500px"}
-knitr::include_graphics("../figures/2020/East Central_harvest.png")
+knitr::include_graphics("../figures/2021/East Central_harvest.png")
 ```
 
 
@@ -389,16 +416,11 @@ knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (C
 ```
 
 ```{r, fig.cap = "East Central golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/East Central logbook_cpue.png")
+knitr::include_graphics("../figures/2021/East Central logbook_cpue.png")
 ```
-
-```{r, fig.cap = "Adjusted East Central golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE per industry request.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/East Central logbook_cpue_60_40.png")
-```
-
 
 ```{r, fig.cap = "East Central golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/East Central_length_freq.png")
+knitr::include_graphics("../figures/2021/East Central_length_freq.png")
 
 ```
 
@@ -408,7 +430,7 @@ knitr::include_graphics("../figures/2020/East Central_length_freq.png")
 The Mid-Chatham Strait management area was closed for the 2020 season.
 
 ```{r, fig.cap = "Commercial GKC fishery harvest from the Mid-Chatham Strait management area. Dots represents the GHL in a given season (2001–Present).", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Mid-Chatham_harvest.png")
+knitr::include_graphics("../figures/2021/Mid-Chatham_harvest.png")
 ```
 
 
@@ -444,20 +466,12 @@ knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (C
 ```
 
 ```{r, fig.cap = "Mid-Chatham Strait golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Mid-Chatham logbook_cpue.png")
+knitr::include_graphics("../figures/2021/Mid-Chatham logbook_cpue.png")
 ```
 
-```{r, fig.cap = "Adjusted Mid-Chatham Strait golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE per industry request.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Mid-Chatham logbook_cpue_60_40.png")
-```
-
-```{r, fig.cap = "Mid-Chatham Strait golden king crab length frequencies of sampled commercial catch by recruit class from 2000-2019", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Mid-Chatham_length_freq.png")
-
-```
 
 ```{r, fig.cap = "Mid-Chatham Strait golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Mid-Chatham_length_freq.png")
+knitr::include_graphics("../figures/2021/Mid-Chatham_length_freq.png")
 
 ```
 
@@ -467,7 +481,7 @@ knitr::include_graphics("../figures/2020/Mid-Chatham_length_freq.png")
 The Lower Chatham Strait management area was closed for the 2020 season.
 
 ```{r, fig.cap = "Commercial GKC fishery harvest from the Lower Chatham Strait management area. Dots represents the GHL in a given season (2001–Present).", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Lower Chatham_harvest.png")
+knitr::include_graphics("../figures/2021/Lower Chatham_harvest.png")
 ```
 
 
@@ -504,15 +518,11 @@ knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (C
 ```
 
 ```{r, fig.cap = "Lower Chatham Strait golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE (excludes 2013 outlier).", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Lower Chatham logbook_cpue.png")
-```
-
-```{r, fig.cap = "Adjusted Lower Chatham Strait golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE per industry request.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Lower Chatham logbook_cpue_60_40.png")
+knitr::include_graphics("../figures/2021/Lower Chatham logbook_cpue.png")
 ```
 
 ```{r, fig.cap = "Lower Chatham Strait golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Lower Chatham_length_freq.png")
+knitr::include_graphics("../figures/2021/Lower Chatham_length_freq.png")
 
 ```
 
@@ -521,7 +531,7 @@ knitr::include_graphics("../figures/2020/Lower Chatham_length_freq.png")
 ###Season Overview
 
 ```{r, fig.cap = "Commercial GKC fishery harvest from the Southern management area. Dots represents the GHL in a given season (2001–Present).", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Southern_harvest.png")
+knitr::include_graphics("../figures/2021/Southern_harvest.png")
 ```
 
 ### Reference Points
@@ -556,15 +566,10 @@ knitr::kable(dt, caption = "Golden king crab logbook catch per unit of effort (C
 ```
 
 ```{r, fig.cap = "Southern golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Southern logbook_cpue.png")
+knitr::include_graphics("../figures/2021/Southern logbook_cpue.png")
 ```
-
-```{r, fig.cap = "Adjusted Southern golden king crab reference points (Target, Trigger, and Limit) and fishery performance utilizing logbook CPUE per industry request.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Southern logbook_cpue_60_40.png")
-```
-
 
 ```{r, fig.cap = "Southern golden king crab length frequencies of sampled commercial catch by recruit class from 2000-Present.", out.width= "500px"}
-knitr::include_graphics("../figures/2020/Southern_length_freq.png")
+knitr::include_graphics("../figures/2021/Southern_length_freq.png")
 
 ```
